@@ -25,7 +25,6 @@ function App() {
         >
           다운
         </button>
-        <img src="asdf" />
       </div>
     </div>
   );
