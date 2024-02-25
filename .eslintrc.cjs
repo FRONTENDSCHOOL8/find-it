@@ -17,12 +17,17 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
+    '@typescript-eslint/no-unused-vars': 'warn',
   },
   settings: {
     'import/resolver': {
-      node: { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
       typescript: {},
+      alias: {
+        map: {
+          '@': './src',
+          extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
+        },
+      },
     },
-    react: { version: 'detect' },
   },
 };

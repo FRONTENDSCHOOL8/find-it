@@ -32,7 +32,7 @@ export default {
       },
     },
     fontFamily: {
-      sans: ['Pretandard Variable', 'Pretendard', 'noto-sans-kr', 'sans-serif'],
+      sans: ['OAGothic', 'noto-sans-kr', 'sans-serif'],
     },
   },
   plugins: [],

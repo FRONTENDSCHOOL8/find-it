@@ -1,4 +1,14 @@
-@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css');
+@font-face {
+  font-family: 'OAGothic';
+  src: url('@/fonts/OAGothic-medium.woff') format('woff');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'OAGothic';
+  src: url('@/fonts/OAGothic-ExtraBold.woff') format('woff');
+  font-weight: 800;
+}
 
 @tailwind base;
 @tailwind components;

@@ -1,33 +1,15 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/store/store';
-import { increment, decrement } from '@/store/slices/countSlice';
+import useCountStore from '@/store/count/countStore';
 
-function App() {
-  const dispatch = useDispatch();
-  const count = useSelector((state: RootState) => state.count.number);
+const App = () => {
+  const { count } = useCountStore((state) => state);
+
+  console.log(count);
 
   return (
     <div className="text-center">
       <h1 className="text-32px">Find It</h1>
-      <span className="text-50px font-black">{count}</span>
-      <div className="mt-12px">
-        <button
-          type="button"
-          className="px-16px text-24px font-bold"
-          onClick={() => dispatch(increment())}
-        >
-          업
-        </button>
-        <button
-          type="button"
-          className="px-16px text-24px font-bold"
-          onClick={() => dispatch(decrement())}
-        >
-          다운
-        </button>
-      </div>
     </div>
   );
-}
+};
 
 export default App;
