@@ -9,6 +9,6 @@ export default {
 /**@type{import('@storybook/react').StoryObj} */
 export const Basic: StoryObj<typeof NavigationItem> = {
   args: {
-    isHomeTrue: false,
+    isHomeActive: false,
   },
 };
