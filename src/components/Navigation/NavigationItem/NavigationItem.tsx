@@ -36,8 +36,10 @@ const NavigationItem: React.FC<NavigationItemProps> = ({
   let homeLogo;
   let paragraph;
 
-  const PARAGRAPH_FALSE_STYLE = "font-OAGothic -tracking-0.3px text-center text-10px text-gray-700";
-  const PARAGRAPH_TRUE_STYLE = "font-OAGothic -tracking-0.3px text-center text-10px text-primary";
+  const PARAGRAPH_FALSE_STYLE =
+    'font-OAGothic -tracking-0.3px text-center text-10px text-gray-700';
+  const PARAGRAPH_TRUE_STYLE =
+    'font-OAGothic -tracking-0.3px text-center text-10px text-primary';
 
   if (isHomeActive !== undefined) {
     if (isHomeActive) {
