@@ -12,20 +12,20 @@ import icon_profile_true from '@/assets/navigation/icon_profile_true.svg';
 import icon_profile_false from '@/assets/navigation/icon_profile_false.svg';
 
 interface NavigationItemProps {
-  isHomeTrue?: boolean;
-  isBoxTrue?: boolean;
-  isLostTrue?: boolean;
-  isBoardTrue?: boolean;
-  isProfileTrue?: boolean;
+  isHomeActive?: boolean;
+  isBoxActive?: boolean;
+  isLostActive?: boolean;
+  isBoardActive?: boolean;
+  isProfileActive?: boolean;
   children?: string;
 }
 
 const NavigationItem: React.FC<NavigationItemProps> = ({
-  isHomeTrue,
-  isBoxTrue,
-  isLostTrue,
-  isBoardTrue,
-  isProfileTrue,
+  isHomeActive,
+  isBoxActive,
+  isLostActive,
+  isBoardActive,
+  isProfileActive,
   children,
 }) => {
   let iconHome;
@@ -34,9 +34,13 @@ const NavigationItem: React.FC<NavigationItemProps> = ({
   let iconBoard;
   let iconProfile;
   let homeLogo;
+  let paragraph;
 
-  if (isHomeTrue !== undefined) {
-    if (isHomeTrue) {
+  const PARAGRAPH_FALSE_STYLE = "font-OAGothic -tracking-0.3px text-center text-10px text-gray-700";
+  const PARAGRAPH_TRUE_STYLE = "font-OAGothic -tracking-0.3px text-center text-10px text-primary";
+
+  if (isHomeActive !== undefined) {
+    if (isHomeActive) {
       iconHome = <img src={icon_home_true} alt="홈 아이콘" />;
       homeLogo = <img src={LOGOTYPE_small_true} alt="찾아줘" />;
     } else {
@@ -45,35 +49,43 @@ const NavigationItem: React.FC<NavigationItemProps> = ({
     }
   }
 
-  if (isBoxTrue !== undefined) {
-    if (isBoxTrue) {
+  if (isBoxActive !== undefined) {
+    if (isBoxActive) {
       iconBox = <img src={icon_box_true} alt="홈 아이콘" />;
+      paragraph = <p className={PARAGRAPH_TRUE_STYLE}>{children}</p>;
     } else {
       iconBox = <img src={icon_box_false} alt="홈 아이콘" />;
+      paragraph = <p className={PARAGRAPH_FALSE_STYLE}>{children}</p>;
     }
   }
 
-  if (isLostTrue !== undefined) {
-    if (isLostTrue) {
+  if (isLostActive !== undefined) {
+    if (isLostActive) {
       iconLost = <img src={icon_lost_true} alt="홈 아이콘" />;
+      paragraph = <p className={PARAGRAPH_TRUE_STYLE}>{children}</p>;
     } else {
       iconLost = <img src={icon_lost_false} alt="홈 아이콘" />;
+      paragraph = <p className={PARAGRAPH_FALSE_STYLE}>{children}</p>;
     }
   }
 
-  if (isBoardTrue !== undefined) {
-    if (isBoardTrue) {
+  if (isBoardActive !== undefined) {
+    if (isBoardActive) {
       iconBoard = <img src={icon_board_true} alt="홈 아이콘" />;
+      paragraph = <p className={PARAGRAPH_TRUE_STYLE}>{children}</p>;
     } else {
       iconBoard = <img src={icon_board_false} alt="홈 아이콘" />;
+      paragraph = <p className={PARAGRAPH_FALSE_STYLE}>{children}</p>;
     }
   }
 
-  if (isProfileTrue !== undefined) {
-    if (isProfileTrue) {
+  if (isProfileActive !== undefined) {
+    if (isProfileActive) {
       iconProfile = <img src={icon_profile_true} alt="홈 아이콘" />;
+      paragraph = <p className={PARAGRAPH_TRUE_STYLE}>{children}</p>;
     } else {
       iconProfile = <img src={icon_profile_false} alt="홈 아이콘" />;
+      paragraph = <p className={PARAGRAPH_FALSE_STYLE}>{children}</p>;
     }
   }
 
@@ -92,9 +104,7 @@ const NavigationItem: React.FC<NavigationItemProps> = ({
         {iconProfile}
       </a>
       {homeLogo}
-      <p className="font-OAGothic -tracking-0.3px text-center text-10px">
-        {children}
-      </p>
+      {paragraph}
     </div>
   );
 };
