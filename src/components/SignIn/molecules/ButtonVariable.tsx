@@ -4,10 +4,6 @@ export const ButtonVariable = ({
   variant = 'confirm',
   ...restProps
 }) => {
-  const buttonTest = () => {
-    alert('버튼 디폴트 테스트');
-  };
-
   let background, color, borderColor, width, height;
   switch (variant) {
     case 'normal':
@@ -56,10 +52,20 @@ export const ButtonVariable = ({
       break;
   }
 
+  const buttonTest = () => {
+    alert('기본 버튼 클릭 테스트');
+  };
+
+  const onClickHandler = () => {
+    if (buttonType === 'button') {
+      buttonTest();
+    }
+  };
+
   return (
     <button
       type={buttonType}
-      onClick={buttonTest}
+      onClick={onClickHandler}
       style={{
         background,
         color,
