@@ -1,4 +1,5 @@
 import { ButtonIcon } from '@/components/SignIn/molecules/ButtonIcon';
+import { ButtonVariable } from '@/components/SignIn/molecules/ButtonVariable';
 
 const SignIn = () => {
   const handleSignIn = () => {
@@ -14,11 +15,8 @@ const SignIn = () => {
   return (
     <>
       <h2>SignIn</h2>
-      <div className="mx-0 my-auto flex h-screen flex-col items-center bg-zinc-500">
-        <form
-          className="w-375px bg-black px-20px pt-16px"
-          onSubmit={handleSignIn}
-        >
+      <div className="mx-0 my-auto flex h-screen flex-col items-center">
+        <form className="w-375px px-20px pt-16px" onSubmit={handleSignIn}>
           <div className="mb-14px flex h-48px w-full justify-between border-b border-gray-300">
             <input
               className="mr-2.5 w-full pl-2.5 text-xs"
@@ -37,20 +35,17 @@ const SignIn = () => {
             />
             <ButtonIcon iconName="eyeoff" />
           </div>
-          <div className="flex flex-col gap-[1rem]	pt-60px">
-            <button
-              className="h-66px w-full rounded-[20px] bg-primary text-white"
-              type="submit"
-            >
-              로그인
-            </button>
-            <button
-              className="h-66px w-full rounded-[20px] border	border-primary bg-white text-primary"
-              type="button"
-              onClick={handleSignUp}
-            >
-              회원가입
-            </button>
+          <div className="box-border flex flex-col items-center gap-[1rem]	pt-60px">
+            <ButtonVariable
+              buttonType="submit"
+              buttonText="로그인"
+              variant="normal"
+            />
+            <ButtonVariable
+              buttonType="button"
+              buttonText="회원가입"
+              variant="lineStyle"
+            />
           </div>
         </form>
       </div>
