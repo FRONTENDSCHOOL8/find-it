@@ -25,6 +25,9 @@ export default {
       lineHeight: {
         ...pxToRemFunc(1, 1000),
       },
+      borderRadius: {
+        ...pxToRemFunc(1, 1000),
+      },
       screens: {
         mobile: '360px',
         tablet: '768px',
