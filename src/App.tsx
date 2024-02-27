@@ -23,7 +23,7 @@ const App = () => {
   return (
     <div className="text-center">
       <h1 className="text-32px text-red-500">Find It</h1>
-      <SignIn />;
+      <SignIn />
     </div>
   );
 };
