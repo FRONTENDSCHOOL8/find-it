@@ -16,11 +16,13 @@ const SignIn = () => {
               type="email"
               name="useremail"
               placeholder="이메일 주소"
+              alretText=""
             />
             <InputForm
               type="password"
               name="userpassword"
               placeholder="비밀번호(영어, 숫자, 특수문자 조합)"
+              alretText="invalidValue"
             />
           </div>
           <div className="box-border flex flex-col items-center gap-[1rem]	pt-60px">

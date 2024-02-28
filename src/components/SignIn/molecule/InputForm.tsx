@@ -10,6 +10,7 @@ export const InputForm = ({
   type = 'text',
   name = 'inputName',
   placeholder = 'placeholder',
+  alretText = '',
 }) => {
   const inputRef = useRef(null);
 
@@ -34,7 +35,7 @@ export const InputForm = ({
         <DeleteContent isShow={true} />
         <EyeToggle isShow={true} />
       </div>
-      <AlertText text="invalidEmail" />
+      <AlertText text={alretText} />
     </div>
   );
 };
