@@ -1,4 +1,8 @@
-import { ButtonIcon } from '@/components/SignIn/molecules/ButtonIcon';
+import {
+  DoubleCheck,
+  DeleteContent,
+  EyeToggle,
+} from '@/components/SignIn/molecule/ButtonIcon';
 import { AlertText } from '@/components/SignIn/atom/AlertText';
 import { useRef } from 'react';
 
@@ -6,6 +10,7 @@ export const InputForm = ({
   type = 'text',
   name = 'inputName',
   placeholder = 'placeholder',
+  alretText = '',
 }) => {
   const inputRef = useRef(null);
 
@@ -15,7 +20,6 @@ export const InputForm = ({
       inputRef.current.blur();
     }
   };
-  /////////////////////////////
   return (
     <div>
       <div className="flex h-48px w-full justify-between border-b border-gray-300 ">
@@ -27,11 +31,11 @@ export const InputForm = ({
           name={name}
           placeholder={placeholder}
         />
-        <ButtonIcon iconName="dubleCheck" />
-        <ButtonIcon iconName="" />
-        <ButtonIcon iconName="" />
+        <DoubleCheck isShow={true} />
+        <DeleteContent isShow={true} />
+        <EyeToggle isShow={true} />
       </div>
-      <AlertText text="invalidEmail" />
+      <AlertText text={alretText} />
     </div>
   );
 };
