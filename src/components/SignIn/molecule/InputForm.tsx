@@ -1,4 +1,4 @@
-import { ButtonIcon } from '@/components/SignIn/molecules/ButtonIcon';
+import { ButtonIcon } from '@/components/SignIn/molecule/ButtonIcon';
 import { AlertText } from '@/components/SignIn/atom/AlertText';
 import { useRef } from 'react';
 
@@ -28,8 +28,8 @@ export const InputForm = ({
           placeholder={placeholder}
         />
         <ButtonIcon iconName="dubleCheck" />
-        <ButtonIcon iconName="" />
-        <ButtonIcon iconName="" />
+        <ButtonIcon iconName="delete" />
+        <ButtonIcon iconName="eyeon" />
       </div>
       <AlertText text="invalidEmail" />
     </div>

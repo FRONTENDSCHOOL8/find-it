@@ -1,4 +1,4 @@
-import { IconDelete } from '@/components/SignIn/atom/IconDelete';
+import { IconDelete } from '@/components/common/atom/IconDelete';
 import { IconEyeOff } from '@/components/SignIn/atom/IconEyeOff';
 import { IconEyeOn } from '@/components/SignIn/atom/IconEyeOn';
 import { ButtonDoubleCheck } from '@/components/SignIn/atom/ButtonDoubleCheck';
@@ -8,7 +8,7 @@ export const ButtonIcon = ({ iconName }) => {
     alert('엑스,눈,중복확인 클릭 테스트');
   };
   const iconMap = {
-    delete: <IconDelete />,
+    delete: <IconDelete color="#4785ff" />,
     eyeoff: <IconEyeOff />,
     eyeon: <IconEyeOn />,
     dubleCheck: <ButtonDoubleCheck />,
