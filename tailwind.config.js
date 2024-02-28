@@ -49,10 +49,10 @@ export default {
         'gray-500': '#666666',
         'gray-700': '#494949',
       },
+      fontFamily: {
+        sans: ['OAGothic', 'noto-sans-kr', 'sans-serif'],
+      },
     },
-    fontFamily: {
-      sans: ['OAGothic', 'noto-sans-kr', 'sans-serif'],
-    },
+    plugins: [],
   },
-  plugins: [],
 };
