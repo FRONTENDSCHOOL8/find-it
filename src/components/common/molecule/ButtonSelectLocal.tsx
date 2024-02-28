@@ -1,5 +1,4 @@
 import { IconSelectLocal } from '@/components/common/atom/IconSelectLocal';
-import { SelectLocalListFirst, SelectLocalListSecond } from './SelectLocalList';
 
 export const ButtonSelectLocal = ({
   isClick = false,
