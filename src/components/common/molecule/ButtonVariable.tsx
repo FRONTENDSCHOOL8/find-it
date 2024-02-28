@@ -53,7 +53,7 @@ export const ButtonVariable = ({
   }
 
   const buttonTest = () => {
-    alert('기본 버튼 클릭 테스트');
+    alert('ButtonVariable: button type으로 쓰일때 클릭 테스트');
   };
 
   const onClickHandler = () => {
