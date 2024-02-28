@@ -32,7 +32,7 @@ const Header: React.FC<HeaderProps> = ({
   let submitButton;
   let emptyBox;
   const defaultStyle =
-    'h-96p flex w-375px items-center justify-around pb-19px pt-54px';
+    'h-52px flex w-375px items-center justify-around pb-19px pt-54px';
 
   const handlePreviousPage = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
