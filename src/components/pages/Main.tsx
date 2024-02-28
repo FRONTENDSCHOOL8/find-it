@@ -1,3 +1,5 @@
+import { pb } from '@/lib/utils/pb';
+
 import Header from '../Header/Header';
 import ItemBox from '../ItemBox/ItemBox';
 import Navigation from '../Navigation/Navigation';
@@ -6,13 +8,21 @@ import icon_search from '@/assets/icons/icon_search_36.svg';
 import icon_next from '@/assets/icons/icon_next_14.svg';
 import icon_right from '@/assets/icons/icon_right.svg';
 
+const userData = await pb.collection('users').getOne('h1d5vbnyi4o0faj', {
+  expand: 'nickname, email',
+});
+
+const { nickname } = userData;
+
 interface ProfileBoxProps {
   userName?: string;
 }
 
-const ProfileBox: React.FC<ProfileBoxProps> = ({ userName = '방문자' }) => {
+const ProfileBox: React.FC<ProfileBoxProps> = ({
+  userName = nickname || '방문자',
+}) => {
   let profileName: string;
-  if (userName.length > 5) {
+  if (nickname.length > 5) {
     profileName = `${userName.slice(0, 4)}...`;
   } else {
     profileName = userName;
