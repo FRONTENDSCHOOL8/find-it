@@ -46,7 +46,7 @@ const SignIn = () => {
         </form>
       </div>
       <h4>지역 설정 테스트</h4>
-      <ButtonSelectLocal isClick={true} />
+      <ButtonSelectLocal isClick={false} />
     </>
   );
 };
