@@ -24,7 +24,6 @@ export const ButtonSelectLocal = ({
         {firstName}
         <IconSelectLocal color={blackColor} />
       </button>
-      {!(<SelectLocalListFirst />)}
       <button
         className="flex items-center rounded-full px-14px py-6px text-10px"
         type="button"
@@ -36,7 +35,6 @@ export const ButtonSelectLocal = ({
         {secondName}
         <IconSelectLocal color={blackColor} />
       </button>
-      {!(<SelectLocalListSecond />)}
     </div>
   );
 };
