@@ -22,7 +22,7 @@ const Modal: React.FC<ModalProps> = ({
   }
 
   return (
-    <div className="flex h-139px w-302px flex-col items-center justify-center gap-26px rounded-20px bg-white px-76px">
+    <div className="flex w-302px flex-col items-center justify-center gap-26px rounded-20px bg-white px-76px pb-26px pt-46px">
       <p className="w-280px text-center text-14px text-gray-400">{children}</p>
       <div className="flex h-21px w-150px items-center justify-center gap-90px">
         {cancelButton}
