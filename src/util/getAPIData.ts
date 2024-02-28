@@ -23,10 +23,14 @@ export const getAPIData = async (
 
     const data = await response.text();
     const parser = new DOMParser();
-    const xml = parser.parseFromString(data, 'application/xml');
+    const xml = parser.parseFromString(data, 'text/xml');
     const json = xmlToJson(xml);
 
-    return json;
+    if (typeof json === 'string') {
+      throw new Error('json is string');
+    }
+
+    return json.response;
   } catch (error) {
     console.error('error: ' + error);
   }

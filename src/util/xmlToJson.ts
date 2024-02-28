@@ -1,5 +1,5 @@
 interface Json {
-  [key: string]: string | Json | Json[];
+  [key: string]: Json | string | Json[] | object;
 }
 
 // XML을 JSON으로 변환하는 함수
@@ -37,5 +37,6 @@ export const xmlToJson = (xml: Node): Json | string => {
       }
     });
   }
+
   return obj;
 };
