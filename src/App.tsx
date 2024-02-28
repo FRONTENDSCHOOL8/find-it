@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import useCountStore from '@/store/count/countStore';
-import SignIn from '@/components/SignIn/SignIn';
 
 const App = () => {
   const { count } = useCountStore((state) => state);
@@ -23,7 +22,6 @@ const App = () => {
   return (
     <div className="text-center">
       <h1 className="text-32px text-red-500">Find It</h1>
-      <SignIn />
     </div>
   );
 };
