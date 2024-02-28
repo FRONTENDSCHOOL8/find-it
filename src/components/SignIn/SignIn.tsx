@@ -21,7 +21,6 @@ const SignIn = () => {
               type="password"
               name="userpassword"
               placeholder="비밀번호(영어, 숫자, 특수문자 조합)"
-              delete={false}
             />
           </div>
           <div className="box-border flex flex-col items-center gap-[1rem]	pt-60px">
