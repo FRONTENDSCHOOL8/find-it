@@ -1,3 +1,6 @@
+import { pb } from '@/lib/utils/pb';
+import GetTimeDiff from '@/components/common/atom/GetTimeDiff';
+
 import Header from '../Header/Header';
 import Shortcut from '../Shortcut/Shortcut';
 import ItemBox from '../ItemBox/ItemBox';
@@ -6,13 +9,25 @@ import Navigation from '../Navigation/Navigation';
 import icon_search from '@/assets/icons/icon_search_36.svg';
 import icon_right from '@/assets/icons/icon_right.svg';
 
+/* -------------------------------------------------------------------------- */
+/*                                  유저 이름 렌더링                              */
+/* -------------------------------------------------------------------------- */
+
+const userData = await pb.collection('users').getOne('h1d5vbnyi4o0faj', {
+  expand: 'nickname',
+});
+
+const { nickname } = userData;
+
 interface ProfileBoxProps {
   userName?: string;
 }
 
-const ProfileBox: React.FC<ProfileBoxProps> = ({ userName = '방문자' }) => {
+const ProfileBox: React.FC<ProfileBoxProps> = ({
+  userName = nickname || '방문자',
+}) => {
   let profileName: string;
-  if (userName.length > 5) {
+  if (nickname.length > 5) {
     profileName = `${userName.slice(0, 4)}...`;
   } else {
     profileName = userName;
@@ -30,6 +45,9 @@ const ProfileBox: React.FC<ProfileBoxProps> = ({ userName = '방문자' }) => {
   );
 };
 
+/* -------------------------------------------------------------------------- */
+/*                                 물품 찾기 박스                                */
+/* -------------------------------------------------------------------------- */
 const FindItemBox = () => {
   return (
     <div className="relative w-140px rounded-20px bg-gray-200 transition-all duration-300 hover:shadow-lg">
@@ -45,19 +63,20 @@ const FindItemBox = () => {
   );
 };
 
-interface CommunityBoxProps {
-  recentPost1?: string;
-  recentPost2?: string;
-  postTime1?: string;
-  postTime2?: string;
-}
+/* -------------------------------------------------------------------------- */
+/*                             자유게시판 데이터 렌더링                             */
+/* -------------------------------------------------------------------------- */
 
-const CommunityBox: React.FC<CommunityBoxProps> = ({
-  recentPost1 = '최근 게시물이 없습니다.',
-  recentPost2 = '최근 게시물이 없습니다.',
-  postTime1 = '',
-  postTime2 = '',
-}) => {
+const recentPost = await pb.collection('community').getList(1, 2, {
+  sort: '-created',
+  expand: 'title, created',
+});
+const recentPost1 = recentPost.items[0].title;
+const recentPost2 = recentPost.items[1].title;
+const postTime1 = recentPost.items[0].created;
+const postTime2 = recentPost.items[1].created;
+
+const CommunityBox = () => {
   return (
     <a href="/" className="block">
       <div className="mb-5 flex h-140px w-335px flex-col gap-20px rounded-20px border border-black p-5 transition-all duration-300 hover:cursor-pointer hover:shadow-lg">
@@ -69,11 +88,11 @@ const CommunityBox: React.FC<CommunityBoxProps> = ({
         <div className="">
           <div className="flex items-center gap-2 pb-1">
             <span className="text-14px">{recentPost1}</span>
-            <span className="text-10px text-gray-450">{postTime1}</span>
+            <GetTimeDiff createdAt={postTime1} />
           </div>
           <div className="flex items-center gap-2">
             <span className="text-14px">{recentPost2}</span>
-            <span className="text-10px text-gray-450">{postTime2}</span>
+            <GetTimeDiff createdAt={postTime2} />
           </div>
         </div>
       </div>
@@ -81,6 +100,9 @@ const CommunityBox: React.FC<CommunityBoxProps> = ({
   );
 };
 
+/* -------------------------------------------------------------------------- */
+/*                                메인페이지 렌더링                               */
+/* -------------------------------------------------------------------------- */
 const Main = () => {
   return (
     <>

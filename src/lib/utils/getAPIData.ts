@@ -1,4 +1,4 @@
-import { xmlToJson } from '@/util/xmlToJson';
+import { xmlToJson } from '@/lib/utils/xmlToJson';
 
 const defaultOptions = {
   method: 'GET',
