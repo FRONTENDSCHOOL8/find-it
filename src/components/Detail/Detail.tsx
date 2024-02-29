@@ -1,6 +1,7 @@
 import bookmark_icon from '@/assets/icons/icon_bookmarkt_18.svg';
 import bookmark_icon_fill from '@/assets/icons/icon_my_bookmark_fill.svg';
 import useBookmarkStore from '@/store/bookmark/bookmark';
+import { useEffect } from 'react';
 
 interface DetailType {
   item_name: string;
@@ -13,12 +14,6 @@ interface DetailType {
   mgmt_num: string;
   item_type_A: string;
   item_type_B: string;
-}
-
-declare global {
-  interface Window {
-    kakao: any;
-  }
 }
 
 export interface DetailProps {
@@ -51,6 +46,32 @@ const Detail: React.FC<DetailProps> = () => {
     }
     return bookmark_icon;
   };
+
+  useEffect(() => {
+    const kakaoMapsScript = document.createElement('script');
+    kakaoMapsScript.src = `<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${import.meta.env.VITE_KAKAO_MAPS_API_KEY}"></script>`;
+    kakaoMapsScript.async = true;
+
+    kakaoMapsScript.onload = () => {
+      window.kakao.maps.load(() => {
+        const mapContainer = document.querySelector('#map'), // 지도를 표시할 div
+          mapOption = {
+            center: new window.kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
+            level: 3, // 지도의 확대 레벨
+          };
+
+        if (mapContainer instanceof HTMLElement) {
+          new window.kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+        }
+      });
+    };
+
+    return () => {
+      if (document.head.contains(kakaoMapsScript)) {
+        document.head.removeChild(kakaoMapsScript);
+      }
+    };
+  }, []);
 
   return (
     <div className="mx-auto w-375px leading-[1.3]">
@@ -147,7 +168,7 @@ const Detail: React.FC<DetailProps> = () => {
           </li>
         </ul>
         <div className="mt-28px h-375px bg-slate-500 py-50px text-center text-24px text-white">
-          <div id="map" className="h-full w-full"></div>
+          <div id="map" className="h-full w-full bg-blue-400"></div>
         </div>
 
         <button

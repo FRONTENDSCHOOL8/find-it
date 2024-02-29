@@ -23,10 +23,8 @@ module.exports = {
     'import/resolver': {
       typescript: {},
       alias: {
-        map: {
-          '@': './src',
-          extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
-        },
+        map: [['@', './src']],
+        extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
       },
     },
   },

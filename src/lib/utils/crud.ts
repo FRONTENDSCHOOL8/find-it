@@ -1,4 +1,4 @@
-import { pb } from '@/api/getPbData';
+import { pb } from '@/lib/api/getPbData';
 
 export const getData = async (collection: string, options: object = {}) => {
   try {
