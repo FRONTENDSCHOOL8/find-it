@@ -1,11 +1,11 @@
 import { pb } from '@/lib/utils/pb';
 
 import Header from '../Header/Header';
+import Shortcut from '../Shortcut/Shortcut';
 import ItemBox from '../ItemBox/ItemBox';
 import Navigation from '../Navigation/Navigation';
 
 import icon_search from '@/assets/icons/icon_search_36.svg';
-import icon_next from '@/assets/icons/icon_next_14.svg';
 import icon_right from '@/assets/icons/icon_right.svg';
 
 const userData = await pb.collection('users').getOne('h1d5vbnyi4o0faj', {
@@ -55,15 +55,6 @@ const FindItemBox = () => {
   );
 };
 
-const ShortcutGetList = () => {
-  return (
-    <a href="/" className="flex pb-5px pl-10px pt-3">
-      <span className="text-14px text-gray-700">주인을 찾아요!</span>
-      <img src={icon_next} alt="습득물 페이지 바로가기" />
-    </a>
-  );
-};
-
 interface CommunityBoxProps {
   recentPost1?: string;
   recentPost2?: string;
@@ -109,7 +100,13 @@ const Main = () => {
           <ProfileBox />
           <FindItemBox />
         </div>
-        <ShortcutGetList />
+        <div className="pb-5px pl-10px pt-3">
+          <Shortcut
+            link="/"
+            text="주인을 찾아요!"
+            alt="습득물 페이지 바로가기"
+          />
+        </div>
         <ItemBox itemType="main" />
         <CommunityBox />
       </div>
