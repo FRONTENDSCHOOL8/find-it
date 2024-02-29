@@ -1,4 +1,4 @@
-export const IconDelete = ({ color = '#666666', ...props }) => {
+const IconDelete = ({ color = '#666666', ...props }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -23,3 +23,5 @@ export const IconDelete = ({ color = '#666666', ...props }) => {
     </svg>
   );
 };
+
+export default IconDelete;
