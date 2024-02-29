@@ -1,4 +1,5 @@
 import { useId, useState } from 'react';
+import SearchParagraph from '../atom/SearchParagraph';
 
 interface SearchDateProps {
   children: string;
@@ -23,11 +24,8 @@ const SearchDate: React.FC<SearchDateProps> = ({ children }) => {
 
   return (
     <div className="flex h-20px w-316px items-center justify-between">
-      <label
-        htmlFor={dateInputId}
-        className="text-12px font-medium tracking-[-0.36px]"
-      >
-        {children}
+      <label htmlFor={dateInputId}>
+        <SearchParagraph>{children}</SearchParagraph>
       </label>
       <div className="flex items-center gap-8px">
         <p className="text-12px">{selectDate}</p>
