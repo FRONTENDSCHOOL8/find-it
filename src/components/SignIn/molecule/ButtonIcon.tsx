@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { IconDelete } from '@/components/common/atom/IconDelete';
+import IconDelete from '@/components/common/atom/IconDelete';
 import { IconEyeOff } from '@/components/SignIn/atom/IconEyeOff';
 import { IconEyeOn } from '@/components/SignIn/atom/IconEyeOn';
 import { ButtonDoubleCheck } from '@/components/SignIn/atom/ButtonDoubleCheck';
@@ -13,7 +13,7 @@ export const EyeToggle = ({ isShow }) => {
   if (isShow) {
     return (
       <>
-        <button className="inline pr-2.5 " onClick={toggleEye}>
+        <button onClick={toggleEye}>
           {isEyeOn && <IconEyeOn />}
           {!isEyeOn && <IconEyeOff />}
         </button>
@@ -26,11 +26,11 @@ export const EyeToggle = ({ isShow }) => {
 
 export const DeleteContent = ({ isShow }) => {
   const buttonTest = () => {
-    alert('아이온 클릭 테스트');
+    alert('삭제 클릭 테스트');
   };
   if (isShow) {
     return (
-      <button className="inline pr-2.5 " onClick={buttonTest}>
+      <button onClick={buttonTest}>
         <IconDelete color="#4785ff" />
       </button>
     );
@@ -40,11 +40,11 @@ export const DeleteContent = ({ isShow }) => {
 };
 export const DoubleCheck = ({ isShow }) => {
   const buttonTest = () => {
-    alert('아이온 클릭 테스트');
+    alert('중복확인 클릭 테스트');
   };
   if (isShow) {
     return (
-      <button className="inline pr-2.5 " onClick={buttonTest}>
+      <button onClick={buttonTest}>
         <ButtonDoubleCheck />
       </button>
     );

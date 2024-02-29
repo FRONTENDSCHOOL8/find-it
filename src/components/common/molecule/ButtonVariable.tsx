@@ -1,7 +1,8 @@
-export const ButtonVariable = ({
+const ButtonVariable = ({
   buttonType = 'button',
   buttonText = '확인',
   variant = 'normal',
+  handleClick,
   ...restProps
 }) => {
   let background, color, borderColor, width, height;
@@ -52,20 +53,14 @@ export const ButtonVariable = ({
       break;
   }
 
-  const buttonTest = () => {
-    alert('ButtonVariable: button type으로 쓰일때 클릭 테스트');
-  };
-
-  const onClickHandler = () => {
-    if (buttonType === 'button') {
-      buttonTest();
-    }
-  };
+  if (!buttonType === 'submit') {
+    onClickHandler = null;
+  }
 
   return (
     <button
       type={buttonType}
-      onClick={onClickHandler}
+      onClick={handleClick}
       style={{
         width,
         height,
@@ -80,3 +75,5 @@ export const ButtonVariable = ({
     </button>
   );
 };
+
+export default ButtonVariable;
