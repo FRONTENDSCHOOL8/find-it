@@ -1,7 +1,7 @@
 export const ButtonVariable = ({
   buttonType = 'button',
   buttonText = '확인',
-  variant = 'confirm',
+  variant = 'normal',
   ...restProps
 }) => {
   let background, color, borderColor, width, height;
@@ -27,21 +27,21 @@ export const ButtonVariable = ({
       width = '100%';
       height = '66px';
       break;
-    case 'blackSolid':
+    case 'blackSolidThin':
       background = 'black';
       color = 'white';
       borderColor = 'black';
       width = '315px';
       height = '53px';
       break;
-    case 'blackLine':
+    case 'blackLineThin':
       background = 'white';
       color = 'black';
       borderColor = 'black';
       width = '315px';
       height = '53px';
       break;
-    case 'primarySolid':
+    case 'primarySolidThin':
       background = '#4785ff';
       color = 'white';
       borderColor = '#4785ff';
@@ -67,13 +67,12 @@ export const ButtonVariable = ({
       type={buttonType}
       onClick={onClickHandler}
       style={{
-        background,
-        color,
-        borderColor,
-        border: 'solid',
-        borderRadius: '20px',
         width,
         height,
+        background,
+        color,
+        border: `1px solid ${borderColor}`,
+        borderRadius: '20px',
       }}
       {...restProps}
     >

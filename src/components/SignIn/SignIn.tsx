@@ -1,5 +1,11 @@
 import { ButtonVariable } from '@/components/common/molecule/ButtonVariable';
-import { InputForm } from './molecule/InputForm';
+import { InputForm } from '@/components/SignIn/molecule/InputForm';
+import { IconSelectLocal } from '@/components/common/atom/IconSelectLocal';
+import {
+  SelectLocalListFirst,
+  SelectLocalListSecond,
+} from '@/components/common/molecule/SelectLocalList';
+import { ButtonSelectLocal } from '@/components/common/molecule/ButtonSelectLocal';
 
 const SignIn = () => {
   const handleSignIn = () => {
@@ -9,7 +15,7 @@ const SignIn = () => {
   return (
     <>
       <h2>SignIn</h2>
-      <div className="mx-0 my-auto flex h-screen flex-col items-center">
+      <div className="mx-0 my-auto flex flex-col items-center">
         <form className="w-375px px-20px pt-16px" onSubmit={handleSignIn}>
           <div className="flex flex-col gap-20px">
             <InputForm
@@ -39,6 +45,8 @@ const SignIn = () => {
           </div>
         </form>
       </div>
+      <h4>지역 설정 테스트</h4>
+      <ButtonSelectLocal isClick={false} />
     </>
   );
 };
