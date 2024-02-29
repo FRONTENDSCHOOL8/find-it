@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import profile from '@/assets/profile.svg';
 import icon_pencil from '@/assets/icons/icon_pencil.svg';
 import icon_bookmark from '@/assets/icons/icon_bookmark.svg';
@@ -5,7 +7,6 @@ import icon_docs from '@/assets/icons/icon_docs.svg';
 import icon_envelope from '@/assets/icons/icon_envelope.svg';
 import icon_search from '@/assets/icons/icon_search_16.svg';
 import icon_bell from '@/assets/icons/icon_bell.svg';
-
 import Horizon from '../common/atom/Horizon';
 
 const Profile = () => {
@@ -33,6 +34,8 @@ const Profile = () => {
 };
 
 const List01 = () => {
+  const [inboxAlert, setInBoxAlert] = useState(true);
+
   return (
     <section className="pb-26px">
       <ul className="flex flex-col gap-10px">
@@ -51,7 +54,14 @@ const List01 = () => {
         <li className="transition-all duration-300 hover:rounded hover:bg-gray-100">
           <a href="/" className="flex gap-10px py-4px">
             <img src={icon_envelope} alt="받은 쪽지함 보기" />
-            <span>받은 쪽지함</span>
+            <span className="flex gap-3px">
+              받은 쪽지함
+              <p
+                className={`${inboxAlert ? 'h-7px w-7px rounded-full bg-primary' : ''} `}
+              >
+                &nbsp;
+              </p>
+            </span>
           </a>
         </li>
       </ul>
@@ -60,6 +70,8 @@ const List01 = () => {
 };
 
 const List02 = () => {
+  const [keywordAlert, setKeywordAlert] = useState(true);
+
   return (
     <section className="py-26px">
       <ul className="flex flex-col gap-10px">
@@ -71,8 +83,15 @@ const List02 = () => {
         </li>
         <li className="transition-all duration-300 hover:rounded hover:bg-gray-100">
           <a href="/" className="flex gap-10px py-4px">
-            <img src={icon_bell} alt="게시글 관리" />
-            <span>게시글 관리</span>
+            <img src={icon_bell} alt="키워드 알림 보기" />
+            <span className="flex gap-3px">
+              키워드 알림
+              <p
+                className={`${keywordAlert ? 'h-7px w-7px rounded-full bg-primary' : ''} `}
+              >
+                &nbsp;
+              </p>
+            </span>
           </a>
         </li>
       </ul>
