@@ -37,11 +37,7 @@ export const InputForm = ({
           <EyeToggle isShow={true} />
         </div>
       </div>
-<<<<<<< HEAD
       <AlertText alertCase={alretText} />
-=======
-      <AlertText text={alretText} />
->>>>>>> 616c48d747633d28c0ee1686a8ced60d3205d817
     </div>
   );
 };
