@@ -1,4 +1,4 @@
-export const IconEyeOff = (props) => {
+const IconEyeOff = (props) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -15,3 +15,5 @@ export const IconEyeOff = (props) => {
     </svg>
   );
 };
+
+export default IconEyeOff;

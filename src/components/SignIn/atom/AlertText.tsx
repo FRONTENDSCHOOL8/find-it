@@ -1,8 +1,4 @@
-<<<<<<< HEAD:src/components/common/atom/AlertText.tsx
 const AlertText = ({ alertCase }) => {
-=======
-export const AlertText = ({ text }) => {
->>>>>>> 616c48d747633d28c0ee1686a8ced60d3205d817:src/components/SignIn/atom/AlertText.tsx
   let comment = {
     doubleCheckEmail: '이미 사용중인 이메일 주소입니다.',
     doubleCheckNickname: '이미 사용중인 닉네임 입니다.',

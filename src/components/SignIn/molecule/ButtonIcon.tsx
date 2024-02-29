@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import IconDelete from '@/components/common/atom/IconDelete';
-import { IconEyeOff } from '@/components/SignIn/atom/IconEyeOff';
-import { IconEyeOn } from '@/components/SignIn/atom/IconEyeOn';
-import { ButtonDoubleCheck } from '@/components/SignIn/atom/ButtonDoubleCheck';
+import IconEyeOff from '@/components/SignIn/atom/IconEyeOff';
+import IconEyeOn from '@/components/SignIn/atom/IconEyeOn';
+import ButtonDoubleCheck from '@/components/SignIn/atom/ButtonDoubleCheck';
 
 export const EyeToggle = ({ isShow }) => {
   const [isEyeOn, setIsEyeOn] = useState(false);

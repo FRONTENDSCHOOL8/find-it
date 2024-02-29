@@ -1,18 +1,7 @@
 import ButtonVariable from '@/components/common/molecule/ButtonVariable';
 import { InputForm } from '@/components/SignIn/molecule/InputForm';
 import ButtonSelectItem from '@/components/common/molecule/ButtonSelectItem';
-////삭제할것
-// export const DataList = [
-//   '강남구',
-//   '강동구',
-//   '강북구',
-//   '강서구',
-//   '관악구',
-//   '광진구',
-//   '구로구',
-// ];
-
-/////
+import GetLocalList from '@/components/SignIn/molecule/GetLocalList';
 
 const SignIn = () => {
   const handleSignIn = () => {
@@ -54,6 +43,7 @@ const SignIn = () => {
       </div>
       <h4>지역 설정 테스트</h4>
       <ButtonSelectItem isClick={false} />
+      <GetLocalList />
     </>
   );
 };

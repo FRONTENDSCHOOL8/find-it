@@ -1,10 +1,10 @@
+import { useRef } from 'react';
+import AlertText from '@/components/common/atom/AlertText';
 import {
   DoubleCheck,
   DeleteContent,
   EyeToggle,
 } from '@/components/SignIn/molecule/ButtonIcon';
-import AlertText from '@/components/common/atom/AlertText';
-import { useRef } from 'react';
 
 export const InputForm = ({
   type = 'text',
