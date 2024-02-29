@@ -17,6 +17,12 @@ interface DetailType {
   item_type_B: string;
 }
 
+declare global {
+  interface Window {
+    kakao: any;
+  }
+}
+
 export interface DetailProps {
   children: React.ReactNode;
 }
@@ -49,11 +55,7 @@ const Detail: React.FC<DetailProps> = () => {
   };
 
   useEffect(() => {
-    (async () => {
-      const data = await getData('community');
-
-      console.log(data);
-    })();
+    window.kakao.maps.load(() => {});
   }, []);
 
   return (
@@ -151,7 +153,7 @@ const Detail: React.FC<DetailProps> = () => {
           </li>
         </ul>
         <div className="mt-28px h-375px bg-slate-500 py-50px text-center text-24px text-white">
-          지도 자리
+          <div id="map" className="h-full w-full"></div>
         </div>
 
         <button
