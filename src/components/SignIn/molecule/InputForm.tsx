@@ -22,12 +22,7 @@ export const InputForm = ({
   };
   return (
     <div>
-      <div
-        style={{
-          borderBottom: '1px solid #e4e4e4',
-        }}
-        className="flex h-48px w-full justify-between "
-      >
+      <div className="flex h-48px w-full justify-between border-b border-gray-300 ">
         <input
           ref={inputRef}
           onKeyDown={handleKeyDown}
@@ -42,7 +37,11 @@ export const InputForm = ({
           <EyeToggle isShow={true} />
         </div>
       </div>
+<<<<<<< HEAD
       <AlertText alertCase={alretText} />
+=======
+      <AlertText text={alretText} />
+>>>>>>> 616c48d747633d28c0ee1686a8ced60d3205d817
     </div>
   );
 };

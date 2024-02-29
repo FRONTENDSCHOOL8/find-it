@@ -10,6 +10,23 @@
   font-weight: 800;
 }
 
+@layer components {
+  .date-input {
+    @apply block h-20px w-20px border-0 text-12px;
+  }
+
+  .date-input::-webkit-calendar-picker-indicator {
+    @apply hidden;
+  }
+
+  .date-input::-webkit-calendar-picker-indicator {
+    @apply block h-20px w-20px bg-cover bg-center bg-no-repeat;
+    background-image: url('@/assets/icons/icon_calendar.svg');
+    color: rgba(0, 0, 0, 0);
+    opacity: 1;
+  }
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

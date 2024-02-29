@@ -1,3 +1,4 @@
+
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 const App = () => {
@@ -7,6 +8,7 @@ const App = () => {
         <Route path="/" element={<App />} />
       </Routes>
     </BrowserRouter>
+
   );
 };
 
