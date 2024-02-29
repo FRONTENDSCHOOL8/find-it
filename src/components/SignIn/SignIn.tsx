@@ -48,7 +48,7 @@ const SignIn = () => {
       <h4>지역 설정 테스트</h4>
       <ButtonSelectLocal isClick={false} />
       {/* <FirstCategory /> */}
-      <SecondCategory selectedArea="서울" />
+      {/* <SecondCategory selectedArea="서울" /> */}
     </>
   );
 };
