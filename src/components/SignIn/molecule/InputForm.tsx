@@ -3,17 +3,16 @@ import {
   DeleteContent,
   EyeToggle,
 } from '@/components/SignIn/molecule/ButtonIcon';
-import { AlertText } from '@/components/common/atom/AlertText';
+import AlertText from '@/components/common/atom/AlertText';
 import { useRef } from 'react';
 
 export const InputForm = ({
   type = 'text',
   name = 'inputName',
   placeholder = 'placeholder',
-  borderColor = '#e4e4e4',
+  alretText = '',
 }) => {
   const inputRef = useRef(null);
-  const primaryColor = '#4785ff';
 
   // ESC 키가 눌렸을 때 입력 필드 포커스 해제
   const handleKeyDown = (e) => {
@@ -32,16 +31,18 @@ export const InputForm = ({
         <input
           ref={inputRef}
           onKeyDown={handleKeyDown}
-          className="mr-2.5 w-full pl-2.5 pr-2.5 text-14px"
+          className="w-full pl-2.5 pr-2.5 text-14px"
           type={type}
           name={name}
           placeholder={placeholder}
         />
-        <DoubleCheck isShow={true} />
-        <DeleteContent isShow={true} />
-        <EyeToggle isShow={true} />
+        <div className="px- flex gap-10px">
+          <DoubleCheck isShow={true} />
+          <DeleteContent isShow={true} />
+          <EyeToggle isShow={true} />
+        </div>
       </div>
-      <AlertText alertCase="invalidEmail" />
+      <AlertText alertCase={alretText} />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-export const AlertText = ({ alertCase }) => {
+const AlertText = ({ alertCase }) => {
   let comment = {
     doubleCheckEmail: '이미 사용중인 이메일 주소입니다.',
     doubleCheckNickname: '이미 사용중인 닉네임 입니다.',
@@ -20,3 +20,5 @@ export const AlertText = ({ alertCase }) => {
     </span>
   );
 };
+
+export default AlertText;

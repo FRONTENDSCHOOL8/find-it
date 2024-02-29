@@ -1,26 +1,27 @@
-import { IconSelectLocal } from '@/components/common/atom/IconSelectLocal';
+import IconSelectItem from '@/components/common/atom/IconSelectItem';
 
-export const ButtonSelectLocal = ({
+interface ButtonSelectItemProps {
+  isClick?: boolean;
+  firstName?: string;
+  secondName?: string;
+  handleSelectList;
+}
+
+const ButtonSelectItem: React.FC<ButtonSelectItemProps> = ({
   isClick = false,
   firstName = '대분류 선택',
   secondName = '소분류 선택',
+  handleSelectList,
 }) => {
   const selectColor = '#4785ff';
   const blackColor = (isClick && selectColor) || 'black';
   const firstBorder = (isClick && selectColor) || '#666';
   const secondBorder = (isClick && selectColor) || '#BCBCBC';
 
-  const buttonTestFirst = () => {
-    alert('대분류 선택 테스트');
-  };
-  const buttonTestSecond = () => {
-    alert('소분류 선택 테스트');
-  };
-
   return (
     <div className="flex gap-14px">
       <button
-        onClick={buttonTestFirst}
+        onClick={handleSelectList}
         className="flex items-center rounded-full px-14px py-6px text-10px"
         type="button"
         style={{
@@ -29,10 +30,10 @@ export const ButtonSelectLocal = ({
         }}
       >
         {firstName}
-        <IconSelectLocal color={blackColor} />
+        <IconSelectItem color={blackColor} />
       </button>
       <button
-        onClick={buttonTestSecond}
+        onClick={handleSelectList}
         className="flex items-center rounded-full px-14px py-6px text-10px"
         type="button"
         style={{
@@ -41,8 +42,10 @@ export const ButtonSelectLocal = ({
         }}
       >
         {secondName}
-        <IconSelectLocal color={blackColor} />
+        <IconSelectItem color={blackColor} />
       </button>
     </div>
   );
 };
+
+export default ButtonSelectItem;
