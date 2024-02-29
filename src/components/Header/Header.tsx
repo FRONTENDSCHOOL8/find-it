@@ -104,7 +104,7 @@ const Header: React.FC<HeaderProps> = ({
   }
 
   if (children !== undefined) {
-    paragraph = <p className="w-113px text-20px">{children}</p>;
+    paragraph = <p className="text-20px">{children}</p>;
   }
 
   if (empty !== undefined) {

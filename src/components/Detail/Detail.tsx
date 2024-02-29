@@ -1,8 +1,6 @@
 import bookmark_icon from '@/assets/icons/icon_bookmarkt_18.svg';
 import bookmark_icon_fill from '@/assets/icons/icon_my_bookmark_fill.svg';
 import useBookmarkStore from '@/store/bookmark/bookmark';
-import { getData } from '@/util/crud';
-import { useEffect } from 'react';
 
 interface DetailType {
   item_name: string;
@@ -53,10 +51,6 @@ const Detail: React.FC<DetailProps> = () => {
     }
     return bookmark_icon;
   };
-
-  useEffect(() => {
-    window.kakao.maps.load(() => {});
-  }, []);
 
   return (
     <div className="mx-auto w-375px leading-[1.3]">
