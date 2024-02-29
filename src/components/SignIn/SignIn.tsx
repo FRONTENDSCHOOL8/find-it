@@ -1,11 +1,11 @@
+import { useState } from 'react';
 import { ButtonVariable } from '@/components/common/molecule/ButtonVariable';
 import { InputForm } from '@/components/SignIn/molecule/InputForm';
-import { IconSelectLocal } from '@/components/common/atom/IconSelectLocal';
-import {
-  SelectLocalListFirst,
-  SelectLocalListSecond,
-} from '@/components/common/molecule/SelectLocalList';
 import { ButtonSelectLocal } from '@/components/common/molecule/ButtonSelectLocal';
+import {
+  FirstCategory,
+  SecondCategory,
+} from '@/components/common/molecule/SelectCategoryList';
 
 const SignIn = () => {
   const handleSignIn = () => {
@@ -47,6 +47,8 @@ const SignIn = () => {
       </div>
       <h4>지역 설정 테스트</h4>
       <ButtonSelectLocal isClick={false} />
+      {/* <FirstCategory /> */}
+      <SecondCategory selectedArea="서울" />
     </>
   );
 };
