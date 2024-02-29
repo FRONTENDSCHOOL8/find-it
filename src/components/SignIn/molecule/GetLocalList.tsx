@@ -1,58 +1,44 @@
 import { useEffect, useState } from 'react';
 
-const dataList = {
-  id: 'API_0701',
-  result: [
-    {
-      addr_name: '서울특별시',
-      cd: '11',
-      full_addr: '서울특별시',
-      x_coor: '953932',
-      y_coor: '1952053',
-    },
-    {
-      addr_name: '경기도',
-      cd: '11',
-      full_addr: '경기도',
-      x_coor: '953932',
-      y_coor: '1952053',
-    },
-  ],
-};
+interface AddressData {
+  result: { addr_name: string; cd: number }[];
+}
+interface 시도코드프롭Props {
+  시도코드프롭?: number;
+}
 
-const GetLocalList = () => {
-  const [주소데이터, 셋주소데이터] = useState({ result: [] });
+const GetLocalList = ({ 시도코드프롭 = '' }: 시도코드프롭Props) => {
+  const [localNameList, setLocalNameList] = useState<string[]>([]);
+  const VITE_SIDO_API_URL = `https://sgisapi.kostat.go.kr/OpenAPI3/addr/stage.json?accessToken=b44b46d4-e2c2-441e-b56f-67c35b665f6a`;
+  const VITE_GUNGU_API_URL = `${VITE_SIDO_API_URL}&cd=${시도코드프롭}`;
 
   useEffect(() => {
-    (async () => {
+    const fetchFunction = async (url: string) => {
       try {
-        const response = await fetch(
-          'https://sgisapi.kostat.go.kr/OpenAPI3/addr/stage.json?accessToken=662d80fe-eb38-4cd7-92d3-f0ba613aca4f'
-        );
+        const response = await fetch(url);
 
         if (!response.ok) {
           throw new Error('fetch 에러');
         }
 
-        const jsonData = await response.json();
+        const jsonData: AddressData = await response.json();
+        const nameList = jsonData.result.map((item) => item.addr_name);
+        // const codeList = jsonData.result.map((item) => Number(item.cd));
 
-        셋주소데이터(jsonData);
+        setLocalNameList(nameList);
       } catch (error) {
         console.error('에러남: ' + error);
       }
-    })();
+    };
+
+    if (시도코드프롭) {
+      fetchFunction(VITE_GUNGU_API_URL);
+    } else {
+      fetchFunction(VITE_SIDO_API_URL);
+    }
   }, []);
 
-  const 풀주소 =
-    주소데이터.result && 주소데이터.result.map((item) => item.full_addr);
-  console.log(풀주소);
-  return (
-    <ul>
-      {풀주소.map((item, index) => (
-        <li key={index}>{item}</li>
-      ))}
-    </ul>
-  );
+  return localNameList;
 };
 
 export default GetLocalList;
