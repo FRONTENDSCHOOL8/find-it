@@ -1,4 +1,4 @@
-export const IconSelectLocal = ({ color = 'black' }) => {
+const IconSelectItem = ({ color = 'black' }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -14,3 +14,5 @@ export const IconSelectLocal = ({ color = 'black' }) => {
     </svg>
   );
 };
+
+export default IconSelectItem;

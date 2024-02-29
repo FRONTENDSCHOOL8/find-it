@@ -1,11 +1,18 @@
-import { useState } from 'react';
-import { ButtonVariable } from '@/components/common/molecule/ButtonVariable';
+import ButtonVariable from '@/components/common/molecule/ButtonVariable';
 import { InputForm } from '@/components/SignIn/molecule/InputForm';
-import { ButtonSelectLocal } from '@/components/common/molecule/ButtonSelectLocal';
-import {
-  FirstCategory,
-  SecondCategory,
-} from '@/components/common/molecule/SelectCategoryList';
+import ButtonSelectItem from '@/components/common/molecule/ButtonSelectItem';
+////삭제할것
+// export const DataList = [
+//   '강남구',
+//   '강동구',
+//   '강북구',
+//   '강서구',
+//   '관악구',
+//   '광진구',
+//   '구로구',
+// ];
+
+/////
 
 const SignIn = () => {
   const handleSignIn = () => {
@@ -46,9 +53,7 @@ const SignIn = () => {
         </form>
       </div>
       <h4>지역 설정 테스트</h4>
-      <ButtonSelectLocal isClick={false} />
-      {/* <FirstCategory /> */}
-      <SecondCategory selectedArea="서울" />
+      <ButtonSelectItem isClick={false} />
     </>
   );
 };

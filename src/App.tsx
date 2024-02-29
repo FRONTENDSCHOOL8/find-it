@@ -1,11 +1,13 @@
-import Detail from '@/components/Detail/Detail';
+
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 const App = () => {
   return (
-    <>
-      <h1>App</h1>
-      <Detail>하이</Detail>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<App />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 
