@@ -1,11 +1,14 @@
-import Detail from './components/Detail/Detail';
+
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 const App = () => {
   return (
-    <div className="w-mobile">
-      <h1>App</h1>
-      <Detail>sdf</Detail>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<App />} />
+      </Routes>
+    </BrowserRouter>
+
   );
 };
 
