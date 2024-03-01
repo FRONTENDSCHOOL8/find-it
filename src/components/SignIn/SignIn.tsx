@@ -5,11 +5,11 @@ import GetLocalList from '@/components/SignIn/molecule/GetLocalList';
 import SelectCategoryList from '@/components/common/molecule/SelectCategoryList';
 
 const SignIn = () => {
+  const localListData = GetLocalList();
   const handleSignIn = () => {
     alert('로그인 버튼 클릭 테스트');
   };
 
-  const localListData = GetLocalList({ 시도코드프롭: 11 });
   return (
     <>
       <h2>SignIn</h2>
