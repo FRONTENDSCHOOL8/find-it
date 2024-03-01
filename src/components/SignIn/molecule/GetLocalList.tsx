@@ -1,69 +1,82 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 interface AddressData {
   result: { addr_name: string; cd: number }[];
 }
-
 const CONSUMERKEY = '7d560967125d42e48900';
 const CONSUMERSECRET = '84ea54c3e889409a9841';
 const VITE_AUTH_API_URL =
   'https://sgisapi.kostat.go.kr/OpenAPI3/auth/authentication.json';
 const VITE_LOCAL_API_URL =
   'https://sgisapi.kostat.go.kr/OpenAPI3/addr/stage.json';
-const localCode = 11;
-const getAccessToken = async () => {
-  const URL = `${VITE_AUTH_API_URL}?consumer_key=${CONSUMERKEY}&consumer_secret=${CONSUMERSECRET}`;
-  try {
-    const response = await fetch(URL);
+const LOCAL_CODE = 11;
+const MAX_AUTH_ATTEMPTS = 200;
+const TOKEN_REFRESH_INTERVAL = 3.6e6; //3시간마다 재발급
 
-    if (!response.ok) {
-      throw new Error('fetch 에러');
+const useAccessToken = () => {
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [attemptCount, setAttemptCount] = useState<number>(0);
+
+  const getAccessToken = async () => {
+    if (attemptCount >= MAX_AUTH_ATTEMPTS) {
+      throw new Error('API 인증 시도 횟수를 초과했습니다.');
     }
-    const jsonData = await response.json();
-    const token = jsonData.result.accessToken;
-    return token;
-  } catch (error) {
-    console.error('에러남: ' + error);
-    return null;
-  }
+    const URL = `${VITE_AUTH_API_URL}?consumer_key=${CONSUMERKEY}&consumer_secret=${CONSUMERSECRET}`;
+    try {
+      const response = await fetch(URL);
+      if (!response.ok) {
+        throw new Error('API 인증에 실패했습니다.');
+      }
+      const jsonData = await response.json();
+      setAccessToken(jsonData.result.accessToken);
+      setAttemptCount((prevCount) => prevCount + 1);
+    } catch (error) {
+      console.error('에러남: ' + error);
+    }
+  };
+
+  useEffect(() => {
+    getAccessToken();
+    const interval = setInterval(getAccessToken, TOKEN_REFRESH_INTERVAL);
+    return () => clearInterval(interval);
+  }, []);
+  return accessToken;
+};
+
+const useLocalList = (accessToken) => {
+  const [localList, setLocalList] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchLocalList = async () => {
+      if (!accessToken) return;
+
+      try {
+        const SIDOURL = `${VITE_LOCAL_API_URL}?accessToken=${accessToken}`;
+        // const GUNGUURL = `${VITE_LOCAL_API_URL}?accessToken=${accessToken}&cd=${LOCAL_CODE}`;
+        const response = await fetch(SIDOURL);
+
+        if (!response.ok) {
+          throw new Error('목록을 불러오는데 실패했습니다.');
+        }
+        const jsonData: AddressData = await response.json();
+        const items = jsonData.result;
+        const nameList = items.map((item) => item.addr_name);
+        // const codeList = items.map((item) => Number(item.cd));
+        setLocalList(nameList);
+      } catch (error) {
+        console.error('에러남: ' + error);
+      }
+    };
+    fetchLocalList();
+  }, [accessToken]);
+  return localList;
 };
 
 const GetLocalList = () => {
-  const [localNameList, setLocalNameList] = useState<string[]>([]);
-  const [mytoken, setMytoken] = useState<string | null>(null); // abc 변수를 useState로 선언
-
-  useEffect(() => {
-    (async () => {
-      const token = await getAccessToken();
-      if (token) {
-        setMytoken(token);
-      }
-    })();
-  }, []);
-
-  useEffect(() => {
-    if (mytoken) {
-      (async () => {
-        try {
-          const SIDOURL = `${VITE_LOCAL_API_URL}?accessToken=${mytoken}`;
-          const GUNGUURL = `${VITE_LOCAL_API_URL}?accessToken=${mytoken}&cd=${localCode}`;
-          const response = await fetch(GUNGUURL);
-
-          if (!response.ok) {
-            throw new Error('fetch 에러');
-          }
-          const jsonData: AddressData = await response.json();
-          const nameList = jsonData.result.map((item) => item.addr_name);
-          const codeList = jsonData.result.map((item) => Number(item.cd));
-          setLocalNameList(nameList);
-        } catch (error) {
-          console.error('에러남: ' + error);
-        }
-      })();
-    }
-  }, [mytoken]);
-
-  return localNameList;
+  const accessToken = useAccessToken();
+  const localList = useLocalList(accessToken);
+  console.log(accessToken);
+  return localList;
 };
 
 export default GetLocalList;
