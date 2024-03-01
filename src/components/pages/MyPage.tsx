@@ -1,3 +1,4 @@
+import { pb } from '@/lib/utils/pb';
 import { useState } from 'react';
 
 import profile from '@/assets/profile.svg';
@@ -8,18 +9,25 @@ import icon_envelope from '@/assets/icons/icon_envelope.svg';
 import icon_search from '@/assets/icons/icon_search_16.svg';
 import icon_bell from '@/assets/icons/icon_bell.svg';
 import Horizon from '../common/atom/Horizon';
+import getPbImgURL from '@/lib/utils/getPbImgURL';
+
+const userData = await pb.collection('users').getOne('2pzqk217b5qa9tu', {
+  expand: 'nickname, email, avatar',
+});
+
+const { nickname, email, avatar } = userData;
 
 const Profile = () => {
   return (
     <section className="my-50px flex items-center gap-3">
       <img
-        src={profile}
+        src={avatar !== '' ? getPbImgURL(userData, 'avatar') : profile}
         alt="나의 프로필 사진"
         className="size-66px rounded-full"
       />
       <div className="flex flex-col gap-6px">
-        <div className="flex items-center gap-10px">
-          <h1 className="text-20px">세븐일레븐</h1>
+        <div className="flex items-center gap-4px">
+          <h1 className="text-20px">{nickname}</h1>
           <a
             href="/"
             className="p-1.5 transition-all duration-300 hover:rounded hover:bg-gray-100"
@@ -27,14 +35,14 @@ const Profile = () => {
             <img src={icon_pencil} alt="프로필 수정하기" />
           </a>
         </div>
-        <span className="text-12px text-gray-450">seven@eleven.com</span>
+        <span className="text-12px text-gray-450">{email}</span>
       </div>
     </section>
   );
 };
 
 const List01 = () => {
-  const [inboxAlert, setInBoxAlert] = useState(true);
+  const [inboxAlert, setInBoxAlert] = useState(false);
 
   return (
     <section className="pb-26px">
@@ -70,7 +78,7 @@ const List01 = () => {
 };
 
 const List02 = () => {
-  const [keywordAlert, setKeywordAlert] = useState(true);
+  const [keywordAlert, setKeywordAlert] = useState(false);
 
   return (
     <section className="py-26px">
