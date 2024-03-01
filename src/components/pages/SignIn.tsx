@@ -13,7 +13,7 @@ const SignIn = () => {
       <div className="flex flex-col items-center ">
         <Header children="로그인" />
         <div className="flex flex-col items-center">
-          <form className="w-375px px-20px pt-16px" onSubmit={handleSignIn}>
+          <form className="w-375px px-20px pt-30px" onSubmit={handleSignIn}>
             <div className="flex flex-col gap-20px">
               <InputForm
                 type="email"

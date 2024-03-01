@@ -52,3 +52,14 @@ export const DoubleCheck = ({ isShow }) => {
     return null;
   }
 };
+export const InputIconButton = () => {
+  return (
+    <div className="flex gap-10px pr-12px">
+      <DoubleCheck isShow={true} />
+      <DeleteContent isShow={false} />
+      <EyeToggle isShow={false} />
+    </div>
+  );
+};
+
+export default InputIconButton;

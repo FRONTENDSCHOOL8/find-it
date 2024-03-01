@@ -13,36 +13,38 @@ const ButtonSelectItem: React.FC<ButtonSelectItemProps> = ({
   secondName = '소분류 선택',
   handleSelectList,
 }) => {
-  const selectColor = '#4785ff';
-  const blackColor = (isClick && selectColor) || 'black';
-  const firstBorder = (isClick && selectColor) || '#666';
-  const secondBorder = (isClick && selectColor) || '#BCBCBC';
+  const commonStyle =
+    'flex h-fit items-center truncate rounded-full px-14px py-6px text-10px';
+  const isClickColor = '#4785ff';
+  const defaultBlackColor = (isClick && isClickColor) || 'black';
+  const firstDefaultBorder = (isClick && isClickColor) || '#666';
+  const secondDefaultBorder = (isClick && isClickColor) || '#BCBCBC';
 
   return (
     <div className="flex gap-14px">
       <button
         onClick={handleSelectList}
-        className="flex items-center rounded-full px-14px py-6px text-10px"
+        className={commonStyle}
         type="button"
         style={{
-          color: blackColor,
-          border: `1px solid ${firstBorder}`,
+          color: defaultBlackColor,
+          border: `1px solid ${firstDefaultBorder}`,
         }}
       >
         {firstName}
-        <IconSelectItem color={blackColor} />
+        <IconSelectItem color={defaultBlackColor} />
       </button>
       <button
         onClick={handleSelectList}
-        className="flex items-center rounded-full px-14px py-6px text-10px"
+        className={commonStyle}
         type="button"
         style={{
-          color: blackColor,
-          border: `1px solid ${secondBorder}`,
+          color: defaultBlackColor,
+          border: `1px solid ${secondDefaultBorder}`,
         }}
       >
         {secondName}
-        <IconSelectItem color={blackColor} />
+        <IconSelectItem color={defaultBlackColor} />
       </button>
     </div>
   );

@@ -1,10 +1,6 @@
 import { useRef } from 'react';
 import AlertText from '@/components/common/atom/AlertText';
-import {
-  DoubleCheck,
-  DeleteContent,
-  EyeToggle,
-} from '@/components/SignIn/molecule/ButtonIcon';
+import InputIconButton from '@/components/SignIn/molecule/InputIconButton';
 
 interface InputFormProps {
   type: string;
@@ -18,9 +14,7 @@ interface InputFormProps {
     | 'invalidEmail'
     | 'invalidPassword'
     | 'userDelete';
-  // isDoubleCheck: boolean;
-  // isDeleteContent: boolean;
-  // isEyeToggle: boolean;
+  marginTop: string;
 }
 
 const InputForm: React.FC<InputFormProps> = ({
@@ -28,9 +22,7 @@ const InputForm: React.FC<InputFormProps> = ({
   title,
   placeholder,
   alretText,
-  // isDoubleCheck = false,
-  // isDeleteContent = false,
-  // isEyeToggle = false,
+  marginTop = '0px',
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -41,21 +33,22 @@ const InputForm: React.FC<InputFormProps> = ({
     }
   };
   return (
-    <div>
+    <div
+      style={{
+        marginTop: `${marginTop}`,
+      }}
+    >
       <div className="flex h-48px w-full justify-between border-b border-gray-300 ">
         <input
           ref={inputRef}
           onKeyDown={handleKeyDown}
-          className="w-full pl-2.5 pr-2.5 text-14px"
+          className="text-#989898 w-full pl-2.5 pr-2.5 text-14px"
           type={type}
           name={title}
           placeholder={placeholder}
+          style={{ outline: 'none' }}
         />
-        <div className="px- flex gap-10px">
-          <DoubleCheck isShow={true} />
-          <DeleteContent isShow={true} />
-          <EyeToggle isShow={true} />
-        </div>
+        <InputIconButton />
       </div>
       <AlertText alertCase={alretText} />
     </div>
