@@ -13,5 +13,8 @@ export const Basic: StoryObj<typeof InputForm> = {
     title: 'Title',
     placeholder: 'placeholder',
     alretText: 'doubleCheckEmail',
+    isDoubleCheck: false,
+    isDeleteContent: false,
+    isEyeToggle: false,
   },
 };

@@ -18,13 +18,12 @@ const SignIn = () => {
           <div className="flex flex-col gap-20px">
             <InputForm
               type="email"
-              name="useremail"
+              title="useremail"
               placeholder="이메일 주소"
-              alretText=""
             />
             <InputForm
               type="password"
-              name="userpassword"
+              title="userpassword"
               placeholder="비밀번호(영어, 숫자, 특수문자 조합)"
               alretText="invalidValue"
             />
@@ -44,11 +43,11 @@ const SignIn = () => {
         </form>
       </div>
       <h4>지역 설정 테스트</h4>
-      <ButtonSelectItem isClick={false} />
-      {/* <SelectCategoryList
+      <ButtonSelectItem />
+      <SelectCategoryList
         title="대분류를 선택하세요"
         dataList={localListData}
-      /> */}
+      />
     </>
   );
 };

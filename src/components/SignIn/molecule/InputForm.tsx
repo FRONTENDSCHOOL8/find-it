@@ -18,6 +18,9 @@ interface InputFormProps {
     | 'invalidEmail'
     | 'invalidPassword'
     | 'userDelete';
+  // isDoubleCheck: boolean;
+  // isDeleteContent: boolean;
+  // isEyeToggle: boolean;
 }
 
 const InputForm: React.FC<InputFormProps> = ({
@@ -25,6 +28,9 @@ const InputForm: React.FC<InputFormProps> = ({
   title,
   placeholder,
   alretText,
+  // isDoubleCheck = false,
+  // isDeleteContent = false,
+  // isEyeToggle = false,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
