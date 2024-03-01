@@ -1,5 +1,5 @@
 import ButtonVariable from '@/components/common/molecule/ButtonVariable';
-import { InputForm } from '@/components/SignIn/molecule/InputForm';
+import InputForm from '@/components/SignIn/molecule/InputForm';
 import ButtonSelectItem from '@/components/common/molecule/ButtonSelectItem';
 import GetLocalList from '@/components/SignIn/molecule/GetLocalList';
 import SelectCategoryList from '@/components/common/molecule/SelectCategoryList';
@@ -45,10 +45,10 @@ const SignIn = () => {
       </div>
       <h4>지역 설정 테스트</h4>
       <ButtonSelectItem isClick={false} />
-      <SelectCategoryList
+      {/* <SelectCategoryList
         title="대분류를 선택하세요"
         dataList={localListData}
-      />
+      /> */}
     </>
   );
 };

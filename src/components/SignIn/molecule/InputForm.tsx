@@ -6,17 +6,31 @@ import {
   EyeToggle,
 } from '@/components/SignIn/molecule/ButtonIcon';
 
-export const InputForm = ({
+interface InputFormProps {
+  type: string;
+  title: string;
+  placeholder: string;
+  alretText:
+    | 'doubleCheckEmail'
+    | 'doubleCheckNickname'
+    | 'doubleCheckPassword'
+    | 'invalidValue'
+    | 'invalidEmail'
+    | 'invalidPassword'
+    | 'userDelete';
+}
+
+const InputForm: React.FC<InputFormProps> = ({
   type = 'text',
-  name = 'inputName',
-  placeholder = 'placeholder',
-  alretText = '',
+  title,
+  placeholder,
+  alretText,
 }) => {
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // ESC 키가 눌렸을 때 입력 필드 포커스 해제
-  const handleKeyDown = (e) => {
-    if (e.key === 'Escape') {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Escape' && inputRef.current !== null) {
       inputRef.current.blur();
     }
   };
@@ -28,7 +42,7 @@ export const InputForm = ({
           onKeyDown={handleKeyDown}
           className="w-full pl-2.5 pr-2.5 text-14px"
           type={type}
-          name={name}
+          name={title}
           placeholder={placeholder}
         />
         <div className="px- flex gap-10px">
@@ -41,3 +55,5 @@ export const InputForm = ({
     </div>
   );
 };
+
+export default InputForm;
