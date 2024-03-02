@@ -2,7 +2,7 @@ const ButtonVariable = ({
   buttonType = 'button',
   buttonText = '확인',
   variant = 'normal',
-  handleClick,
+  onClick,
   ...restProps
 }) => {
   let background, color, borderColor, width, height;
@@ -56,7 +56,7 @@ const ButtonVariable = ({
   return (
     <button
       type={buttonType}
-      onClick={handleClick}
+      onClick={onClick}
       style={{
         width,
         height,

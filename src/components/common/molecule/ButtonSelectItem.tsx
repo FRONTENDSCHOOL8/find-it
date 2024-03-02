@@ -4,14 +4,14 @@ interface ButtonSelectItemProps {
   isClick?: boolean;
   firstName?: string;
   secondName?: string;
-  handleSelectList;
+  onClick;
 }
 
 const ButtonSelectItem: React.FC<ButtonSelectItemProps> = ({
   isClick = false,
   firstName = '대분류 선택',
   secondName = '소분류 선택',
-  handleSelectList,
+  onClick,
 }) => {
   const commonStyle =
     'flex h-fit items-center truncate rounded-full px-14px py-6px text-10px';
@@ -23,7 +23,7 @@ const ButtonSelectItem: React.FC<ButtonSelectItemProps> = ({
   return (
     <div className="flex gap-14px">
       <button
-        onClick={handleSelectList}
+        onClick={onClick}
         className={commonStyle}
         type="button"
         style={{
@@ -35,7 +35,7 @@ const ButtonSelectItem: React.FC<ButtonSelectItemProps> = ({
         <IconSelectItem color={defaultBlackColor} />
       </button>
       <button
-        onClick={handleSelectList}
+        onClick={onClick}
         className={commonStyle}
         type="button"
         style={{

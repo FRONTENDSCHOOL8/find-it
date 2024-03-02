@@ -1,52 +1,80 @@
-import { useRef } from 'react';
+import { forwardRef, useState } from 'react';
 import AlertText from '@/components/common/atom/AlertText';
 import InputIconButton from '@/components/SignIn/molecule/InputIconButton';
 
-interface InputFormProps {
-  type: string;
-  title: string;
-  placeholder: string;
-  alretText:
-    | 'doubleCheckEmail'
-    | 'doubleCheckNickname'
-    | 'doubleCheckPassword'
-    | 'invalidValue'
-    | 'invalidEmail'
-    | 'invalidPassword'
-    | 'userDelete';
-  marginTop: string;
-}
+// interface InputFormProps {
+//   type: string;
+//   title: string;
+//   placeholder: string;
+//   alretText:
+//     | 'doubleCheckEmail'
+//     | 'doubleCheckNickname'
+//     | 'doubleCheckPassword'
+//     | 'invalidValue'
+//     | 'invalidEmail'
+//     | 'invalidPassword'
+//     | 'userDelete';
+//   marginTop: string;
+//   inputLabel: string;
+//   onChange,
+//   ref;
+// }
 
-const InputForm: React.FC<InputFormProps> = ({
-  type = 'text',
-  title,
-  placeholder,
-  alretText,
-  marginTop = '0px',
-}) => {
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  // ESC 키가 눌렸을 때 입력 필드 포커스 해제
+const InputForm = (
+  {
+    marginTop = '0px',
+    type = 'text',
+    title,
+    placeholder,
+    value,
+    inputLabel,
+    onChange,
+    alretText,
+    ...resProps
+  },
+  ref
+) => {
+  const [isFocus, setIsFocus] = useState(false);
+  const handleFocus = () => {
+    setIsFocus(true);
+  };
+  const handleBlur = () => {
+    setIsFocus(false);
+  };
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Escape' && inputRef.current !== null) {
-      inputRef.current.blur();
+    if (e.key === 'Escape' && ref.current) {
+      ref.current.blur();
     }
   };
+
+  const defaultColor = '#e4e4e4';
+  const activeColor = '#4785ff';
+  const borderColor = (isFocus && activeColor) || defaultColor;
+
   return (
     <div
       style={{
         marginTop: `${marginTop}`,
       }}
     >
-      <div className="flex h-48px w-full justify-between border-b border-gray-300 ">
+      <div
+        className="flex h-48px w-full items-center justify-between"
+        style={{ borderBottom: `1.4px solid ${borderColor}` }}
+      >
+        <label className="sr-only">{inputLabel}</label>
         <input
-          ref={inputRef}
-          onKeyDown={handleKeyDown}
           className="text-#989898 w-full pl-2.5 pr-2.5 text-14px"
+          style={{ outline: 'none' }}
+          ref={ref}
           type={type}
           name={title}
           placeholder={placeholder}
-          style={{ outline: 'none' }}
+          value={value}
+          onChange={onChange}
+          onKeyDown={handleKeyDown}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          {...resProps}
         />
         <InputIconButton />
       </div>
@@ -55,4 +83,5 @@ const InputForm: React.FC<InputFormProps> = ({
   );
 };
 
-export default InputForm;
+const InputFormRef = forwardRef(InputForm);
+export default InputFormRef;
