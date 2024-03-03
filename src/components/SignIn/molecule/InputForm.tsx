@@ -37,7 +37,7 @@ const InputForm = (
   ref
 ) => {
   /* -------------------------------------------------------------------------- */
-  // 클릭 상태 변수 관리
+  // 인풋 아이콘, 스타일 상태 변수 관리
   const [isFocus, setIsFocus] = useState(false);
   const [isDoubleCheck, setIsDoubleCheck] = useState(iconDoubleCheck);
   const [isDelete, setIsDelete] = useState(false);
@@ -63,6 +63,8 @@ const InputForm = (
   const activeColor = '#4785ff';
   const borderColor = (isFocus && activeColor) || defaultColor;
 
+  /* -------------------------------------------------------------------------- */
+  // jsx 반환
   return (
     <div
       style={{
