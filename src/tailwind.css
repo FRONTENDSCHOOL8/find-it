@@ -25,6 +25,18 @@
     color: rgba(0, 0, 0, 0);
     opacity: 1;
   }
+
+  .custom-bullet {
+    @apply mx-1 inline-block size-2 rounded-full bg-[#AECFFF];
+  }
+
+  .custom-bullet-active {
+    @apply bg-white;
+  }
+
+  .swiper .swiper-pagination-bullets {
+    @apply absolute bottom-[15px] !important;
+  }
 }
 
 @tailwind base;
