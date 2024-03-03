@@ -53,10 +53,6 @@ const ButtonVariable = ({
       break;
   }
 
-  if (!buttonType === 'submit') {
-    onClickHandler = null;
-  }
-
   return (
     <button
       type={buttonType}

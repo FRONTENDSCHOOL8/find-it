@@ -1,14 +1,16 @@
-type AlertTextProps =
-  | 'doubleCheckEmail'
-  | 'doubleCheckNickname'
-  | 'doubleCheckPassword'
-  | 'invalidValue'
-  | 'invalidEmail'
-  | 'invalidPassword'
-  | 'userDelete';
+type AlertTextProps = {
+  alertCase:
+    | 'doubleCheckEmail'
+    | 'doubleCheckNickname'
+    | 'doubleCheckPassword'
+    | 'invalidValue'
+    | 'invalidEmail'
+    | 'invalidPassword'
+    | 'userDelete';
+};
 
-const AlertText: React.FC<{ alertCase: AlertText }> = ({ alertCase }) => {
-  let comment = {
+const AlertText: React.FC<AlertTextProps> = ({ alertCase }) => {
+  const comment = {
     doubleCheckEmail: '이미 사용중인 이메일 주소입니다.',
     doubleCheckNickname: '이미 사용중인 닉네임 입니다.',
     doubleCheckPassword: '비밀번호가 동일하지 않습니다.',

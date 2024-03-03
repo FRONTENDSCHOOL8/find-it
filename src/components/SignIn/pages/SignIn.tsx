@@ -1,20 +1,11 @@
 import ButtonVariable from '@/components/common/molecule/ButtonVariable';
-import { InputForm } from '@/components/SignIn/molecule/InputForm';
+import InputForm from '@/components/SignIn/molecule/InputForm';
 import ButtonSelectItem from '@/components/common/molecule/ButtonSelectItem';
-////삭제할것
-// export const DataList = [
-//   '강남구',
-//   '강동구',
-//   '강북구',
-//   '강서구',
-//   '관악구',
-//   '광진구',
-//   '구로구',
-// ];
-
-/////
+import GetLocalList from '@/components/SignIn/molecule/GetLocalList';
+import SelectCategoryList from '@/components/common/molecule/SelectCategoryList';
 
 const SignIn = () => {
+  const localListData = GetLocalList();
   const handleSignIn = () => {
     alert('로그인 버튼 클릭 테스트');
   };
@@ -27,13 +18,12 @@ const SignIn = () => {
           <div className="flex flex-col gap-20px">
             <InputForm
               type="email"
-              name="useremail"
+              title="useremail"
               placeholder="이메일 주소"
-              alretText=""
             />
             <InputForm
               type="password"
-              name="userpassword"
+              title="userpassword"
               placeholder="비밀번호(영어, 숫자, 특수문자 조합)"
               alretText="invalidValue"
             />
@@ -53,7 +43,11 @@ const SignIn = () => {
         </form>
       </div>
       <h4>지역 설정 테스트</h4>
-      <ButtonSelectItem isClick={false} />
+      <ButtonSelectItem />
+      <SelectCategoryList
+        title="대분류를 선택하세요"
+        dataList={localListData}
+      />
     </>
   );
 };
