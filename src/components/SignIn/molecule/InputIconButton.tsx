@@ -2,9 +2,41 @@ import { useState } from 'react';
 import IconDelete from '@/components/common/atom/IconDelete';
 import IconEyeOff from '@/components/SignIn/atom/IconEyeOff';
 import IconEyeOn from '@/components/SignIn/atom/IconEyeOn';
-import ButtonDoubleCheck from '@/components/SignIn/atom/ButtonDoubleCheck';
+import IconDoubleCheck from '@/components/SignIn/atom/IconDoubleCheck';
 
-export const EyeToggle = ({ isShow }) => {
+interface IconProps {
+  isShow: boolean;
+}
+export const DoubleCheck: React.FC<IconProps> = ({ isShow }) => {
+  const buttonTest = () => {
+    alert('중복확인 클릭 테스트');
+  };
+  if (isShow) {
+    return (
+      <button onClick={buttonTest}>
+        <IconDoubleCheck />
+      </button>
+    );
+  } else {
+    return null;
+  }
+};
+export const DeleteContent: React.FC<IconProps> = ({ isShow }) => {
+  const buttonTest = () => {
+    alert('삭제 클릭 테스트');
+  };
+  if (isShow) {
+    return (
+      <button onClick={buttonTest}>
+        <IconDelete color="#4785ff" />
+      </button>
+    );
+  } else {
+    return null;
+  }
+};
+
+export const EyeToggle: React.FC<IconProps> = ({ isShow }) => {
   const [isEyeOn, setIsEyeOn] = useState(false);
   const toggleEye = () => {
     setIsEyeOn(!isEyeOn);
@@ -24,40 +56,21 @@ export const EyeToggle = ({ isShow }) => {
   }
 };
 
-export const DeleteContent = ({ isShow }) => {
-  const buttonTest = () => {
-    alert('삭제 클릭 테스트');
-  };
-  if (isShow) {
-    return (
-      <button onClick={buttonTest}>
-        <IconDelete color="#4785ff" />
-      </button>
-    );
-  } else {
-    return null;
-  }
-};
-export const DoubleCheck = ({ isShow }) => {
-  const buttonTest = () => {
-    alert('중복확인 클릭 테스트');
-  };
-  if (isShow) {
-    return (
-      <button onClick={buttonTest}>
-        <ButtonDoubleCheck />
-      </button>
-    );
-  } else {
-    return null;
-  }
-};
-export const InputIconButton = () => {
+interface InputIconButtonProps {
+  iconDoubleCheck: boolean;
+  iconDelete: boolean;
+  iconEyeToggle: boolean;
+}
+export const InputIconButton: React.FC<InputIconButtonProps> = ({
+  iconDoubleCheck = false,
+  iconDelete = false,
+  iconEyeToggle = false,
+}) => {
   return (
     <div className="flex gap-10px pr-12px">
-      <DoubleCheck isShow={true} />
-      <DeleteContent isShow={false} />
-      <EyeToggle isShow={false} />
+      <DoubleCheck isShow={iconDoubleCheck} />
+      <DeleteContent isShow={iconDelete} />
+      <EyeToggle isShow={iconEyeToggle} />
     </div>
   );
 };

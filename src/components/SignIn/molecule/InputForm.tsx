@@ -28,23 +28,35 @@ const InputForm = (
     placeholder,
     value,
     inputLabel,
-    onChange,
     alretText,
+    onChange,
+    iconDoubleCheck,
+    iconEyeToggle,
     ...resProps
   },
   ref
 ) => {
+  /* -------------------------------------------------------------------------- */
+  // 클릭 상태 변수 관리
   const [isFocus, setIsFocus] = useState(false);
-  const handleFocus = () => {
-    setIsFocus(true);
-  };
-  const handleBlur = () => {
-    setIsFocus(false);
-  };
+  const [isDoubleCheck, setIsDoubleCheck] = useState(iconDoubleCheck);
+  const [isDelete, setIsDelete] = useState(false);
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Escape' && ref.current) {
       ref.current.blur();
     }
+  };
+
+  const handleFocus = () => {
+    setIsFocus(true);
+    setIsDoubleCheck((state) => !state);
+    setIsDelete((state) => !state);
+  };
+  const handleBlur = () => {
+    setIsFocus(false);
+    setIsDoubleCheck((state) => !state);
+    setIsDelete((state) => !state);
   };
 
   const defaultColor = '#e4e4e4';
@@ -76,7 +88,11 @@ const InputForm = (
           onBlur={handleBlur}
           {...resProps}
         />
-        <InputIconButton />
+        <InputIconButton
+          iconDoubleCheck={iconDoubleCheck && isDoubleCheck}
+          iconDelete={isDelete}
+          iconEyeToggle={iconEyeToggle}
+        />
       </div>
       <AlertText alertCase={alretText} />
     </div>

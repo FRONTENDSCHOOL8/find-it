@@ -36,6 +36,7 @@ const SignUp = () => {
 
   const newUserData = {
     email: emailValue,
+    emailVisibility: true,
     password: passwordValue,
     passwordConfirm: passwordCheckValue,
     nickname: nicknameValue,
@@ -48,6 +49,25 @@ const SignUp = () => {
     const userData = await createData('users', newUserData);
     return userData;
   };
+
+  /* -------------------------------------------------------------------------- */
+  // 클릭시 상태 변수 관리
+  //  const [isDoubleCheck, setIsDoubleCheck] = useState(true);
+  //  const [isDelete, setIsDelete] = useState(true);
+
+  //  const handleFocus = () => {
+  //    setIsFocus(true);
+  //    setIsDoubleCheck((state) => !state);
+  //    setIsDelete((state) => !state);
+  //  };
+  //  const handleBlur = () => {
+  //    setIsFocus(false);
+  //    setIsDoubleCheck((state) => !state);
+  //    setIsDelete((state) => !state);
+  //  };
+
+  /* -------------------------------------------------------------------------- */
+  // jsx 반환
   return (
     <>
       <div className="flex flex-col items-center ">
@@ -61,33 +81,37 @@ const SignUp = () => {
               placeholder="이메일 주소를 입력해주세요."
               value={emailValue}
               onChange={handleEmail}
+              iconDoubleCheck={true}
             />
             <InputForm
+              marginTop="40px"
               ref={passwordRef}
               type="password"
               title="userpassword"
               placeholder="비밀번호를 입력해주세요."
               value={passwordValue}
               onChange={handlePassword}
-              marginTop="40px"
+              iconEyeToggle={true}
             />
             <InputForm
+              marginTop="8px"
               ref={passwordCheckRef}
               type="password"
               title="userpasswordCheck"
               placeholder="비밀번호를 다시 한번 입력해주세요."
               value={passwordCheckValue}
               onChange={handlePasswordCheck}
-              marginTop="8px"
+              iconEyeToggle={true}
             />
             <InputForm
+              marginTop="40px"
               ref={nicknameRef}
               type="text"
               title="nickname"
               placeholder="닉네임을 입력해주세요."
               value={nicknameValue}
               onChange={handleNickname}
-              marginTop="40px"
+              iconDoubleCheck={true}
             />
             <div className="mt-10px flex h-48px w-full items-center justify-between ">
               <input
