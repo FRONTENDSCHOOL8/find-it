@@ -75,7 +75,7 @@ const useLocalList = (accessToken) => {
 const GetLocalList = () => {
   const accessToken = useAccessToken();
   const localList = useLocalList(accessToken);
-  console.log(accessToken);
+  // console.log(accessToken);
   return localList;
 };
 

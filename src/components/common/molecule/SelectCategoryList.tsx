@@ -1,6 +1,6 @@
 interface SelectCategoryListProps {
   title: string;
-  dataList: string[];
+  dataList;
 }
 
 const SelectCategoryList: React.FC<SelectCategoryListProps> = ({

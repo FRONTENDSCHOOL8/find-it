@@ -1,48 +1,72 @@
+import { useState } from 'react';
 import IconSelectItem from '@/components/common/atom/IconSelectItem';
 
 interface ButtonSelectItemProps {
-  isClick?: boolean;
   firstName?: string;
   secondName?: string;
-  handleSelectList;
+  onClickFirst?: () => void;
+  onClickSecond?: () => void;
 }
 
 const ButtonSelectItem: React.FC<ButtonSelectItemProps> = ({
-  isClick = false,
   firstName = '대분류 선택',
   secondName = '소분류 선택',
-  handleSelectList,
+  onClickFirst,
+  onClickSecond,
 }) => {
-  const selectColor = '#4785ff';
-  const blackColor = (isClick && selectColor) || 'black';
-  const firstBorder = (isClick && selectColor) || '#666';
-  const secondBorder = (isClick && selectColor) || '#BCBCBC';
+  /* -------------------------------------------------------------------------- */
+  // 버튼 선택시 스타일변경 & 상위 프롭 함수 실행
+  const [isActiveFirst, setIsActiveFirst] = useState(false);
+  const [isActiveSecond, setIsActiveSecond] = useState(false);
+  const commonStyle =
+    'flex h-fit items-center truncate rounded-full px-14px py-6px text-10px';
+  const isActiveColor = '#4785ff';
 
+  const onFirst = () => {
+    setIsActiveFirst(true);
+    if (onClickFirst) {
+      onClickFirst();
+    }
+  };
+  const onSecond = () => {
+    setIsActiveSecond(true);
+    if (onClickSecond) {
+      onClickSecond();
+    }
+  };
+
+  const firstTextColor = (!isActiveFirst && 'black') || isActiveColor;
+  const firstBorderColor = (!isActiveFirst && '#666') || isActiveColor;
+  const secondTextColor = (!isActiveSecond && 'black') || isActiveColor;
+  const secondBorderColor = (!isActiveSecond && '#BCBCBC') || isActiveColor;
+
+  /* -------------------------------------------------------------------------- */
+  // jsx 반환
   return (
     <div className="flex gap-14px">
       <button
-        onClick={handleSelectList}
-        className="flex items-center rounded-full px-14px py-6px text-10px"
+        onClick={onFirst}
+        className={commonStyle}
         type="button"
         style={{
-          color: blackColor,
-          border: `1px solid ${firstBorder}`,
+          color: firstTextColor,
+          border: `1px solid ${firstBorderColor}`,
         }}
       >
         {firstName}
-        <IconSelectItem color={blackColor} />
+        <IconSelectItem color={firstTextColor} />
       </button>
       <button
-        onClick={handleSelectList}
-        className="flex items-center rounded-full px-14px py-6px text-10px"
+        onClick={onSecond}
+        className={commonStyle}
         type="button"
         style={{
-          color: blackColor,
-          border: `1px solid ${secondBorder}`,
+          color: secondTextColor,
+          border: `1px solid ${secondBorderColor}`,
         }}
       >
         {secondName}
-        <IconSelectItem color={blackColor} />
+        <IconSelectItem color={secondTextColor} />
       </button>
     </div>
   );

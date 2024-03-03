@@ -1,65 +1,105 @@
-import { useRef } from 'react';
+import { forwardRef, useState } from 'react';
 import AlertText from '@/components/common/atom/AlertText';
-import {
-  DoubleCheck,
-  DeleteContent,
-  EyeToggle,
-} from '@/components/SignIn/molecule/ButtonIcon';
+import InputIconButton from '@/components/SignIn/molecule/InputIconButton';
 
-interface InputFormProps {
-  type: string;
-  title: string;
-  placeholder: string;
-  alretText:
-    | 'doubleCheckEmail'
-    | 'doubleCheckNickname'
-    | 'doubleCheckPassword'
-    | 'invalidValue'
-    | 'invalidEmail'
-    | 'invalidPassword'
-    | 'userDelete';
-  // isDoubleCheck: boolean;
-  // isDeleteContent: boolean;
-  // isEyeToggle: boolean;
-}
+// interface InputFormProps {
+//   type: string;
+//   title: string;
+//   placeholder: string;
+//   alretText:
+//     | 'doubleCheckEmail'
+//     | 'doubleCheckNickname'
+//     | 'doubleCheckPassword'
+//     | 'invalidValue'
+//     | 'invalidEmail'
+//     | 'invalidPassword'
+//     | 'userDelete';
+//   marginTop: string;
+//   inputLabel: string;
+//   onChange,
+//   ref;
+// }
 
-const InputForm: React.FC<InputFormProps> = ({
-  type = 'text',
-  title,
-  placeholder,
-  alretText,
-  // isDoubleCheck = false,
-  // isDeleteContent = false,
-  // isEyeToggle = false,
-}) => {
-  const inputRef = useRef<HTMLInputElement>(null);
+const InputForm = (
+  {
+    marginTop = '0px',
+    type = 'text',
+    title,
+    placeholder,
+    value,
+    inputLabel,
+    alretText,
+    onChange,
+    iconDoubleCheck,
+    iconEyeToggle,
+    ...resProps
+  },
+  ref
+) => {
+  /* -------------------------------------------------------------------------- */
+  // 인풋 아이콘, 스타일 상태 변수 관리
+  const [isFocus, setIsFocus] = useState(false);
+  const [isDoubleCheck, setIsDoubleCheck] = useState(iconDoubleCheck);
+  const [isDelete, setIsDelete] = useState(false);
 
-  // ESC 키가 눌렸을 때 입력 필드 포커스 해제
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Escape' && inputRef.current !== null) {
-      inputRef.current.blur();
+    if (e.key === 'Escape' && ref.current) {
+      ref.current.blur();
     }
   };
+
+  const handleFocus = () => {
+    setIsFocus(true);
+    setIsDoubleCheck((state) => !state);
+    setIsDelete((state) => !state);
+  };
+  const handleBlur = () => {
+    setIsFocus(false);
+    setIsDoubleCheck((state) => !state);
+    setIsDelete((state) => !state);
+  };
+
+  const defaultColor = '#e4e4e4';
+  const activeColor = '#4785ff';
+  const borderColor = (isFocus && activeColor) || defaultColor;
+
+  /* -------------------------------------------------------------------------- */
+  // jsx 반환
   return (
-    <div>
-      <div className="flex h-48px w-full justify-between border-b border-gray-300 ">
+    <div
+      style={{
+        marginTop: `${marginTop}`,
+      }}
+    >
+      <div
+        className="flex h-48px w-full items-center justify-between"
+        style={{ borderBottom: `1.4px solid ${borderColor}` }}
+      >
+        <label className="sr-only">{inputLabel}</label>
         <input
-          ref={inputRef}
-          onKeyDown={handleKeyDown}
-          className="w-full pl-2.5 pr-2.5 text-14px"
+          className="text-#989898 w-full pl-2.5 pr-2.5 text-14px"
+          style={{ outline: 'none' }}
+          ref={ref}
           type={type}
           name={title}
           placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          onKeyDown={handleKeyDown}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          {...resProps}
         />
-        <div className="px- flex gap-10px">
-          <DoubleCheck isShow={true} />
-          <DeleteContent isShow={true} />
-          <EyeToggle isShow={true} />
-        </div>
+        <InputIconButton
+          iconDoubleCheck={iconDoubleCheck && isDoubleCheck}
+          iconDelete={isDelete}
+          iconEyeToggle={iconEyeToggle}
+        />
       </div>
       <AlertText alertCase={alretText} />
     </div>
   );
 };
 
-export default InputForm;
+const InputFormRef = forwardRef(InputForm);
+export default InputFormRef;
