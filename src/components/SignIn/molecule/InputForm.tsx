@@ -2,45 +2,53 @@ import { forwardRef, useState } from 'react';
 import AlertText from '@/components/common/atom/AlertText';
 import InputIconButton from '@/components/SignIn/molecule/InputIconButton';
 
-// interface InputFormProps {
-//   type: string;
-//   title: string;
-//   placeholder: string;
-//   alretText:
-//     | 'doubleCheckEmail'
-//     | 'doubleCheckNickname'
-//     | 'doubleCheckPassword'
-//     | 'invalidValue'
-//     | 'invalidEmail'
-//     | 'invalidPassword'
-//     | 'userDelete';
-//   marginTop: string;
-//   inputLabel: string;
-//   onChange,
-//   ref;
-// }
+interface InputFormProps {
+  marginTop?: string;
+  type?: string;
+  title: string;
+  placeholder: string;
+  value: string;
+  alertText?:
+    | 'doubleCheckEmail'
+    | 'doubleCheckNickname'
+    | 'doubleCheckPassword'
+    | 'invalidValue'
+    | 'invalidEmail'
+    | 'invalidPassword'
+    | 'userDelete';
 
-const InputForm = (
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  iconDoubleCheck?: boolean;
+  iconDelete?: boolean;
+  iconEyeToggle?: boolean;
+  onClickDoubleCheck?: () => void;
+  onClickDelete?: () => void;
+  onClickEye?: () => void;
+}
+
+const InputForm: React.FC<InputFormProps> = (
   {
     marginTop = '0px',
     type = 'text',
     title,
     placeholder,
     value,
-    inputLabel,
-    alretText,
+    alertText,
     onChange,
     iconDoubleCheck,
+    iconDelete,
     iconEyeToggle,
+    onClickDoubleCheck,
+    onClickDelete,
+    onClickEye,
     ...resProps
   },
   ref
 ) => {
   /* -------------------------------------------------------------------------- */
-  // 인풋 아이콘, 스타일 상태 변수 관리
+  // 인풋 접근시 중복체크 아이콘, 스타일 상태 변수 관리
   const [isFocus, setIsFocus] = useState(false);
   const [isDoubleCheck, setIsDoubleCheck] = useState(iconDoubleCheck);
-  const [isDelete, setIsDelete] = useState(false);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Escape' && ref.current) {
@@ -50,13 +58,11 @@ const InputForm = (
 
   const handleFocus = () => {
     setIsFocus(true);
-    setIsDoubleCheck((state) => !state);
-    setIsDelete((state) => !state);
+    setIsDoubleCheck(false);
   };
   const handleBlur = () => {
     setIsFocus(false);
-    setIsDoubleCheck((state) => !state);
-    setIsDelete((state) => !state);
+    setIsDoubleCheck(true);
   };
 
   const defaultColor = '#e4e4e4';
@@ -75,7 +81,7 @@ const InputForm = (
         className="flex h-48px w-full items-center justify-between"
         style={{ borderBottom: `1.4px solid ${borderColor}` }}
       >
-        <label className="sr-only">{inputLabel}</label>
+        <label className="sr-only">{title}</label>
         <input
           className="text-#989898 w-full pl-2.5 pr-2.5 text-14px"
           style={{ outline: 'none' }}
@@ -92,11 +98,14 @@ const InputForm = (
         />
         <InputIconButton
           iconDoubleCheck={iconDoubleCheck && isDoubleCheck}
-          iconDelete={isDelete}
+          iconDelete={iconDelete}
           iconEyeToggle={iconEyeToggle}
+          onClickDoubleCheck={onClickDoubleCheck}
+          onClickDelete={onClickDelete}
+          onClickEye={onClickEye}
         />
       </div>
-      <AlertText alertCase={alretText} />
+      <AlertText alertCase={alertText} />
     </div>
   );
 };
