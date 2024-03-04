@@ -1,13 +1,25 @@
-const ButtonVariable = ({
-  buttonType = 'button',
+interface ButtonVariableProps {
+  buttonText?: string;
+  variant?:
+    | 'submit'
+    | 'disabled'
+    | 'lineStyle'
+    | 'blackSolidThin'
+    | 'blackLineThin'
+    | 'primarySolidThin';
+  onClick?: () => void;
+}
+const ButtonVariable: React.FC<ButtonVariableProps> = ({
   buttonText = '확인',
   variant = 'normal',
   onClick,
   ...restProps
 }) => {
+  let buttonType: 'button' | 'reset' | 'submit' | undefined;
   let background, color, borderColor, width, height;
   switch (variant) {
-    case 'normal':
+    case 'submit':
+      buttonType = 'submit';
       background = '#4785ff';
       color = 'white';
       borderColor = '#4785ff';
@@ -15,13 +27,16 @@ const ButtonVariable = ({
       height = '66px';
       break;
     case 'disabled':
+      buttonType = 'button';
       background = '#666666';
       color = '#BCBCBC';
       borderColor = '#666666';
       width = '100%';
       height = '66px';
+
       break;
     case 'lineStyle':
+      buttonType = 'button';
       background = 'white';
       color = '#4785ff';
       borderColor = '#4785ff';
@@ -29,6 +44,7 @@ const ButtonVariable = ({
       height = '66px';
       break;
     case 'blackSolidThin':
+      buttonType = 'button';
       background = 'black';
       color = 'white';
       borderColor = 'black';
@@ -36,6 +52,7 @@ const ButtonVariable = ({
       height = '53px';
       break;
     case 'blackLineThin':
+      buttonType = 'button';
       background = 'white';
       color = 'black';
       borderColor = 'black';
@@ -43,6 +60,7 @@ const ButtonVariable = ({
       height = '53px';
       break;
     case 'primarySolidThin':
+      buttonType = 'button';
       background = '#4785ff';
       color = 'white';
       borderColor = '#4785ff';
@@ -65,6 +83,7 @@ const ButtonVariable = ({
         border: `1px solid ${borderColor}`,
         borderRadius: '20px',
       }}
+      disabled={variant === 'disabled'}
       {...restProps}
     >
       {buttonText}

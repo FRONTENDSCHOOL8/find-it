@@ -6,14 +6,16 @@ import IconDoubleCheck from '@/components/SignIn/atom/IconDoubleCheck';
 
 interface IconProps {
   isShow: boolean;
+  onClickDoubleCheck?: () => void;
+  onClickDelete?: () => void;
+  onClickEye?: () => void;
 }
-export const DoubleCheck: React.FC<IconProps> = ({ isShow }) => {
-  const buttonTest = () => {
-    alert('중복확인 클릭 테스트');
-  };
+/* -------------------------------------------------------------------------- */
+// 클릭 함수 전달과 기본 마크업
+const DoubleCheck: React.FC<IconProps> = ({ isShow, onClickDoubleCheck }) => {
   if (isShow) {
     return (
-      <button onClick={buttonTest}>
+      <button type="button" onClick={onClickDoubleCheck}>
         <IconDoubleCheck />
       </button>
     );
@@ -21,13 +23,10 @@ export const DoubleCheck: React.FC<IconProps> = ({ isShow }) => {
     return null;
   }
 };
-export const DeleteContent: React.FC<IconProps> = ({ isShow }) => {
-  const buttonTest = () => {
-    alert('삭제 클릭 테스트');
-  };
+const DeleteContent: React.FC<IconProps> = ({ isShow, onClickDelete }) => {
   if (isShow) {
     return (
-      <button onClick={buttonTest}>
+      <button type="button" onClick={onClickDelete}>
         <IconDelete color="#4785ff" />
       </button>
     );
@@ -35,17 +34,19 @@ export const DeleteContent: React.FC<IconProps> = ({ isShow }) => {
     return null;
   }
 };
-
-export const EyeToggle: React.FC<IconProps> = ({ isShow }) => {
+const EyeToggle: React.FC<IconProps> = ({ isShow, onClickEye }) => {
   const [isEyeOn, setIsEyeOn] = useState(false);
   const toggleEye = () => {
     setIsEyeOn(!isEyeOn);
+    if (onClickEye) {
+      onClickEye();
+    }
   };
 
   if (isShow) {
     return (
       <>
-        <button onClick={toggleEye}>
+        <button type="button" onClick={toggleEye}>
           {isEyeOn && <IconEyeOn />}
           {!isEyeOn && <IconEyeOff />}
         </button>
@@ -55,22 +56,33 @@ export const EyeToggle: React.FC<IconProps> = ({ isShow }) => {
     return null;
   }
 };
+/* -------------------------------------------------------------------------- */
+// 디폴트 실행 함수
 
 interface InputIconButtonProps {
   iconDoubleCheck: boolean;
   iconDelete: boolean;
   iconEyeToggle: boolean;
+  onClickDoubleCheck?: () => void;
+  onClickDelete?: () => void;
+  onClickEye?: () => void;
 }
 export const InputIconButton: React.FC<InputIconButtonProps> = ({
   iconDoubleCheck = false,
   iconDelete = false,
   iconEyeToggle = false,
+  onClickDoubleCheck,
+  onClickDelete,
+  onClickEye,
 }) => {
   return (
     <div className="flex gap-10px pr-12px">
-      <DoubleCheck isShow={iconDoubleCheck} />
-      <DeleteContent isShow={iconDelete} />
-      <EyeToggle isShow={iconEyeToggle} />
+      <DoubleCheck
+        isShow={iconDoubleCheck}
+        onClickDoubleCheck={onClickDoubleCheck}
+      />
+      <DeleteContent isShow={iconDelete} onClickDelete={onClickDelete} />
+      <EyeToggle isShow={iconEyeToggle} onClickEye={onClickEye} />
     </div>
   );
 };
