@@ -4,7 +4,7 @@ const defaultOptions = {
   method: 'GET',
 };
 
-export const getAPIData = async (
+export const getAllData = async (
   url: string,
   query = {},
   options = defaultOptions
