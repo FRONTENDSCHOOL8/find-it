@@ -6,7 +6,8 @@ type AlertTextProps = {
     | 'invalidValue'
     | 'invalidEmail'
     | 'invalidPassword'
-    | 'userDelete';
+    | 'userDelete'
+    | '';
 };
 
 const AlertText: React.FC<AlertTextProps> = ({ alertCase = '' }) => {
