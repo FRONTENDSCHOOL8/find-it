@@ -1,7 +1,9 @@
-import bookmark_icon from '@/assets/icons/icon_bookmarkt_18.svg';
+import bookmark_icon from '@/assets/icons/icon_bookmark.svg';
 import bookmark_icon_fill from '@/assets/icons/icon_my_bookmark_fill.svg';
 import useBookmarkStore from '@/store/bookmark/bookmark';
 import KakaoMap from '@/components/Detail/atom/KakaoMap';
+import { getAPIData } from '@/lib/utils/getAPIData';
+import { useEffect } from 'react';
 
 interface DetailType {
   item_name: string;
@@ -14,10 +16,6 @@ interface DetailType {
   mgmt_num: string;
   item_type_A: string;
   item_type_B: string;
-}
-
-export interface DetailProps {
-  children: React.ReactNode;
 }
 
 const isEmpty = (value: string) => {
@@ -37,8 +35,15 @@ const data: DetailType = {
   item_type_B: '종이가방',
 }; // 실제 데이터는 API를 통해 받아온다.
 
-const Detail: React.FC<DetailProps> = () => {
+const Detail: React.FC = () => {
   const bookmark = useBookmarkStore((state) => state.bookmark);
+
+  useEffect(() => {
+    const data = fetch(
+      `http://apis.data.go.kr/1320000/LosfundInfoInqireService?serviceKey=xBkbbknjXif3VR72NQfRK77qi02bgoenTRuwfQbYR43eraRP8eDLB84QlyKzwQ619S%2BIFpu6hSt%2FnefORgdcNg%3D%3D`
+    );
+    console.log(data);
+  }, []);
 
   const isBookmarked = (bookmark: boolean) => {
     if (bookmark) {
