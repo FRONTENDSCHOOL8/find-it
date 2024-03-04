@@ -8,14 +8,15 @@ interface InputFormProps {
   title: string;
   placeholder: string;
   value: string;
-  alertText?:
+  alertCase?:
     | 'doubleCheckEmail'
     | 'doubleCheckNickname'
     | 'doubleCheckPassword'
     | 'invalidValue'
     | 'invalidEmail'
     | 'invalidPassword'
-    | 'userDelete';
+    | 'userDelete'
+    | '';
 
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   iconDoubleCheck?: boolean;
@@ -26,14 +27,17 @@ interface InputFormProps {
   onClickEye?: () => void;
 }
 
-const InputForm: React.FC<InputFormProps> = (
+const InputForm: React.ForwardRefRenderFunction<
+  HTMLInputElement,
+  InputFormProps
+> = (
   {
     marginTop = '0px',
     type = 'text',
     title,
     placeholder,
     value,
-    alertText,
+    alertCase,
     onChange,
     iconDoubleCheck,
     iconDelete,
@@ -51,7 +55,7 @@ const InputForm: React.FC<InputFormProps> = (
   const [isDoubleCheck, setIsDoubleCheck] = useState(iconDoubleCheck);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Escape' && ref.current) {
+    if (e.key === 'Escape' && typeof ref === 'object' && ref?.current) {
       ref.current.blur();
     }
   };
@@ -97,15 +101,15 @@ const InputForm: React.FC<InputFormProps> = (
           {...resProps}
         />
         <InputIconButton
-          iconDoubleCheck={iconDoubleCheck && isDoubleCheck}
-          iconDelete={iconDelete}
-          iconEyeToggle={iconEyeToggle}
+          iconDoubleCheck={!!(iconDoubleCheck && isDoubleCheck)}
+          iconDelete={!!iconDelete}
+          iconEyeToggle={!!iconEyeToggle}
           onClickDoubleCheck={onClickDoubleCheck}
           onClickDelete={onClickDelete}
           onClickEye={onClickEye}
         />
       </div>
-      <AlertText alertCase={alertText} />
+      <AlertText alertCase={alertCase} />
     </div>
   );
 };
