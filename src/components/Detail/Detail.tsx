@@ -1,7 +1,7 @@
 import bookmark_icon from '@/assets/icons/icon_bookmarkt_18.svg';
 import bookmark_icon_fill from '@/assets/icons/icon_my_bookmark_fill.svg';
 import useBookmarkStore from '@/store/bookmark/bookmark';
-import { useEffect } from 'react';
+import KakaoMap from '@/components/Detail/atom/KakaoMap';
 
 interface DetailType {
   item_name: string;
@@ -30,7 +30,7 @@ const data: DetailType = {
   place: '피시방',
   content: '종이로 만든 가방입니다. 피시방에서 주움.',
   item_image: '',
-  storage: '서울시 강남구 친절한 파출소',
+  storage: '멋쟁이사자처럼',
   phone: '010-1234-5678',
   mgmt_num: 'ff123456',
   item_type_A: '가방',
@@ -46,32 +46,6 @@ const Detail: React.FC<DetailProps> = () => {
     }
     return bookmark_icon;
   };
-
-  useEffect(() => {
-    const kakaoMapsScript = document.createElement('script');
-    kakaoMapsScript.src = `<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${import.meta.env.VITE_KAKAO_MAPS_API_KEY}"></script>`;
-    kakaoMapsScript.async = true;
-
-    kakaoMapsScript.onload = () => {
-      window.kakao.maps.load(() => {
-        const mapContainer = document.querySelector('#map'), // 지도를 표시할 div
-          mapOption = {
-            center: new window.kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
-            level: 3, // 지도의 확대 레벨
-          };
-
-        if (mapContainer instanceof HTMLElement) {
-          new window.kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-        }
-      });
-    };
-
-    return () => {
-      if (document.head.contains(kakaoMapsScript)) {
-        document.head.removeChild(kakaoMapsScript);
-      }
-    };
-  }, []);
 
   return (
     <div className="mx-auto w-375px leading-[1.3]">
@@ -167,8 +141,8 @@ const Detail: React.FC<DetailProps> = () => {
             </dl>
           </li>
         </ul>
-        <div className="mt-28px h-375px bg-slate-500 py-50px text-center text-24px text-white">
-          <div id="map" className="h-full w-full bg-blue-400"></div>
+        <div className="mt-28px h-375px bg-slate-500 text-center text-24px text-white">
+          <KakaoMap place={data.storage} className="h-full w-full" />
         </div>
 
         <button
