@@ -1,5 +1,5 @@
 import { pb } from '@/lib/utils/pb';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import profile from '@/assets/profile.svg';
 import icon_pencil from '@/assets/icons/icon_pencil.svg';
@@ -127,6 +127,19 @@ const Menu = () => {
 };
 
 const MyPage = () => {
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://embed.tawk.to/65e52f1d9131ed19d9746a7d/1ho3k035v';
+    script.charset = 'UTF-8';
+    script.setAttribute('crossorigin', '*');
+
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
   return (
     <div className="w-375px px-30px">
       <Profile />
