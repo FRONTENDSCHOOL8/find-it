@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
 import {
   Main,
   MyPage,
@@ -9,9 +10,11 @@ import {
 } from '@/components/pages/index';
 import Detail from '@/components/Detail/Detail';
 
+
 const App = () => {
   return (
     <>
+
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Main />} />
@@ -23,6 +26,7 @@ const App = () => {
           <Route path="/credit" element={<Credit />} />
         </Routes>
       </BrowserRouter>
+
     </>
   );
 };

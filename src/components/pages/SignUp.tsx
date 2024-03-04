@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { createData, getData } from '@/lib/utils/crud';
+import { useRef, useState } from 'react';
+import { createData } from '@/lib/utils/crud';
 import Header from '@/components/Header/Header';
 import Navigation from '@/components/Navigation/Navigation';
 import InputForm from '@/components/SignIn/molecule/InputForm';
@@ -17,6 +17,7 @@ import SelectCategoryList from '@/components/common/molecule/SelectCategoryList'
 // - 눈 누르면 비번 보이기
 //4. 모두 입력시 true 면 버튼 활성화  :::: disable -> cofirn
 // 지역 버튼 누르면 트루,
+/// git commit -m "[코드수정](jung/#66) 회원가입 기능 추가(중복확인, 지역 외 완료)"
 
 const SignUp = () => {
   /* -------------------------------------------------------------------------- */
@@ -37,10 +38,39 @@ const SignUp = () => {
   const [nicknameValue, setNicknameValue] = useState('');
   const [passwordType, setPasswordType] = useState('password');
   const [passwordCheckType, setPasswordCheckType] = useState('password');
-  const [alertEmail, setAlertEmail] = useState('');
-  const [alertPassword, setAlertPassword] = useState('');
-  const [alertNickname, setAlertNickname] = useState('');
 
+  const [alertEmail, setAlertEmail] = useState<
+    | 'doubleCheckEmail'
+    | 'doubleCheckNickname'
+    | 'doubleCheckPassword'
+    | 'invalidValue'
+    | 'invalidEmail'
+    | 'invalidPassword'
+    | 'userDelete'
+    | ''
+  >();
+  const [alertPassword, setAlertPassword] = useState<
+    | 'doubleCheckEmail'
+    | 'doubleCheckNickname'
+    | 'doubleCheckPassword'
+    | 'invalidValue'
+    | 'invalidEmail'
+    | 'invalidPassword'
+    | 'userDelete'
+    | ''
+  >();
+
+  const [alertPasswordCheck, setAlertPasswordCheck] = useState<
+    | 'doubleCheckEmail'
+    | 'doubleCheckNickname'
+    | 'doubleCheckPassword'
+    | 'invalidValue'
+    | 'invalidEmail'
+    | 'invalidPassword'
+    | 'userDelete'
+    | ''
+  >();
+  // const [alertNickname, setAlertNickname] = useState('');
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const passwordCheckRef = useRef(null);
@@ -56,12 +86,12 @@ const SignUp = () => {
   const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const newValue = e.target.value;
-    if (newValue.match(regex.emailRegex)) {
-      setEmailValue(newValue);
-      setAlertEmail('');
-    } else {
+    setEmailValue(newValue);
+    if (!newValue.match(regex.emailRegex)) {
       setAlertEmail('invalidEmail');
-      setEmailValue(newValue);
+    } else {
+      setAlertEmail('');
+      // setEmailValue(newValue);
     }
   };
   // 비밀번호 정규식 검사
@@ -70,11 +100,19 @@ const SignUp = () => {
     setPasswordValue(newValue);
     if (!newValue.match(regex.pwRegex)) {
       setAlertPassword('invalidPassword');
+    } else {
+      setAlertPassword('');
     }
   };
+  // 비밀번호 동일 검사
   const handlePasswordCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setPasswordCheckValue(newValue);
+    if (newValue !== passwordValue) {
+      setAlertPasswordCheck('doubleCheckPassword');
+    } else {
+      setAlertPasswordCheck('');
+    }
   };
   const handleNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
@@ -129,11 +167,15 @@ const SignUp = () => {
 
   // 최종 버튼 활성화 & 데이터 보내기 : 버튼 베리언트를 변경
   const [variant, setVariant] = useState<'submit' | 'disabled'>('submit');
-  // if (
-  //   //조건
-  // ) {
-  //   setVariant('submit');
-  // }
+  if (
+    // 인풋값이 모두 참일때
+    emailValue &&
+    passwordValue &&
+    passwordCheckValue &&
+    nicknameValue
+  ) {
+    setVariant('submit');
+  }
   // 유저 데이터 보내기
   const createUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -162,7 +204,7 @@ const SignUp = () => {
               iconDelete={!!emailValue}
               onClickDoubleCheck={handleDoubleCheckEmail}
               onClickDelete={handleDeleteEmail}
-              alertText={alertEmail || 'invalidEmail'}
+              alertCase={alertEmail}
             />
             <InputForm
               ref={passwordRef}
@@ -176,7 +218,7 @@ const SignUp = () => {
               iconEyeToggle={true}
               onClickDelete={handleDeletePassword}
               onClickEye={handleEyePassword}
-              // alertText="invalidPassword"
+              alertCase={alertPassword}
             />
             <InputForm
               marginTop="8px"
@@ -190,6 +232,7 @@ const SignUp = () => {
               iconEyeToggle={true}
               onClickDelete={handleDeletePasswordCheck}
               onClickEye={handleEyePasswordCheck}
+              alertCase={alertPasswordCheck}
             />
             <InputForm
               marginTop="40px"
@@ -203,7 +246,7 @@ const SignUp = () => {
               iconDelete={!!nicknameValue}
               onClickDoubleCheck={handleDoubleCheckNickname}
               onClickDelete={handleDeleteNickname}
-              // alertText="doubleCheckNickname"
+              // alertCase="doubleCheckNickname"
             />
             <div className="mt-10px flex h-48px w-full items-center justify-between ">
               <input
