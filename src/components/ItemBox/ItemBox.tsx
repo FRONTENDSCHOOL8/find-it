@@ -9,7 +9,7 @@ const ItemBox: React.FC<itemTypeProps> = ({ itemType }) => {
   return (
     <div>
       {itemType === 'get' && (
-        <Link to="/" className="block" onClick={() => console.log('qwe')}>
+        <a href="/" className="block">
           <div className="mb-3 flex h-140px w-335px justify-between rounded-[20px] bg-white transition-all duration-300 hover:cursor-pointer hover:shadow-lg">
             <div className="flex flex-col items-start py-18px pl-20px">
               <h1 className="pb-2 text-20px font-medium leading-[1.3] tracking-tighter">
@@ -33,7 +33,7 @@ const ItemBox: React.FC<itemTypeProps> = ({ itemType }) => {
               <img src={default_item} alt="등록된 물품 사진 없음" />
             </div>
           </div>
-        </Link>
+        </a>
       )}
 
       {itemType === 'lost' && (

@@ -1,6 +1,6 @@
 interface SelectCategoryListProps {
   title: string;
-  dataList: string[];
+  dataList;
 }
 
 const SelectCategoryList: React.FC<SelectCategoryListProps> = ({
@@ -34,12 +34,15 @@ const SelectCategoryList: React.FC<SelectCategoryListProps> = ({
 
   return (
     <div className="fixed inset-0	bg-[#00000045]">
-      <ul className="z-1 absolute bottom-0 w-full rounded-t-40px bg-white px-40px pt-40px">
+      <ul
+        style={{ scrollbarWidth: 'none' }}
+        className="z-1 absolute bottom-0 h-3/4 w-full overflow-auto rounded-t-40px bg-white px-40px pt-40px"
+      >
         <h3 className="pb-36px text-18px">{title}</h3>
-        {Object.keys({ dataList }).map((item) => (
+        {dataList.map((item, index) => (
           <li
             className="flex items-center justify-between pb-20px"
-            key={item}
+            key={index}
             style={{ color: `${nomalColor}` }}
           >
             <a href="/">{item}</a>

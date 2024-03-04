@@ -1,4 +1,4 @@
-export const IconEyeOn = (props) => {
+const IconEyeOn = (props) => {
   return (
     <svg
       width={16}
@@ -15,3 +15,5 @@ export const IconEyeOn = (props) => {
     </svg>
   );
 };
+
+export default IconEyeOn;
