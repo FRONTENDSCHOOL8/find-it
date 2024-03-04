@@ -2,7 +2,7 @@ import Header from '@/components/Header/Header';
 import SearchDate from '../molecule/SearchDate';
 import Horizon from '@/components/common/atom/Horizon';
 import SearchParagraph from '../atom/SearchParagraph';
-import { ButtonVariable } from '@/components/common/molecule/ButtonVariable';
+import ButtonVariable from '@/components/common/molecule/ButtonVariable';
 import Shortcut from '@/components/Shortcut/Shortcut';
 import icon_next from '@/assets/icons/icon_next.svg';
 import { useState } from 'react';
