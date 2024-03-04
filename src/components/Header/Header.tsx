@@ -31,8 +31,7 @@ const Header: React.FC<HeaderProps> = ({
   let paragraph;
   let submitButton;
   let emptyBox;
-  const defaultStyle =
-    'h-52px flex w-375px items-center justify-around pb-19px pt-54px';
+  const defaultStyle = 'h-26px flex w-375px items-center justify-around';
 
   const handlePreviousPage = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -112,7 +111,7 @@ const Header: React.FC<HeaderProps> = ({
   }
 
   return (
-    <header>
+    <header className="py-20px">
       <div className={`${defaultStyle} ${customStyle}`}>
         {prevIcon}
         {symbolLogo}
