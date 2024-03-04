@@ -14,7 +14,7 @@ export default defineConfig({
       },
       '/apiLost': {
         target:
-          'http://apis.data.go.kr/1320000/LostGoodsInfoInqireService/getLostGoodsInfoAccToClAreaPd',
+          'http://apis.data.go.kr/1320000/LosfundInfoInqireService/getLosfundInfoAccToClAreaPd',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/apiLost/, ''),
       },

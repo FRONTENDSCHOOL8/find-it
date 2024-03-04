@@ -2,7 +2,7 @@ import bookmark_icon from '@/assets/icons/icon_bookmark.svg';
 import bookmark_icon_fill from '@/assets/icons/icon_my_bookmark_fill.svg';
 import useBookmarkStore from '@/store/bookmark/bookmark';
 import KakaoMap from '@/components/Detail/atom/KakaoMap';
-import { getAPIData } from '@/lib/utils/getAPIData';
+import { getAllData } from '@/lib/utils/getAPIData';
 import { useEffect } from 'react';
 
 interface DetailType {
@@ -39,10 +39,14 @@ const Detail: React.FC = () => {
   const bookmark = useBookmarkStore((state) => state.bookmark);
 
   useEffect(() => {
-    const data = fetch(
-      `http://apis.data.go.kr/1320000/LosfundInfoInqireService?serviceKey=xBkbbknjXif3VR72NQfRK77qi02bgoenTRuwfQbYR43eraRP8eDLB84QlyKzwQ619S%2BIFpu6hSt%2FnefORgdcNg%3D%3D`
-    );
-    console.log(data);
+    (async () => {
+      const data = await getAllData(import.meta.env.VITE_GETITEMS_API_URL, {
+        pageNo: 2,
+        numOfRows: 100,
+      });
+
+      console.log(data);
+    })();
   }, []);
 
   const isBookmarked = (bookmark: boolean) => {
