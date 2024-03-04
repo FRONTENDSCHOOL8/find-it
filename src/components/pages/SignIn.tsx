@@ -28,16 +28,8 @@ const SignIn = () => {
               />
             </div>
             <div className="box-border flex flex-col items-center gap-[1rem]	pt-60px">
-              <ButtonVariable
-                buttonType="submit"
-                buttonText="로그인"
-                variant="normal"
-              />
-              <ButtonVariable
-                buttonType="button"
-                buttonText="회원가입"
-                variant="lineStyle"
-              />
+              <ButtonVariable buttonText="로그인" variant="submit" />
+              <ButtonVariable buttonText="회원가입" variant="lineStyle" />
             </div>
           </form>
         </div>
