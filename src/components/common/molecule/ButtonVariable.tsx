@@ -1,6 +1,6 @@
 interface ButtonVariableProps {
-  buttonText?: string;
-  variant?:
+  buttonText: string;
+  variant:
     | 'submit'
     | 'disabled'
     | 'lineStyle'

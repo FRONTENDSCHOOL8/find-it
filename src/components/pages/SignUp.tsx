@@ -22,10 +22,10 @@ const SignUp = () => {
   // 지역 리스트 데이터 가져오기
   const localData = GetLocalList();
   /* -------------------------------------------------------------------------- */
-  // 유효성 검사용 정규식 : 비번 10자이상 영문 숫자 특수문자 포함
+  // 유효성 검사용 정규식 : 비번 8자이상 20자 이하영문 숫자 특수문자 포함
   const regex = {
     emailRegex: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-    pwRegex: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{10,}$/,
+    pwRegex: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,20}$/,
   };
 
   /* -------------------------------------------------------------------------- */
@@ -50,6 +50,7 @@ const SignUp = () => {
   const handleCategorySelection = () => {
     setIsSelectingCategory(true);
   };
+
   /* -------------------------------------------------------------------------- */
   // 이메일 입력 & 정규식 검사
   const [valiEmailFrom, setValiEmailFrom] = useState(false);
@@ -57,6 +58,7 @@ const SignUp = () => {
     e.preventDefault();
     const newValue = e.target.value;
     setEmailValue(newValue);
+
     if (!newValue.match(regex.emailRegex)) {
       setAlertEmail('invalidEmail');
     } else {
@@ -91,7 +93,9 @@ const SignUp = () => {
     const newValue = e.target.value;
     setNicknameValue(newValue);
   };
+
   /* -------------------------------------------------------------------------- */
+
   // 이메일 중복 확인    ----------------------------------->> 이메일 폼 맞앗을때로 조건 추가
   const [valiEmail, setValiEmail] = useState(false);
   const handleDoubleCheckEmail = async () => {
@@ -133,23 +137,6 @@ const SignUp = () => {
       console.log(error);
     }
   };
-
-  // 딜리트 버튼 실행 : 빈문자로 셋업
-  const handleDeleteEmail = () => {
-    setEmailValue('');
-    setValiEmail(false);
-  };
-  const handleDeletePassword = () => {
-    setPasswordValue('');
-  };
-  const handleDeletePasswordCheck = () => {
-    setPasswordCheckValue('');
-  };
-  const handleDeleteNickname = () => {
-    setNicknameValue('');
-    setValiNick(false);
-  };
-
   // 비번 보이기 눈 버튼 : 인풋 타입을 텍스트로 바꿈
   const handleEyePassword = () => {
     setPasswordType((passwordType === 'password' && 'text') || 'password');
@@ -158,6 +145,36 @@ const SignUp = () => {
     setPasswordCheckType(
       (passwordCheckType === 'password' && 'text') || 'password'
     );
+  };
+  /* -------------------------------------------------------------------------- */
+  // 중복검사 활성화 조건
+  const [activeDoubleCheck, setActiveDoubleCheck] = useState(false);
+  useEffect(() => {
+    if (emailValue === '' || valiEmail === false) {
+      setActiveDoubleCheck(false);
+    } else {
+      setActiveDoubleCheck(true);
+    }
+  }, [emailValue, valiEmail, nicknameValue]);
+  /* -------------------------------------------------------------------------- */
+  // 딜리트 버튼 실행 : 빈문자로 셋업
+  const handleDeleteEmail = () => {
+    setEmailValue('');
+    setValiEmail(false);
+    setAlertEmail('');
+  };
+  const handleDeletePassword = () => {
+    setPasswordValue('');
+    setAlertPassword('');
+  };
+  const handleDeletePasswordCheck = () => {
+    setPasswordCheckValue('');
+    setAlertPasswordCheck('');
+  };
+  const handleDeleteNickname = () => {
+    setNicknameValue('');
+    setValiNick(false);
+    setAlertNickname('');
   };
 
   /* -------------------------------------------------------------------------- */
@@ -173,8 +190,6 @@ const SignUp = () => {
   };
   /* -------------------------------------------------------------------------- */
   // 최종 버튼 활성화 & 데이터 보내기 : 버튼 베리언트를 변경
-  console.log(valiNick);
-
   const [variant, setVariant] = useState<'submit' | 'disabled'>('disabled');
   useEffect(() => {
     if (
@@ -207,6 +222,8 @@ const SignUp = () => {
     if (variant === 'submit') {
       try {
         const userData = await createData('users', newUserData);
+        //페이지 이동하는 함수
+        window.location.href = '/';
         return userData;
       } catch (error) {
         console.error('회원가입 유저 데이터 보내기 에러났슈:', error);
@@ -235,6 +252,7 @@ const SignUp = () => {
               onClickDoubleCheck={handleDoubleCheckEmail}
               onClickDelete={handleDeleteEmail}
               alertCase={alertEmail}
+              disabledDoubleCheck={activeDoubleCheck}
             />
             <InputForm
               ref={passwordRef}
@@ -244,6 +262,7 @@ const SignUp = () => {
               placeholder="비밀번호를 입력해주세요."
               value={passwordValue}
               onChange={handlePassword}
+              iconDoubleCheck={false}
               iconDelete={!!passwordValue}
               iconEyeToggle={true}
               onClickDelete={handleDeletePassword}
@@ -258,6 +277,7 @@ const SignUp = () => {
               placeholder="비밀번호를 다시 한번 입력해주세요."
               value={passwordCheckValue}
               onChange={handlePasswordCheck}
+              iconDoubleCheck={false}
               iconDelete={!!passwordCheckValue}
               iconEyeToggle={true}
               onClickDelete={handleDeletePasswordCheck}
@@ -277,6 +297,7 @@ const SignUp = () => {
               onClickDoubleCheck={handleDoubleCheckNickname}
               onClickDelete={handleDeleteNickname}
               alertCase={alertNickname}
+              disabledDoubleCheck={activeDoubleCheck}
             />
             <div className="mt-10px flex h-48px w-full items-center justify-between ">
               <input
