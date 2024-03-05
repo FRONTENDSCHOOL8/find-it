@@ -43,7 +43,7 @@ const ButtonSelectItem: React.FC<ButtonSelectItemProps> = ({
   /* -------------------------------------------------------------------------- */
   // jsx 반환
   return (
-    <div className="flex gap-14px">
+    <div className="flex gap-10px">
       <button
         onClick={onFirst}
         className={commonStyle}

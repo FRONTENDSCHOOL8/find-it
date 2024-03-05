@@ -3,8 +3,8 @@ import { createData, getData } from '@/lib/utils/crud';
 import Header from '@/components/Header/Header';
 import InputForm from '@/components/SignIn/molecule/InputForm';
 import {
-  GetSidoList,
   GetGunguList,
+  GetSidoList,
 } from '@/components/SignIn/molecule/GetLocalList';
 import ButtonVariable from '@/components/common/molecule/ButtonVariable';
 import ButtonSelectItem from '@/components/common/molecule/ButtonSelectItem';
@@ -165,6 +165,35 @@ const SignUp = () => {
   };
 
   /* -------------------------------------------------------------------------- */
+  /* -------------------------------------------------------------------------- */
+  // 뿌릴 데이터 종류 전달
+  const firstItemList = GetSidoList(); // 문자열로 된 배열 반환
+  const secondItemList = GetGunguList();
+
+  // 대분류 버튼 클릭시 대분류 리스트 랜더링
+  const [renderFirstList, setRenderFirstList] = useState(false);
+  const handleFirstItem = () => {
+    setRenderFirstList(true);
+  };
+  // 소분류 버튼 클릭시 소분류 리스트 랜더링
+  const [renderSecondList, setRenderSecondList] = useState(false);
+  const handleSecondItem = () => {
+    setRenderSecondList(true);
+  };
+
+  // 렌더된 리스트 (SelectCategoryList 컴포넌트) 에서 찍은거 가져오기
+  // 첫번째 아이템 리스트
+  const [selectFirstItem, setSelectFirstItem] = useState('');
+  const handleSelectFirstItem = (item: string) => {
+    setSelectFirstItem(item);
+  };
+  // 두번째 아이템 리스트
+  const [selectSecondItem, setSelectSecondItem] = useState('');
+  const handleSelectSecondItem = (item: string) => {
+    setSelectSecondItem(item);
+  };
+
+  /* -------------------------------------------------------------------------- */
   // 신규 유저 데이터
   const newUserData = {
     email: emailValue,
@@ -172,11 +201,11 @@ const SignUp = () => {
     password: passwordValue,
     passwordConfirm: passwordCheckValue,
     nickname: nicknameValue,
-    state: 'temp',
-    city: 'temp',
+    state: selectFirstItem,
+    city: selectSecondItem,
   };
   /* -------------------------------------------------------------------------- */
-  // 최종 버튼 활성화 & 데이터 보내기 : 버튼 베리언트를 변경
+  // 최종 버튼 활성화 조건 버튼 변경 & 데이터 보내기
   const [variant, setVariant] = useState<'submit' | 'disabled'>('disabled');
   useEffect(() => {
     if (
@@ -185,7 +214,9 @@ const SignUp = () => {
       valiPasswordForm === true &&
       passwordValue === passwordCheckValue &&
       nicknameValue !== '' &&
-      valiNickDouble === true
+      valiNickDouble === true &&
+      selectFirstItem !== '' &&
+      selectSecondItem !== ''
     ) {
       setVariant('submit');
     } else {
@@ -199,6 +230,8 @@ const SignUp = () => {
     passwordCheckValue,
     nicknameValue,
     valiNickDouble,
+    selectFirstItem,
+    selectSecondItem,
   ]);
 
   // 유저 데이터 pb에 쓰기
@@ -214,30 +247,6 @@ const SignUp = () => {
         console.error('회원가입 유저 데이터 보내기 에러났슈:', error);
       }
     }
-  };
-
-  /* -------------------------------------------------------------------------- */
-  // 리스트 렌더링
-  const [renderList, setRenderList] = useState(false);
-  const [selectItem, setSelectItem] = useState('');
-  // 리스트 컴포넌트 데이터 종류 전달
-  const sidoList = GetSidoList(); // 문자열로 된 배열 반환
-  const gunguList = GetGunguList();
-  const [dataList, setDataList] = useState(sidoList);
-
-  // 대분류 클릭시 대분류 리스트 랜더링
-  const handleFirstItem = () => {
-    setRenderList(true);
-    setDataList(sidoList);
-  };
-  // 소분류 클릭시 소분류 리스트 랜더링
-  const handleSecondItem = () => {
-    setRenderList(true);
-    setDataList(gunguList);
-  };
-  // 하위 컴포넌트에서 찍은거 가져오기?
-  const handleSelectItem = (item: string) => {
-    setSelectItem(item);
   };
 
   /* -------------------------------------------------------------------------- */
@@ -318,8 +327,8 @@ const SignUp = () => {
                 placeholder="거주지역을 선택해주세요"
               />
               <ButtonSelectItem
-                firstName={selectItem || '시/도'}
-                secondName={selectItem || '군/구'}
+                firstName={selectFirstItem || '시/도'}
+                secondName={selectSecondItem || '군/구'}
                 onClickFirst={handleFirstItem}
                 onClickSecond={handleSecondItem}
               />
@@ -329,11 +338,20 @@ const SignUp = () => {
             </div>
           </form>
         </div>
-        {renderList && (
+        {renderFirstList && (
           <SelectCategoryList
             title={'거주지를 선택하세요.'}
-            dataList={dataList}
-            getSelectItem={handleSelectItem}
+            dataList={firstItemList}
+            getSelectItem={handleSelectFirstItem}
+            onClose={() => setRenderFirstList(false)}
+          />
+        )}
+        {renderSecondList && (
+          <SelectCategoryList
+            title={'거주지를 선택하세요.'}
+            dataList={secondItemList}
+            getSelectItem={handleSelectSecondItem}
+            onClose={() => setRenderSecondList(false)}
           />
         )}
       </div>

@@ -1,16 +1,25 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface SelectCategoryListProps {
   title: string;
   dataList: string[];
-  getSelectItem: (item: string) => void; // getSelectItem 함수 추가
+  getSelectItem: (item: string) => void;
+  onClose: () => void;
 }
 
 const SelectCategoryList: React.FC<SelectCategoryListProps> = ({
   title = '아이템을 선택해주세요.',
   dataList,
   getSelectItem,
+  onClose,
 }) => {
+  /* -------------------------------------------------------------------------- */
+  //함수 본문
+
+  const [selectedItem, setSelectedItem] = useState<string>('');
+  const ulRef = useRef<HTMLUListElement>(null);
+  const defaultColor = '#666';
+  const selectedColor = '#4785ff';
   const checkIcon = (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -28,10 +37,9 @@ const SelectCategoryList: React.FC<SelectCategoryListProps> = ({
       />
     </svg>
   );
-  const [selectedItem, setSelectedItem] = useState<string>('');
-  const defaultColor = '#666';
-  const selectedColor = '#4785ff';
 
+  /* -------------------------------------------------------------------------- */
+  // 클릭한 아이템값 가져오기
   const handleClickItem = (
     item: string,
     event?: React.MouseEvent<HTMLAnchorElement>
@@ -41,9 +49,30 @@ const SelectCategoryList: React.FC<SelectCategoryListProps> = ({
     getSelectItem(item);
   };
 
+  /* -------------------------------------------------------------------------- */
+  // 바깥 영역 클릭시 컴포넌트 사라짐
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        selectedItem &&
+        ulRef.current &&
+        !ulRef.current.contains(e.target as Node)
+      ) {
+        onClose();
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [onClose, selectedItem]);
+
+  /* -------------------------------------------------------------------------- */
+  // jsx 반환
   return (
     <div className="fixed inset-0	bg-[#00000045]">
       <ul
+        ref={ulRef}
         style={{ scrollbarWidth: 'none' }}
         className="z-1 absolute bottom-0 h-3/4 w-full overflow-auto rounded-t-40px bg-white px-40px pt-40px"
       >
