@@ -10,6 +10,7 @@ import icon_search from '@/assets/icons/icon_search_16.svg';
 import icon_bell from '@/assets/icons/icon_bell.svg';
 import Horizon from '../common/atom/Horizon';
 import getPbImgURL from '@/lib/utils/getPbImgURL';
+import Header from '../Header/Header';
 
 const userData = await pb.collection('users').getOne('2pzqk217b5qa9tu', {
   expand: 'nickname, email, avatar',
@@ -19,7 +20,7 @@ const { nickname, email, avatar } = userData;
 
 const Profile = () => {
   return (
-    <section className="my-50px flex items-center gap-3">
+    <section className="my-30px flex items-center gap-3">
       <img
         src={avatar !== '' ? getPbImgURL(userData, 'avatar') : profile}
         alt="나의 프로필 사진"
@@ -141,13 +142,16 @@ const MyPage = () => {
     };
   }, []);
   return (
-    <div className="w-375px px-30px">
-      <Profile />
-      <List01 />
-      <Horizon lineBold="thin" lineWidth="short" />
-      <List02 />
-      <Horizon lineBold="thin" lineWidth="short" />
-      <Menu />
+    <div className="min-w-375px">
+      <Header isShowPrev={true} children="마이페이지" empty={true} />
+      <div className="px-30px">
+        <Profile />
+        <List01 />
+        <Horizon lineBold="thin" lineWidth="short" />
+        <List02 />
+        <Horizon lineBold="thin" lineWidth="short" />
+        <Menu />
+      </div>
     </div>
   );
 };

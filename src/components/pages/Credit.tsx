@@ -33,11 +33,11 @@ const Main = () => {
         </li>
         <li className="transition-all duration-300 hover:rounded hover:bg-gray-100">
           <a
-            href="https://github.com/1101x"
+            href="https://www.instagram.com/jujung.hyn/"
             className="flex flex-col gap-3 px-10px py-2"
           >
-            <p className="text-18px">HYUNJU JEONG</p>
-            <p className="text-12px text-gray-400">github@1101x</p>
+            <p className="text-18px">HYUNJU JUNG</p>
+            <p className="text-12px text-gray-400">instagram@jujung.hyn</p>
           </a>
         </li>
       </ul>
