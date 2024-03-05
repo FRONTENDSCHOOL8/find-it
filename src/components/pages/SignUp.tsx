@@ -219,23 +219,26 @@ const SignUp = () => {
   /* -------------------------------------------------------------------------- */
   // 리스트 렌더링
   const [renderList, setRenderList] = useState(false);
+  const [selectItem, setSelectItem] = useState('');
   // 리스트 컴포넌트 데이터 종류 전달
-  const sidoList = GetSidoList();
+  const sidoList = GetSidoList(); // 문자열로 된 배열 반환
   const gunguList = GetGunguList();
   const [dataList, setDataList] = useState(sidoList);
 
-  // 대분류 클릭 함수
+  // 대분류 클릭시 대분류 리스트 랜더링
   const handleFirstItem = () => {
     setRenderList(true);
     setDataList(sidoList);
   };
-  // 소분류 클릭 함수
+  // 소분류 클릭시 소분류 리스트 랜더링
   const handleSecondItem = () => {
     setRenderList(true);
     setDataList(gunguList);
   };
-
-  // 버튼 누르면 이름이 바뀜
+  // 하위 컴포넌트에서 찍은거 가져오기?
+  const handleSelectItem = (item: string) => {
+    setSelectItem(item);
+  };
 
   /* -------------------------------------------------------------------------- */
   /* -------------------------------------------------------------------------- */
@@ -315,8 +318,8 @@ const SignUp = () => {
                 placeholder="거주지역을 선택해주세요"
               />
               <ButtonSelectItem
-                firstName="시/도"
-                secondName="군/구"
+                firstName={selectItem || '시/도'}
+                secondName={selectItem || '군/구'}
                 onClickFirst={handleFirstItem}
                 onClickSecond={handleSecondItem}
               />
@@ -330,6 +333,7 @@ const SignUp = () => {
           <SelectCategoryList
             title={'거주지를 선택하세요.'}
             dataList={dataList}
+            getSelectItem={handleSelectItem}
           />
         )}
       </div>
