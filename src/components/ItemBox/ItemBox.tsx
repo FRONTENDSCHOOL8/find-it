@@ -1,36 +1,61 @@
 import default_item from '@/assets/itembox/default_item.svg';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 type itemTypeProps = {
   itemType: 'get' | 'lost' | 'main';
+  item: any;
 };
 
-const ItemBox: React.FC<itemTypeProps> = ({ itemType }) => {
+interface GetItemType {
+  item_name: string;
+  date: string;
+  storage: string;
+  item_image: string;
+}
+
+const ItemBox: React.FC<itemTypeProps> = ({ itemType, item }) => {
+  const [itemData, setItemData] = useState<GetItemType | null>(null);
+  useEffect(() => {
+    const newItem: GetItemType = {
+      item_name: item.fdPrdtNm['#text'],
+      date: item.fdYmd['#text'],
+      storage: item.depPlace['#text'],
+      item_image: item.fdFilePathImg['#text'],
+    };
+    setItemData(newItem);
+  }, [item]);
+
   return (
     <div>
-      {itemType === 'get' && (
+      {itemType === 'get' && itemData && (
         <a href="/" className="block">
           <div className="mb-3 flex h-140px w-335px justify-between rounded-[20px] bg-white transition-all duration-300 hover:cursor-pointer hover:shadow-lg">
             <div className="flex flex-col items-start py-18px pl-20px">
               <h1 className="pb-2 text-20px font-medium leading-[1.3] tracking-tighter">
-                물품명
+                {itemData.item_name.length > 10
+                  ? itemData.item_name.slice(0, 8) + '...'
+                  : itemData.item_name}
               </h1>
               <span className="rounded-full bg-primary px-3 py-1 text-10px font-medium leading-[1.3] tracking-tighter text-white">
-                습득장소
+                {itemData.storage}
               </span>
 
               <div className="mt-13px flex flex-col gap-1">
                 <span className="text-12px font-medium leading-[1.3] tracking-tighter text-gray-500">
-                  습득한 날
+                  습득날짜
                 </span>
                 <span className="text-12px font-medium leading-[1.3] tracking-tighter">
-                  2024년 2월 26일
+                  {itemData.date}
                 </span>
               </div>
             </div>
 
             <div className="p-10px">
-              <img src={default_item} alt="등록된 물품 사진 없음" />
+              <img
+                src={itemData.item_image}
+                alt="물품 사진"
+                className="size-120px rounded-14px"
+              />
             </div>
           </div>
         </a>
