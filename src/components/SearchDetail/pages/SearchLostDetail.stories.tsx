@@ -1,10 +1,10 @@
 import { StoryObj } from '@storybook/react';
-import SearchDetail from './SearchDetail';
+import SearchLostDetail from './SearchLostDetail';
 
 /**@type{import('@storybook/react').Meta} */
 export default {
-  component: SearchDetail,
+  component: SearchLostDetail,
 };
 
 /**@type{import('@storybook/react').StoryObj} */
-export const Basic: StoryObj<typeof SearchDetail> = {};
+export const Basic: StoryObj<typeof SearchLostDetail> = {};

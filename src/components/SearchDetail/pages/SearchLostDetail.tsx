@@ -8,9 +8,8 @@ import icon_next from '@/assets/icons/icon_next.svg';
 import { useState } from 'react';
 import select from '@/assets/search/select.svg';
 
-const SearchDetail = () => {
-  const [findItemName, setFindItemName] = useState('');
-  const [lostPersonName, setLostPersonName] = useState('');
+const SearchLostDetail = () => {
+  const [lostItemName, setLostItemName] = useState('');
 
   const sectionStyle = 'flex flex-col gap-20px justify-center pt-20px';
   const inputGroupStyle = 'flex justify-between items-center gap-25px';
@@ -19,7 +18,7 @@ const SearchDetail = () => {
   return (
     <div className="flex flex-col items-center">
       <Header isShowPrev={true} empty={true}>
-        습득물 상세검색
+        분실물 상세검색
       </Header>
       <section className={sectionStyle}>
         <div className="flex items-center justify-between">
@@ -49,63 +48,48 @@ const SearchDetail = () => {
         <Horizon lineBold="thin" lineWidth="short" />
       </section>
       <section className={sectionStyle}>
-        <SearchDate>습득 시작일</SearchDate>
-        <SearchDate>습득 종료일</SearchDate>
+        <SearchDate>분실 시작일</SearchDate>
+        <SearchDate>분실 종료일</SearchDate>
         <Horizon lineBold="thin" lineWidth="short" />
       </section>
       <section className={sectionStyle}>
         <div className="flex items-center justify-between">
-          <SearchParagraph>습득 지역</SearchParagraph>
+          <SearchParagraph>분실 지역</SearchParagraph>
           <a href="/">
-            <img src={icon_next} alt="습득 지역 검색하기" />
+            <img src={icon_next} alt="분실 지역 검색하기" />
           </a>
         </div>
         <div className="flex items-center justify-between">
-          <SearchParagraph>습득 장소</SearchParagraph>
+          <SearchParagraph>분실 장소</SearchParagraph>
           <a href="/">
-            <img src={icon_next} alt="습득 지역 검색하기" />
+            <img src={icon_next} alt="분실 지역 검색하기" />
           </a>
         </div>
         <Horizon lineBold="thin" lineWidth="short" />
       </section>
       <section className={sectionStyle}>
         <label className={inputGroupStyle}>
-          <SearchParagraph>습득물명</SearchParagraph>
+          <SearchParagraph>분실물명</SearchParagraph>
           <input
             className={inputStyle}
-            name="findItemName"
-            value={findItemName}
+            name="lostItemName"
+            value={lostItemName}
             onChange={(e) => {
-              setFindItemName(e.target.value);
-            }}
-          />
-        </label>
-        <label className={inputGroupStyle}>
-          <SearchParagraph>분실자명</SearchParagraph>
-          <input
-            className={inputStyle}
-            name="lostPersonName"
-            value={lostPersonName}
-            onChange={(e) => {
-              setLostPersonName(e.target.value);
+              setLostItemName(e.target.value);
             }}
           />
         </label>
       </section>
       <section className={`${sectionStyle} mt-40px items-center`}>
-        <ButtonVariable
-          buttonType="button"
-          variant="primarySolidThin"
-          buttonText="검색"
-        />
+        <ButtonVariable variant="primarySolidThin" buttonText="검색" />
         <Shortcut
-          link="/"
-          text="분실물 검색으로 이동하기"
-          alt="분실물 검색으로 이동하기"
+          link="/searchfind"
+          text="습득물 검색으로 이동하기"
+          alt="습득물 검색으로 이동하기"
         />
       </section>
     </div>
   );
 };
 
-export default SearchDetail;
+export default SearchLostDetail;
