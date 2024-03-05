@@ -8,6 +8,8 @@ import {
   Credit,
 } from '@/components/pages/index';
 import Detail from '@/components/Detail/Detail';
+import SearchFindDetail from '@/components/SearchDetail/pages/SearchFindDetail';
+import SearchLostDetail from './components/SearchDetail/pages/SearchLostDetail';
 
 const App = () => {
   return (
@@ -21,6 +23,8 @@ const App = () => {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/credit" element={<Credit />} />
+          <Route path="/searchfind" element={<SearchFindDetail />} />
+          <Route path="/searchlost" element={<SearchLostDetail />} />
         </Routes>
       </BrowserRouter>
     </>
