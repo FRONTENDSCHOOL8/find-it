@@ -12,12 +12,12 @@ interface IconProps {
   disabledDoubleCheck?: boolean;
 }
 /* -------------------------------------------------------------------------- */
-// 클릭 함수 전달과 기본 마크업
 const DoubleCheck: React.FC<IconProps> = ({
   isShow,
   onClickDoubleCheck,
   disabledDoubleCheck,
 }) => {
+  const doubleCheckcolor = (!disabledDoubleCheck && 'black') || '#bcbcbc';
   if (isShow) {
     return (
       <button
@@ -25,13 +25,14 @@ const DoubleCheck: React.FC<IconProps> = ({
         onClick={onClickDoubleCheck}
         disabled={disabledDoubleCheck}
       >
-        <IconDoubleCheck />
+        <IconDoubleCheck color={doubleCheckcolor} />
       </button>
     );
   } else {
     return null;
   }
 };
+/* -------------------------------------------------------------------------- */
 const DeleteContent: React.FC<IconProps> = ({ isShow, onClickDelete }) => {
   if (isShow) {
     return (
@@ -43,6 +44,7 @@ const DeleteContent: React.FC<IconProps> = ({ isShow, onClickDelete }) => {
     return null;
   }
 };
+/* -------------------------------------------------------------------------- */
 const EyeToggle: React.FC<IconProps> = ({ isShow, onClickEye }) => {
   const [isEyeOn, setIsEyeOn] = useState(false);
   const toggleEye = () => {
@@ -66,7 +68,7 @@ const EyeToggle: React.FC<IconProps> = ({ isShow, onClickEye }) => {
   }
 };
 /* -------------------------------------------------------------------------- */
-// 디폴트 실행 함수
+// 최종 실행 함수
 
 interface InputIconButtonProps {
   iconDoubleCheck: boolean;

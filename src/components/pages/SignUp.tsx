@@ -46,7 +46,7 @@ const SignUp = () => {
 
   /* -------------------------------------------------------------------------- */
   // 이메일 입력 & 정규식 검사
-  const [valiEmailFrom, setValiEmailFrom] = useState(false);
+  const [valiEmailForm, setValiEmailForm] = useState(false);
   const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const newValue = e.target.value;
@@ -54,21 +54,23 @@ const SignUp = () => {
 
     if (!newValue.match(regex.emailRegex)) {
       setAlertEmail('invalidEmail');
+      setValiEmailForm(false);
     } else {
       setAlertEmail('');
-      setValiEmailFrom(true);
+      setValiEmailForm(true);
     }
   };
   // 비밀번호 입력 & 정규식 검사
-  const [valiPassword, setValiPassword] = useState(false);
+  const [valiPasswordForm, setValiPasswordForm] = useState(false);
   const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setPasswordValue(newValue);
     if (!newValue.match(regex.pwRegex)) {
       setAlertPassword('invalidPassword');
+      setValiPasswordForm(false);
     } else {
       setAlertPassword('');
-      setValiPassword(true);
+      setValiPasswordForm(true);
     }
   };
   // 비밀번호 입력 & 동일 검사
@@ -89,8 +91,8 @@ const SignUp = () => {
 
   /* -------------------------------------------------------------------------- */
 
-  // 이메일 중복 확인    ----------------------------------->> 이메일 폼 맞아야지 중복 체크 가능하게
-  const [valiEmail, setValiEmail] = useState(false);
+  // 이메일 중복 확인    ----------------------------------->> 이메일 폼 맞아야지 중복 체크 가능
+  const [valiEmailDouble, setValiEmailDouble] = useState(false);
   const handleDoubleCheckEmail = async () => {
     try {
       const records = await getData('users', {
@@ -100,18 +102,19 @@ const SignUp = () => {
       const emailData = realdata && realdata.email; //db 이메일 불러와지면 중복띄우기
       if (emailData === emailValue) {
         setAlertEmail('doubleCheckEmail');
+        setValiEmailDouble(false);
       } else {
         setAlertEmail('');
-        alert('사용 가능한 이메일 입니다.'); /// ----------------------------------->> 모달 창으로 바꾸기 [1]
-        setValiEmail(true);
+        alert('사용 가능한 이메일 입니다.'); /// ----------------------------------->> 모달 창으로 바꾸기
+        setValiEmailDouble(true);
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  // 닉네임 중복확인   ----------------------------------->> 닉네임 폼 맞앗을때로 조건 추가[2]
-  const [valiNick, setValiNick] = useState(false);
+  // 닉네임 중복확인   ----------------------------------->> 닉네임 빈문자 아닐때 작동
+  const [valiNickDouble, setValiNickDouble] = useState(false);
   const handleDoubleCheckNickname = async () => {
     try {
       const records = await getData('users', {
@@ -121,10 +124,11 @@ const SignUp = () => {
       const nicknameData = realdata && realdata.nickname; //db 닉네임 데이터 불러와지면 중복띄우기
       if (nicknameData === nicknameValue) {
         setAlertNickname('doubleCheckNickname');
+        setValiNickDouble(false);
       } else {
         setAlertNickname('');
         alert('사용 가능한 닉네임 입니다.'); /// ----------------------------------->> 모달 창으로 바꾸기
-        setValiNick(true);
+        setValiNickDouble(true);
       }
     } catch (error) {
       console.log(error);
@@ -140,21 +144,11 @@ const SignUp = () => {
     );
   };
   /* -------------------------------------------------------------------------- */
-  // 중복검사 활성화 조건
-  // const [activeDoubleCheck, setActiveDoubleCheck] = useState(false);
-  // useEffect(() => {
-  //   if (emailValue === '' || valiEmail === false) {
-  //     setActiveDoubleCheck(false);
-  //   } else {
-  //     setActiveDoubleCheck(true);
-  //   }
-  // }, [emailValue, valiEmail, nicknameValue]);
-  /* -------------------------------------------------------------------------- */
-  // 딜리트 버튼 실행 : 빈문자로 셋업
+  // 딜리트 버튼 실행 : 값초기화와 빈문자로 바꾸기
   const handleDeleteEmail = () => {
     setEmailValue('');
-    setValiEmail(false);
     setAlertEmail('');
+    setValiEmailDouble(false);
   };
   const handleDeletePassword = () => {
     setPasswordValue('');
@@ -166,8 +160,8 @@ const SignUp = () => {
   };
   const handleDeleteNickname = () => {
     setNicknameValue('');
-    setValiNick(false);
     setAlertNickname('');
+    setValiNickDouble(false);
   };
 
   /* -------------------------------------------------------------------------- */
@@ -178,8 +172,8 @@ const SignUp = () => {
     password: passwordValue,
     passwordConfirm: passwordCheckValue,
     nickname: nicknameValue,
-    state: 'test',
-    city: 'test',
+    state: 'temp',
+    city: 'temp',
   };
   /* -------------------------------------------------------------------------- */
   // 최종 버튼 활성화 & 데이터 보내기 : 버튼 베리언트를 변경
@@ -187,12 +181,11 @@ const SignUp = () => {
   useEffect(() => {
     if (
       emailValue !== '' &&
-      valiEmailFrom === true && //  --------------------------------------> 이건 나중에 없어도 됨 중복확인 버튼 토글될필요 없음
-      valiEmail === true &&
-      valiPassword === true &&
+      valiEmailDouble === true &&
+      valiPasswordForm === true &&
       passwordValue === passwordCheckValue &&
       nicknameValue !== '' &&
-      valiNick === true
+      valiNickDouble === true
     ) {
       setVariant('submit');
     } else {
@@ -200,13 +193,12 @@ const SignUp = () => {
     }
   }, [
     emailValue,
-    valiEmailFrom,
-    valiEmail,
-    valiPassword,
+    valiEmailDouble,
+    valiPasswordForm,
     passwordValue,
     passwordCheckValue,
     nicknameValue,
-    valiNick,
+    valiNickDouble,
   ]);
 
   // 유저 데이터 pb에 쓰기
@@ -266,7 +258,7 @@ const SignUp = () => {
               onClickDoubleCheck={handleDoubleCheckEmail}
               onClickDelete={handleDeleteEmail}
               alertCase={alertEmail}
-              // disabledDoubleCheck={activeDoubleCheck}
+              disabledDoubleCheck={!valiEmailForm}
             />
             <InputForm
               ref={passwordRef}
@@ -311,7 +303,7 @@ const SignUp = () => {
               onClickDoubleCheck={handleDoubleCheckNickname}
               onClickDelete={handleDeleteNickname}
               alertCase={alertNickname}
-              // disabledDoubleCheck={activeDoubleCheck}
+              disabledDoubleCheck={!nicknameValue}
             />
             <div className="mt-10px flex h-48px w-full items-center justify-between ">
               <input
