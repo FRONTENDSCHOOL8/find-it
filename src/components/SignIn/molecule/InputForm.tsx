@@ -25,6 +25,7 @@ interface InputFormProps {
   onClickDoubleCheck?: () => void;
   onClickDelete?: () => void;
   onClickEye?: () => void;
+  disabledDoubleCheck?: boolean;
 }
 
 const InputForm: React.ForwardRefRenderFunction<
@@ -45,14 +46,14 @@ const InputForm: React.ForwardRefRenderFunction<
     onClickDoubleCheck,
     onClickDelete,
     onClickEye,
+    disabledDoubleCheck,
     ...resProps
   },
   ref
 ) => {
   /* -------------------------------------------------------------------------- */
-  // 인풋 접근시 중복체크 아이콘, 스타일 상태 변수 관리
+  // 인풋 접근시 색상 변경 , 포커스 아웃 효과
   const [isFocus, setIsFocus] = useState(false);
-  const [isDoubleCheck, setIsDoubleCheck] = useState(iconDoubleCheck);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Escape' && typeof ref === 'object' && ref?.current) {
@@ -62,11 +63,9 @@ const InputForm: React.ForwardRefRenderFunction<
 
   const handleFocus = () => {
     setIsFocus(true);
-    setIsDoubleCheck(false);
   };
   const handleBlur = () => {
     setIsFocus(false);
-    setIsDoubleCheck(true);
   };
 
   const defaultColor = '#e4e4e4';
@@ -101,12 +100,13 @@ const InputForm: React.ForwardRefRenderFunction<
           {...resProps}
         />
         <InputIconButton
-          iconDoubleCheck={!!(iconDoubleCheck && isDoubleCheck)}
+          iconDoubleCheck={!!iconDoubleCheck}
           iconDelete={!!iconDelete}
           iconEyeToggle={!!iconEyeToggle}
           onClickDoubleCheck={onClickDoubleCheck}
           onClickDelete={onClickDelete}
           onClickEye={onClickEye}
+          disabledDoubleCheck={disabledDoubleCheck}
         />
       </div>
       <AlertText alertCase={alertCase} />

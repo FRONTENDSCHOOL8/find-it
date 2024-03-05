@@ -27,7 +27,7 @@ const SignIn = () => {
                 alretText="invalidValue"
               />
             </div>
-            <div className="box-border flex flex-col items-center gap-[1rem]	pt-60px">
+            <div className="box-border flex flex-col items-center gap-[1rem]	pt-80px">
               <ButtonVariable buttonText="로그인" variant="submit" />
               <ButtonVariable buttonText="회원가입" variant="lineStyle" />
             </div>
