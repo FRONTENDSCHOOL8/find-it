@@ -148,14 +148,14 @@ const SignUp = () => {
   };
   /* -------------------------------------------------------------------------- */
   // 중복검사 활성화 조건
-  const [activeDoubleCheck, setActiveDoubleCheck] = useState(false);
-  useEffect(() => {
-    if (emailValue === '' || valiEmail === false) {
-      setActiveDoubleCheck(false);
-    } else {
-      setActiveDoubleCheck(true);
-    }
-  }, [emailValue, valiEmail, nicknameValue]);
+  // const [activeDoubleCheck, setActiveDoubleCheck] = useState(false);
+  // useEffect(() => {
+  //   if (emailValue === '' || valiEmail === false) {
+  //     setActiveDoubleCheck(false);
+  //   } else {
+  //     setActiveDoubleCheck(true);
+  //   }
+  // }, [emailValue, valiEmail, nicknameValue]);
   /* -------------------------------------------------------------------------- */
   // 딜리트 버튼 실행 : 빈문자로 셋업
   const handleDeleteEmail = () => {
@@ -223,7 +223,7 @@ const SignUp = () => {
       try {
         const userData = await createData('users', newUserData);
         //페이지 이동하는 함수
-        window.location.href = '/';
+        window.location.href = '/welcome';
         return userData;
       } catch (error) {
         console.error('회원가입 유저 데이터 보내기 에러났슈:', error);
@@ -252,7 +252,7 @@ const SignUp = () => {
               onClickDoubleCheck={handleDoubleCheckEmail}
               onClickDelete={handleDeleteEmail}
               alertCase={alertEmail}
-              disabledDoubleCheck={activeDoubleCheck}
+              // disabledDoubleCheck={activeDoubleCheck}
             />
             <InputForm
               ref={passwordRef}
@@ -297,7 +297,7 @@ const SignUp = () => {
               onClickDoubleCheck={handleDoubleCheckNickname}
               onClickDelete={handleDeleteNickname}
               alertCase={alertNickname}
-              disabledDoubleCheck={activeDoubleCheck}
+              // disabledDoubleCheck={activeDoubleCheck}
             />
             <div className="mt-10px flex h-48px w-full items-center justify-between ">
               <input

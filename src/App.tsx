@@ -7,14 +7,13 @@ import {
   SignIn,
   SignUp,
   Credit,
+  Welcome,
 } from '@/components/pages/index';
 import Detail from '@/components/Detail/Detail';
-
 
 const App = () => {
   return (
     <>
-
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Main />} />
@@ -24,9 +23,9 @@ const App = () => {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/credit" element={<Credit />} />
+          <Route path="/welcome" element={<Welcome />} />
         </Routes>
       </BrowserRouter>
-
     </>
   );
 };
