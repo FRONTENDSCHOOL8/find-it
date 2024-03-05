@@ -25,10 +25,10 @@ const App = () => {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/credit" element={<Credit />} />
+          <Route path="/welcome" element={<Welcome />} />
 
           <Route path="/searchfind" element={<SearchFindDetail />} />
           <Route path="/searchlost" element={<SearchLostDetail />} />
-
         </Routes>
       </BrowserRouter>
     </>
