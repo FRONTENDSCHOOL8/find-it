@@ -2,11 +2,14 @@ import { useEffect, useRef, useState } from 'react';
 import { createData, getData } from '@/lib/utils/crud';
 import Header from '@/components/Header/Header';
 import InputForm from '@/components/SignIn/molecule/InputForm';
-import GetLocalList from '@/components/SignIn/molecule/GetLocalList';
+import {
+  GetSidoList,
+  GetGunguList,
+} from '@/components/SignIn/molecule/GetLocalList';
 import ButtonVariable from '@/components/common/molecule/ButtonVariable';
 import ButtonSelectItem from '@/components/common/molecule/ButtonSelectItem';
 import SelectCategoryList from '@/components/common/molecule/SelectCategoryList';
-// [1] ,[2] ,[3]
+
 type AlertProps =
   | 'doubleCheckEmail'
   | 'doubleCheckNickname'
@@ -19,17 +22,12 @@ type AlertProps =
 
 const SignUp = () => {
   /* -------------------------------------------------------------------------- */
-  // 지역 리스트 데이터 가져오기
-  const localData = GetLocalList();
-  /* -------------------------------------------------------------------------- */
   // 유효성 검사용 정규식 : 비번 8자이상 20자 이하영문 숫자 특수문자 포함
   const regex = {
     emailRegex: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
     pwRegex: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,20}$/,
   };
-
   /* -------------------------------------------------------------------------- */
-  const [isSelectingCategory, setIsSelectingCategory] = useState(false);
   const [emailValue, setEmailValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
   const [passwordCheckValue, setPasswordCheckValue] = useState('');
@@ -45,11 +43,6 @@ const SignUp = () => {
   const passwordRef = useRef(null);
   const passwordCheckRef = useRef(null);
   const nicknameRef = useRef(null);
-
-  // 지역 리스트 랜더링
-  const handleCategorySelection = () => {
-    setIsSelectingCategory(true);
-  };
 
   /* -------------------------------------------------------------------------- */
   // 이메일 입력 & 정규식 검사
@@ -96,15 +89,15 @@ const SignUp = () => {
 
   /* -------------------------------------------------------------------------- */
 
-  // 이메일 중복 확인    ----------------------------------->> 이메일 폼 맞앗을때로 조건 추가
+  // 이메일 중복 확인    ----------------------------------->> 이메일 폼 맞아야지 중복 체크 가능하게
   const [valiEmail, setValiEmail] = useState(false);
   const handleDoubleCheckEmail = async () => {
     try {
       const records = await getData('users', {
-        filter: `email="${emailValue}"`, //조건 충족 리스트 가져옴(객체 1개배열)
+        filter: `email="${emailValue}"`, //pb 에서 조건 충족 리스트 가져옴(객체 1개배열)
       });
       const realdata = records && records[0];
-      const emailData = realdata && realdata.email; //db 데이터 불러옴
+      const emailData = realdata && realdata.email; //db 이메일 불러와지면 중복띄우기
       if (emailData === emailValue) {
         setAlertEmail('doubleCheckEmail');
       } else {
@@ -122,10 +115,10 @@ const SignUp = () => {
   const handleDoubleCheckNickname = async () => {
     try {
       const records = await getData('users', {
-        filter: `nickname="${nicknameValue}"`, //조건 충족 리스트 가져옴(객체 1개배열)
+        filter: `nickname="${nicknameValue}"`, //pb 에서 조건 충족 리스트 가져옴(객체 1개배열)
       });
       const realdata = records && records[0];
-      const nicknameData = realdata && realdata.nickname; //db 데이터 불러옴
+      const nicknameData = realdata && realdata.nickname; //db 닉네임 데이터 불러와지면 중복띄우기
       if (nicknameData === nicknameValue) {
         setAlertNickname('doubleCheckNickname');
       } else {
@@ -194,7 +187,7 @@ const SignUp = () => {
   useEffect(() => {
     if (
       emailValue !== '' &&
-      valiEmailFrom === true && //  --> 이건 나중에 없어도 됨 중복확인 버튼 토글될필요 없음 [3]
+      valiEmailFrom === true && //  --------------------------------------> 이건 나중에 없어도 됨 중복확인 버튼 토글될필요 없음
       valiEmail === true &&
       valiPassword === true &&
       passwordValue === passwordCheckValue &&
@@ -216,7 +209,7 @@ const SignUp = () => {
     valiNick,
   ]);
 
-  // 유저 데이터 보내기
+  // 유저 데이터 pb에 쓰기
   const createUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (variant === 'submit') {
@@ -230,6 +223,27 @@ const SignUp = () => {
       }
     }
   };
+
+  /* -------------------------------------------------------------------------- */
+  // 리스트 렌더링
+  const [renderList, setRenderList] = useState(false);
+  // 리스트 컴포넌트 데이터 종류 전달
+  const sidoList = GetSidoList();
+  const gunguList = GetGunguList();
+  const [dataList, setDataList] = useState(sidoList);
+
+  // 대분류 클릭 함수
+  const handleFirstItem = () => {
+    setRenderList(true);
+    setDataList(sidoList);
+  };
+  // 소분류 클릭 함수
+  const handleSecondItem = () => {
+    setRenderList(true);
+    setDataList(gunguList);
+  };
+
+  // 버튼 누르면 이름이 바뀜
 
   /* -------------------------------------------------------------------------- */
   /* -------------------------------------------------------------------------- */
@@ -311,21 +325,21 @@ const SignUp = () => {
               <ButtonSelectItem
                 firstName="시/도"
                 secondName="군/구"
-                onClickFirst={handleCategorySelection}
-                onClickSecond={handleCategorySelection}
+                onClickFirst={handleFirstItem}
+                onClickSecond={handleSecondItem}
               />
             </div>
             <div className="box-border flex flex-col items-center gap-[1rem]	pt-80px">
               <ButtonVariable buttonText="완료" variant={variant} />
             </div>
           </form>
-          {isSelectingCategory && (
-            <SelectCategoryList
-              title={'거주지를 선택하세요.'}
-              dataList={localData}
-            />
-          )}
         </div>
+        {renderList && (
+          <SelectCategoryList
+            title={'거주지를 선택하세요.'}
+            dataList={dataList}
+          />
+        )}
       </div>
     </>
   );
