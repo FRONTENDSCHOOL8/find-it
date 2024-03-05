@@ -30,13 +30,11 @@ const SearchDate: React.FC<SearchDateProps> = ({ children }) => {
       <div className="flex items-center gap-8px">
         <p className="text-12px">{selectDate}</p>
         <input
-          required
           id={dateInputId}
           type="date"
           className="date-input"
           aria-label="날짜 입력"
           onChange={handleDateChange}
-          value={selectDate}
         />
       </div>
     </div>
