@@ -6,6 +6,7 @@ interface ButtonSelectItemProps {
   secondName?: string;
   onClickFirst?: () => void;
   onClickSecond?: () => void;
+  disabledSecond: boolean;
 }
 
 const ButtonSelectItem: React.FC<ButtonSelectItemProps> = ({
@@ -13,32 +14,36 @@ const ButtonSelectItem: React.FC<ButtonSelectItemProps> = ({
   secondName = '소분류 선택',
   onClickFirst,
   onClickSecond,
+  disabledSecond,
 }) => {
   /* -------------------------------------------------------------------------- */
   // 버튼 선택시 스타일변경 & 상위 프롭 함수 실행
   const [isActiveFirst, setIsActiveFirst] = useState(false);
-  const [isActiveSecond, setIsActiveSecond] = useState(false);
+  const [secondTextColor, setSecondTextColor] = useState('#666');
+  const [secondBorderColor, setSecondBorderColor] = useState('#666');
   const commonStyle =
     'flex h-fit items-center truncate rounded-full px-14px py-6px text-10px';
   const isActiveColor = '#4785ff';
 
   const onFirst = () => {
     setIsActiveFirst(true);
+    setSecondTextColor('#666');
+    setSecondBorderColor('#BCBCBC');
     if (onClickFirst) {
       onClickFirst();
     }
   };
   const onSecond = () => {
-    setIsActiveSecond(true);
+    setSecondTextColor(isActiveColor);
+    setSecondBorderColor(isActiveColor);
+
     if (onClickSecond) {
       onClickSecond();
     }
   };
-
+  const handleDisabledSecond = disabledSecond && !isActiveFirst;
   const firstTextColor = (!isActiveFirst && 'black') || isActiveColor;
   const firstBorderColor = (!isActiveFirst && '#666') || isActiveColor;
-  const secondTextColor = (!isActiveSecond && 'black') || isActiveColor;
-  const secondBorderColor = (!isActiveSecond && '#BCBCBC') || isActiveColor;
 
   /* -------------------------------------------------------------------------- */
   // jsx 반환
@@ -58,6 +63,7 @@ const ButtonSelectItem: React.FC<ButtonSelectItemProps> = ({
       </button>
       <button
         onClick={onSecond}
+        disabled={handleDisabledSecond}
         className={commonStyle}
         type="button"
         style={{

@@ -3,13 +3,16 @@ import { createData, getData } from '@/lib/utils/crud';
 import Header from '@/components/Header/Header';
 import InputForm from '@/components/SignIn/molecule/InputForm';
 import {
-  GetGunguList,
   GetSidoList,
+  GetGunguList,
+  GetCode,
 } from '@/components/SignIn/molecule/GetLocalList';
 import ButtonVariable from '@/components/common/molecule/ButtonVariable';
 import ButtonSelectItem from '@/components/common/molecule/ButtonSelectItem';
 import SelectCategoryList from '@/components/common/molecule/SelectCategoryList';
 
+/* -------------------------------------------------------------------------- */
+// 타입 정의
 type AlertProps =
   | 'doubleCheckEmail'
   | 'doubleCheckNickname'
@@ -29,16 +32,24 @@ const SignUp = () => {
   };
   /* -------------------------------------------------------------------------- */
   const [emailValue, setEmailValue] = useState('');
+  const [valiEmailDouble, setValiEmailDouble] = useState(false);
+  const [valiEmailForm, setValiEmailForm] = useState(false);
+
   const [passwordValue, setPasswordValue] = useState('');
-  const [passwordCheckValue, setPasswordCheckValue] = useState('');
-  const [nicknameValue, setNicknameValue] = useState('');
+  const [valiPasswordForm, setValiPasswordForm] = useState(false);
+
   const [passwordType, setPasswordType] = useState('password');
+  const [passwordCheckValue, setPasswordCheckValue] = useState('');
   const [passwordCheckType, setPasswordCheckType] = useState('password');
+
+  const [nicknameValue, setNicknameValue] = useState('');
+  const [valiNickDouble, setValiNickDouble] = useState(false);
 
   const [alertEmail, setAlertEmail] = useState<AlertProps>();
   const [alertPassword, setAlertPassword] = useState<AlertProps>();
   const [alertPasswordCheck, setAlertPasswordCheck] = useState<AlertProps>();
   const [alertNickname, setAlertNickname] = useState<AlertProps>();
+
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const passwordCheckRef = useRef(null);
@@ -46,7 +57,6 @@ const SignUp = () => {
 
   /* -------------------------------------------------------------------------- */
   // 이메일 입력 & 정규식 검사
-  const [valiEmailForm, setValiEmailForm] = useState(false);
   const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const newValue = e.target.value;
@@ -61,7 +71,6 @@ const SignUp = () => {
     }
   };
   // 비밀번호 입력 & 정규식 검사
-  const [valiPasswordForm, setValiPasswordForm] = useState(false);
   const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setPasswordValue(newValue);
@@ -83,16 +92,17 @@ const SignUp = () => {
       setAlertPasswordCheck('');
     }
   };
-  // 닉네임 입력
+  // 닉네임 입력 & 중복검사 문구 지우기, 중복검사 상태 지우기
   const handleNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setNicknameValue(newValue);
+    setAlertNickname('');
+    setValiNickDouble(false);
   };
 
   /* -------------------------------------------------------------------------- */
 
   // 이메일 중복 확인    ----------------------------------->> 이메일 폼 맞아야지 중복 체크 가능
-  const [valiEmailDouble, setValiEmailDouble] = useState(false);
   const handleDoubleCheckEmail = async () => {
     try {
       const records = await getData('users', {
@@ -114,7 +124,6 @@ const SignUp = () => {
   };
 
   // 닉네임 중복확인   ----------------------------------->> 닉네임 빈문자 아닐때 작동
-  const [valiNickDouble, setValiNickDouble] = useState(false);
   const handleDoubleCheckNickname = async () => {
     try {
       const records = await getData('users', {
@@ -165,15 +174,15 @@ const SignUp = () => {
   };
 
   /* -------------------------------------------------------------------------- */
-  /* -------------------------------------------------------------------------- */
-  // 뿌릴 데이터 종류 전달
-  const firstItemList = GetSidoList(); // 문자열로 된 배열 반환
-  const secondItemList = GetGunguList();
+  // 지역 선택 버튼
 
-  // 대분류 버튼 클릭시 대분류 리스트 랜더링
+  // 대분류 버튼 클릭시 대분류 리스트 랜더링 & 소분류 비활성화 & 소분류 초기화
   const [renderFirstList, setRenderFirstList] = useState(false);
+  const [disabledSecond, setDisabledSecond] = useState(true);
   const handleFirstItem = () => {
     setRenderFirstList(true);
+    setSelectSecondItem('');
+    setDisabledSecond(true);
   };
   // 소분류 버튼 클릭시 소분류 리스트 랜더링
   const [renderSecondList, setRenderSecondList] = useState(false);
@@ -192,6 +201,10 @@ const SignUp = () => {
   const handleSelectSecondItem = (item: string) => {
     setSelectSecondItem(item);
   };
+  // 뿌릴 데이터 종류 전달
+  const LOCAL_CODE = GetCode(selectFirstItem);
+  const firstItemList = GetSidoList(); // 문자열로 된 배열 반환
+  const secondItemList = GetGunguList(`${LOCAL_CODE}`);
 
   /* -------------------------------------------------------------------------- */
   // 신규 유저 데이터
@@ -329,8 +342,9 @@ const SignUp = () => {
               <ButtonSelectItem
                 firstName={selectFirstItem || '시/도'}
                 secondName={selectSecondItem || '군/구'}
-                onClickFirst={handleFirstItem}
+                onClickFirst={handleFirstItem} // 컴포넌트 렌더 실행
                 onClickSecond={handleSecondItem}
+                disabledSecond={disabledSecond}
               />
             </div>
             <div className="box-border flex flex-col items-center gap-[1rem]	pt-80px">
@@ -340,15 +354,15 @@ const SignUp = () => {
         </div>
         {renderFirstList && (
           <SelectCategoryList
-            title={'거주지를 선택하세요.'}
+            title={'거주하시는 시/도를 선택하세요.'}
             dataList={firstItemList}
-            getSelectItem={handleSelectFirstItem}
-            onClose={() => setRenderFirstList(false)}
+            getSelectItem={handleSelectFirstItem} // 선택 아이템 가져옴
+            onClose={() => setRenderFirstList(false)} // 바깥 영역 누르면 사라짐
           />
         )}
         {renderSecondList && (
           <SelectCategoryList
-            title={'거주지를 선택하세요.'}
+            title={'거주하시는 군/구를 선택하세요.'}
             dataList={secondItemList}
             getSelectItem={handleSelectSecondItem}
             onClose={() => setRenderSecondList(false)}
