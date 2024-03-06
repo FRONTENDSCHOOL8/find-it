@@ -8,29 +8,28 @@ const useGetToken = () => {
   const URL = `${import.meta.env.VITE_AUTH_API_URL}?consumer_key=${import.meta.env.VITE_CONSUMERKEY}&consumer_secret=${import.meta.env.VITE_CONSUMERSECRET}`;
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [attemptCount, setAttemptCount] = useState<number>(0);
-
-  const getAccessToken = async () => {
-    if (attemptCount >= MAX_AUTH_ATTEMPTS) {
-      throw new Error('API 인증 시도 횟수를 초과했습니다.');
-    }
-    try {
-      const response = await fetch(URL);
-      if (!response.ok) {
-        throw new Error('API 인증에 실패했습니다.');
-      }
-      const jsonData = await response.json();
-      setAccessToken(jsonData.result.accessToken);
-      setAttemptCount((prevCount) => prevCount + 1);
-    } catch (error) {
-      console.error('에러남: ' + error);
-    }
-  };
-
   useEffect(() => {
+    const getAccessToken = async () => {
+      if (attemptCount >= MAX_AUTH_ATTEMPTS) {
+        throw new Error('API 인증 시도 횟수를 초과했습니다.');
+      }
+      try {
+        const response = await fetch(URL);
+        if (!response.ok) {
+          throw new Error('API 인증에 실패했습니다.');
+        }
+        const jsonData = await response.json();
+        setAccessToken(jsonData.result.accessToken);
+        setAttemptCount((prevCount) => prevCount + 1);
+      } catch (error) {
+        console.error('에러남: ' + error);
+      }
+    };
+
     getAccessToken();
     const interval = setInterval(getAccessToken, TOKEN_REFRESH_INTERVAL);
     return () => clearInterval(interval);
-  }, []);
+  }, [attemptCount, URL]);
   return accessToken;
 };
 

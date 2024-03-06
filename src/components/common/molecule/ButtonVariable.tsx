@@ -7,7 +7,7 @@ interface ButtonVariableProps {
     | 'blackSolidThin'
     | 'blackLineThin'
     | 'primarySolidThin';
-  onClick?: () => void;
+  onClick?: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 const ButtonVariable: React.FC<ButtonVariableProps> = ({
   buttonText = '확인',
@@ -74,7 +74,7 @@ const ButtonVariable: React.FC<ButtonVariableProps> = ({
   return (
     <button
       type={buttonType}
-      onClick={onClick}
+      onClick={onClick as unknown as React.MouseEventHandler<HTMLButtonElement>}
       style={{
         width,
         height,

@@ -1,9 +1,7 @@
-import bookmark_icon from '@/assets/icons/icon_bookmark.svg';
-import bookmark_icon_fill from '@/assets/icons/icon_my_bookmark_fill.svg';
+import bookmark_icon from '@/assets/icons/icon_bookmark_detail.svg';
+import bookmark_icon_fill from '@/assets/icons/icon_bookmark_detail_fill.svg';
 import useBookmarkStore from '@/store/bookmark/bookmark';
 import KakaoMap from '@/components/Detail/atom/KakaoMap';
-import { getAllData, getSearchData } from '@/lib/utils/getAPIData';
-import { useEffect } from 'react';
 
 interface DetailType {
   item_name: string;
@@ -18,14 +16,6 @@ interface DetailType {
   item_type_B: string;
 }
 
-interface SearchData {
-  body?: {
-    items?: {
-      item: object[];
-    };
-  };
-}
-
 const isEmpty = (value: string) => {
   return value !== '';
 };
@@ -36,7 +26,7 @@ const data: DetailType = {
   place: '피시방',
   content: '종이로 만든 가방입니다. 피시방에서 주움.',
   item_image: '',
-  storage: '멋쟁이사자처럼',
+  storage: '멋쟁이 사자처럼',
   phone: '010-1234-5678',
   mgmt_num: 'ff123456',
   item_type_A: '가방',
@@ -46,23 +36,6 @@ const data: DetailType = {
 const Detail: React.FC = () => {
   const bookmark = useBookmarkStore((state) => state.bookmark);
 
-  useEffect(() => {
-    (async () => {
-      const data = await getAllData({
-        pageNo: 2,
-        numOfRows: 100,
-      });
-
-      // console.log(data);
-
-      const searchData = await getSearchData('가방');
-
-      if (typeof searchData === 'object') {
-        console.log((searchData as SearchData).body?.items?.item);
-      }
-    })();
-  }, []);
-
   const isBookmarked = (bookmark: boolean) => {
     if (bookmark) {
       return bookmark_icon_fill;
@@ -71,7 +44,7 @@ const Detail: React.FC = () => {
   };
 
   return (
-    <div className="mx-auto w-375px leading-[1.3]">
+    <div className="w-375px leading-[1.3]">
       <div className="flow-root h-250px w-full bg-slate-500">
         {isEmpty(data.item_image) && (
           <img src={data.item_image} alt="item_image" />

@@ -6,15 +6,12 @@ declare namespace kakao.maps {
     // 기타 메서드 및 속성 정의
   }
 
-  // class services {
-  //   class Geocoder {
-
-  //   }
-  // }
-
   class LatLng {
     constructor(lat: number, lng: number);
-    // 기타 메서드 및 속성 정의
+  }
+
+  class LatLngBounds {
+    extend(latlng: LatLng): void;
   }
 
   interface MapOptions {
@@ -25,9 +22,13 @@ declare namespace kakao.maps {
 
   namespace services {
     class Places {
-      KeywordSearch(
+      keywordSearch(
         keyword: string,
-        callback: (data: any, status: any, pagination: any) => void
+        callback: (
+          data: PlaceResult[],
+          status: Status,
+          pagination: Pagination
+        ) => void
       ): void;
     }
 
@@ -35,11 +36,30 @@ declare namespace kakao.maps {
       OK = 'OK',
       ERROR = 'ERROR',
     }
+
+    interface PlaceResult {
+      x: string;
+      y: string;
+      // 기타 정보
+    }
+
+    interface Pagination {
+      hasNext: boolean;
+      count: number;
+    }
   }
 
   class Marker {
-    setMap(map: Map): void;
+    setMap(map: Map | null): void;
     constructor(options: MarkerOptions);
+  }
+
+  class InfoWindow {
+    constructor(options: InfoWindowOptions);
+  }
+
+  class CustomOverlay {
+    constructor(options: CustomOverlayOptions);
   }
 
   function load(callback: () => void): void;
