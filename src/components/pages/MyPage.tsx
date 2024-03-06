@@ -1,5 +1,6 @@
-import { pb } from '@/lib/utils/pb';
 import { useEffect, useState } from 'react';
+import { pb } from '@/lib/api/getPbData';
+import { Link } from 'react-router-dom';
 
 import profile from '@/assets/profile.svg';
 import icon_pencil from '@/assets/icons/icon_pencil.svg';
@@ -12,23 +13,33 @@ import Horizon from '../common/atom/Horizon';
 import getPbImgURL from '@/lib/utils/getPbImgURL';
 import Header from '../Header/Header';
 
-const userData = await pb.collection('users').getOne('2pzqk217b5qa9tu', {
-  expand: 'nickname, email, avatar',
-});
+/* -------------------------------------------------------------------------- */
+// 로그인 유저 정보 가져오기
+const loginUserData = localStorage.getItem('pocketbase_auth');
+const localData = loginUserData && JSON.parse(loginUserData);
+const userNickname = localData?.model?.nickname;
+const userEmail = localData?.model?.email;
+const userId = localData?.model?.id;
+const userAvatar = localData?.model?.avatar;
 
-const { nickname, email, avatar } = userData;
-
+// 로그아웃 기능
+const handleLogout = () => {
+  pb.authStore.clear();
+  window.location.href = '/';
+};
+/* -------------------------------------------------------------------------- */
+// 마이페이지 마크업
 const Profile = () => {
   return (
-    <section className="my-30px flex items-center gap-3">
+    <section className="my-30px flex items-center gap-4">
       <img
-        src={avatar !== '' ? getPbImgURL(userData, 'avatar') : profile}
+        src={userAvatar !== '' ? getPbImgURL(userId, userAvatar) : profile}
         alt="나의 프로필 사진"
         className="size-66px rounded-full"
       />
       <div className="flex flex-col gap-6px">
         <div className="flex items-center gap-4px">
-          <h1 className="text-20px">{nickname}</h1>
+          <h1 className="text-20px">{userNickname}</h1>
           <a
             href="/"
             className="p-1.5 transition-all duration-300 hover:rounded hover:bg-gray-100"
@@ -36,7 +47,7 @@ const Profile = () => {
             <img src={icon_pencil} alt="프로필 수정하기" />
           </a>
         </div>
-        <span className="text-12px text-gray-450">{email}</span>
+        <span className="text-12px text-gray-450">{userEmail}</span>
       </div>
     </section>
   );
@@ -113,15 +124,21 @@ const Menu = () => {
     <ul className="flex flex-col gap-8px py-26px">
       <li className="transition-all duration-300 hover:rounded hover:bg-gray-100">
         <a href="/" className="flex items-center py-1">
-          <span className="text-12px text-gray-500">
-            공지사항 & 사이트 문의
-          </span>
+          <span className="text-12px text-gray-500">공지사항</span>
         </a>
       </li>
       <li className="transition-all duration-300 hover:rounded hover:bg-gray-100">
-        <a href="/" className="flex items-center py-1">
+        <Link to="/credit" className="flex items-center py-1">
           <span className="text-12px text-gray-500">만든 사람들</span>
-        </a>
+        </Link>
+      </li>
+      <li className="transition-all duration-300 hover:rounded hover:bg-gray-100">
+        <button
+          className="flex items-center py-1 text-12px text-gray-500"
+          onClick={handleLogout}
+        >
+          로그아웃
+        </button>
       </li>
     </ul>
   );

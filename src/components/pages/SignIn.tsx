@@ -5,8 +5,8 @@ import Header from '@/components/Header/Header';
 import InputForm from '@/components/SignIn/molecule/InputForm';
 import Navigation from '@/components/Navigation/Navigation';
 import ButtonVariable from '@/components/common/molecule/ButtonVariable';
+
 /* -------------------------------------------------------------------------- */
-// 머지 테스트
 //알럿창 타입 정의
 type AlertProps =
   | 'doubleCheckEmail'
@@ -87,23 +87,18 @@ const SignIn = () => {
       if (emailData === emailValue) {
         /// 이메일 같을 경우 권한 db 전송
         try {
-          const authData = await pb
+          await pb
             .collection('users')
             .authWithPassword(emailValue, passwordValue);
-          alert(`${authData.record?.nickname}님 좋은 하루 보내세요!`);
           window.location.href = '/';
         } catch (error) {
           alert('비밀번호를 확인해주세요.');
         }
       } else {
-        alert('회원정보가 없습니다. 회원가입을 해주세요.');
+        alert('회원정보가 없습니다.');
       }
     })();
   };
-  // 로그아웃 기능
-  // const handleSignOut = () => {
-  //   pb.authStore.clear();
-  // };
   /* -------------------------------------------------------------------------- */
   /* -------------------------------------------------------------------------- */
   // 마크업
@@ -144,7 +139,7 @@ const SignIn = () => {
               <ButtonVariable
                 buttonText="회원가입"
                 variant="lineStyle"
-                onClick={handleSignIn}
+                onClick={handleSignUp}
               />
             </div>
           </form>
