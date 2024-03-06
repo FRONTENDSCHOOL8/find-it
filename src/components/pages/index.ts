@@ -5,3 +5,4 @@ export { default as SignIn } from '@/components/pages/SignIn';
 export { default as SignUp } from '@/components/pages/SignUp';
 export { default as Credit } from '@/components/pages/Credit';
 export { default as Welcome } from '@/components/pages/Welcome';
+export { default as MypageEntry } from '@/components/pages/MypageEntry';

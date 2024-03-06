@@ -13,21 +13,22 @@ import icon_right from '@/assets/icons/icon_right.svg';
 /*                                  유저 이름 렌더링                              */
 /* -------------------------------------------------------------------------- */
 
-const userData = await pb.collection('users').getOne('h1d5vbnyi4o0faj', {
-  expand: 'nickname',
-});
+// 로그인시 로컬 스토리지에 저장된 유저 닉네임 가져오기
+const loginUserData = localStorage.getItem('pocketbase_auth');
+const localData = loginUserData && JSON.parse(loginUserData);
+const userNickname = localData?.model?.nickname;
 
-const { nickname } = userData;
-
+// 타입 지정
 interface ProfileBoxProps {
   userName?: string;
 }
 
+// 프로필 영역
 const ProfileBox: React.FC<ProfileBoxProps> = ({
-  userName = nickname || '방문자',
+  userName = userNickname || '방문자',
 }) => {
   let profileName: string;
-  if (nickname.length > 5) {
+  if (userNickname?.length > 5) {
     profileName = `${userName.slice(0, 4)}...`;
   } else {
     profileName = userName;
