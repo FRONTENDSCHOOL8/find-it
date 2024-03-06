@@ -8,7 +8,7 @@ import icon_next from '@/assets/icons/icon_next.svg';
 import { useState } from 'react';
 import select from '@/assets/search/select.svg';
 
-const SearchDetail = () => {
+const SearchFindDetail = () => {
   const [findItemName, setFindItemName] = useState('');
   const [lostPersonName, setLostPersonName] = useState('');
 
@@ -93,13 +93,9 @@ const SearchDetail = () => {
         </label>
       </section>
       <section className={`${sectionStyle} mt-40px items-center`}>
-        <ButtonVariable
-          buttonType="button"
-          variant="primarySolidThin"
-          buttonText="검색"
-        />
+        <ButtonVariable variant="primarySolidThin" buttonText="검색" />
         <Shortcut
-          link="/"
+          link="/searchlost"
           text="분실물 검색으로 이동하기"
           alt="분실물 검색으로 이동하기"
         />
@@ -108,4 +104,4 @@ const SearchDetail = () => {
   );
 };
 
-export default SearchDetail;
+export default SearchFindDetail;

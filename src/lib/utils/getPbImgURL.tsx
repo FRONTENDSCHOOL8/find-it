@@ -1,8 +1,5 @@
-const getPbImgURL = (
-  item: { collectionId: string; id: string },
-  fileName: string
-): string => {
-  return `${import.meta.env.VITE_PB_API_URL}/api/files/${item.collectionId}/${item.id}/${item[fileName]}`;
+const getPbImgURL = (id: string, fileName: string) => {
+  return `${import.meta.env.VITE_PB_API_URL}/api/files/users/${id}/${fileName}`;
 };
 
 export default getPbImgURL;

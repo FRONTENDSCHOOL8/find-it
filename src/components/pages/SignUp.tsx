@@ -1,110 +1,89 @@
-import { useRef, useState } from 'react';
-import { createData } from '@/lib/utils/crud';
+import { pb } from '@/lib/utils/pb';
+import { useEffect, useRef, useState } from 'react';
+import { createData, getData } from '@/lib/utils/crud';
 import Header from '@/components/Header/Header';
-import Navigation from '@/components/Navigation/Navigation';
 import InputForm from '@/components/SignIn/molecule/InputForm';
-import GetLocalList from '@/components/SignIn/molecule/GetLocalList';
+import {
+  GetSidoList,
+  GetGunguList,
+  GetCode,
+} from '@/components/SignIn/molecule/GetLocalList';
 import ButtonVariable from '@/components/common/molecule/ButtonVariable';
 import ButtonSelectItem from '@/components/common/molecule/ButtonSelectItem';
 import SelectCategoryList from '@/components/common/molecule/SelectCategoryList';
-// 1. 이메일 onchange 정규식 맞는지 확인 (로그인동일))   + 모두 입력시 활성화   ++ 아이디 비밀번호 db와 일치하는지 확인
-// - 기본 툴팁 뜨는거 없애기
-// 2. 비밀번호 인풋값 === 정규식 맞는지 확인
-// - 위 비번 === 아래 비번 인풋 값과 맞는지 확인
-// 3. 중복 눌럿을 시 인풋===/ db -> true
-// - 중복 눌럿을 시  닉네임 인풋 ==/db -> true
-// - x 누르면 인풋 삭제
-// - 눈 누르면 비번 보이기
-//4. 모두 입력시 true 면 버튼 활성화  :::: disable -> cofirn
-// 지역 버튼 누르면 트루,
-/// git commit -m "[코드수정](jung/#66) 회원가입 기능 추가(중복확인, 지역 외 완료)"
+///머지
+/* -------------------------------------------------------------------------- */
+// 타입 정의
+type AlertProps =
+  | 'doubleCheckEmail'
+  | 'doubleCheckNickname'
+  | 'doubleCheckPassword'
+  | 'invalidValue'
+  | 'invalidEmail'
+  | 'invalidPassword'
+  | 'userDelete'
+  | '';
 
 const SignUp = () => {
   /* -------------------------------------------------------------------------- */
-  // 지역 리스트 데이터 가져오기
-  const localData = GetLocalList();
-  /* -------------------------------------------------------------------------- */
-  // 유효성 검사용 정규식 : 비번 10자이상 영문 숫자 특수문자 포함
+  // 유효성 검사용 정규식 : 비번 8자이상 20자 이하영문 숫자 특수문자 포함
   const regex = {
     emailRegex: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-    pwRegex: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{10,}$/,
+    pwRegex: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,20}$/,
   };
-
   /* -------------------------------------------------------------------------- */
-  const [isSelectingCategory, setIsSelectingCategory] = useState(false);
   const [emailValue, setEmailValue] = useState('');
+  const [valiEmailDouble, setValiEmailDouble] = useState(false);
+  const [valiEmailForm, setValiEmailForm] = useState(false);
+
   const [passwordValue, setPasswordValue] = useState('');
-  const [passwordCheckValue, setPasswordCheckValue] = useState('');
-  const [nicknameValue, setNicknameValue] = useState('');
+  const [valiPasswordForm, setValiPasswordForm] = useState(false);
+
   const [passwordType, setPasswordType] = useState('password');
+  const [passwordCheckValue, setPasswordCheckValue] = useState('');
   const [passwordCheckType, setPasswordCheckType] = useState('password');
 
-  const [alertEmail, setAlertEmail] = useState<
-    | 'doubleCheckEmail'
-    | 'doubleCheckNickname'
-    | 'doubleCheckPassword'
-    | 'invalidValue'
-    | 'invalidEmail'
-    | 'invalidPassword'
-    | 'userDelete'
-    | ''
-  >();
-  const [alertPassword, setAlertPassword] = useState<
-    | 'doubleCheckEmail'
-    | 'doubleCheckNickname'
-    | 'doubleCheckPassword'
-    | 'invalidValue'
-    | 'invalidEmail'
-    | 'invalidPassword'
-    | 'userDelete'
-    | ''
-  >();
+  const [nicknameValue, setNicknameValue] = useState('');
+  const [valiNickDouble, setValiNickDouble] = useState(false);
 
-  const [alertPasswordCheck, setAlertPasswordCheck] = useState<
-    | 'doubleCheckEmail'
-    | 'doubleCheckNickname'
-    | 'doubleCheckPassword'
-    | 'invalidValue'
-    | 'invalidEmail'
-    | 'invalidPassword'
-    | 'userDelete'
-    | ''
-  >();
-  // const [alertNickname, setAlertNickname] = useState('');
+  const [alertEmail, setAlertEmail] = useState<AlertProps>();
+  const [alertPassword, setAlertPassword] = useState<AlertProps>();
+  const [alertPasswordCheck, setAlertPasswordCheck] = useState<AlertProps>();
+  const [alertNickname, setAlertNickname] = useState<AlertProps>();
+
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const passwordCheckRef = useRef(null);
   const nicknameRef = useRef(null);
 
-  // 지역 리스트 랜더링
-  const handleCategorySelection = () => {
-    setIsSelectingCategory(true);
-  };
   /* -------------------------------------------------------------------------- */
-  // 인풋값 읽어오기
-  // 이메일 여기서 정규식 검사
+  // 이메일 입력 & 정규식 검사
   const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const newValue = e.target.value;
     setEmailValue(newValue);
+
     if (!newValue.match(regex.emailRegex)) {
       setAlertEmail('invalidEmail');
+      setValiEmailForm(false);
     } else {
       setAlertEmail('');
-      // setEmailValue(newValue);
+      setValiEmailForm(true);
     }
   };
-  // 비밀번호 정규식 검사
+  // 비밀번호 입력 & 정규식 검사
   const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setPasswordValue(newValue);
     if (!newValue.match(regex.pwRegex)) {
       setAlertPassword('invalidPassword');
+      setValiPasswordForm(false);
     } else {
       setAlertPassword('');
+      setValiPasswordForm(true);
     }
   };
-  // 비밀번호 동일 검사
+  // 비밀번호 입력 & 동일 검사
   const handlePasswordCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setPasswordCheckValue(newValue);
@@ -114,36 +93,58 @@ const SignUp = () => {
       setAlertPasswordCheck('');
     }
   };
+  // 닉네임 입력 & 중복검사 문구 지우기, 중복검사 상태 지우기
   const handleNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setNicknameValue(newValue);
+    setAlertNickname('');
+    setValiNickDouble(false);
   };
 
   /* -------------------------------------------------------------------------- */
-  // 더블 체크 함수 onClickDoubleCheck : db와 비교
-  const handleDoubleCheckEmail = () => {
-    //alertNickname doubleCheckEmail 지정
 
-    alert('중복확인');
+  // 이메일 중복 확인    ----------------------------------->> 이메일 폼 맞아야지 중복 체크 가능
+  const handleDoubleCheckEmail = async () => {
+    try {
+      const records = await getData('users', {
+        filter: `email="${emailValue}"`, //pb 에서 조건 충족 리스트 가져옴(객체 1개배열)
+      });
+      const realdata = records && records[0];
+      const emailData = realdata && realdata.email; //db 이메일 불러와지면 중복띄우기
+      if (emailData === emailValue) {
+        setAlertEmail('doubleCheckEmail');
+        setValiEmailDouble(false);
+      } else {
+        setAlertEmail('');
+        alert('사용 가능한 이메일 입니다.'); /// ----------------------------------->> 모달 창으로 바꾸기
+        setValiEmailDouble(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
-  const handleDoubleCheckNickname = () => {
-    //alertNickname doubleCheckNickname 지정
-    alert('중복확인');
+
+  // 닉네임 중복확인   ----------------------------------->> 닉네임 빈문자 아닐때 작동
+  const handleDoubleCheckNickname = async () => {
+    try {
+      const records = await getData('users', {
+        filter: `nickname="${nicknameValue}"`, //pb 에서 조건 충족 리스트 가져옴(객체 1개배열)
+      });
+      const realdata = records && records[0];
+      const nicknameData = realdata && realdata.nickname; //db 닉네임 데이터 불러와지면 중복띄우기
+      if (nicknameData === nicknameValue) {
+        setAlertNickname('doubleCheckNickname');
+        setValiNickDouble(false);
+      } else {
+        setAlertNickname('');
+        alert('사용 가능한 닉네임 입니다.'); /// ----------------------------------->> 모달 창으로 바꾸기
+        setValiNickDouble(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
-  // 인풋값 삭제 함수 onClickDelete : 빈문자로 셋업
-  const handleDeleteEmail = () => {
-    setEmailValue('');
-  };
-  const handleDeletePassword = () => {
-    setPasswordValue('');
-  };
-  const handleDeletePasswordCheck = () => {
-    setPasswordCheckValue('');
-  };
-  const handleDeleteNickname = () => {
-    setNicknameValue('');
-  };
-  // 비번 보이기 함수 onClickEye : 타입을 텍스트로 바꿈
+  // 비번 보이기 눈 버튼 : 인풋 타입을 텍스트로 바꿈
   const handleEyePassword = () => {
     setPasswordType((passwordType === 'password' && 'text') || 'password');
   };
@@ -152,6 +153,59 @@ const SignUp = () => {
       (passwordCheckType === 'password' && 'text') || 'password'
     );
   };
+  /* -------------------------------------------------------------------------- */
+  // 딜리트 버튼 실행 : 값초기화와 빈문자로 바꾸기
+  const handleDeleteEmail = () => {
+    setEmailValue('');
+    setAlertEmail('');
+    setValiEmailDouble(false);
+  };
+  const handleDeletePassword = () => {
+    setPasswordValue('');
+    setAlertPassword('');
+  };
+  const handleDeletePasswordCheck = () => {
+    setPasswordCheckValue('');
+    setAlertPasswordCheck('');
+  };
+  const handleDeleteNickname = () => {
+    setNicknameValue('');
+    setAlertNickname('');
+    setValiNickDouble(false);
+  };
+
+  /* -------------------------------------------------------------------------- */
+  // 지역 선택 버튼
+
+  // 대분류 버튼 클릭시 대분류 리스트 랜더링 & 소분류 비활성화 & 소분류 초기화
+  const [renderFirstList, setRenderFirstList] = useState(false);
+  const [disabledSecond, setDisabledSecond] = useState(true);
+  const handleFirstItem = () => {
+    setRenderFirstList(true);
+    setSelectSecondItem('');
+    setDisabledSecond(true);
+  };
+  // 소분류 버튼 클릭시 소분류 리스트 랜더링
+  const [renderSecondList, setRenderSecondList] = useState(false);
+  const handleSecondItem = () => {
+    setRenderSecondList(true);
+  };
+
+  // 렌더된 리스트 (SelectCategoryList 컴포넌트) 에서 찍은거 가져오기
+  // 첫번째 아이템 리스트
+  const [selectFirstItem, setSelectFirstItem] = useState('');
+  const handleSelectFirstItem = (item: string) => {
+    setSelectFirstItem(item);
+  };
+  // 두번째 아이템 리스트
+  const [selectSecondItem, setSelectSecondItem] = useState('');
+  const handleSelectSecondItem = (item: string) => {
+    setSelectSecondItem(item);
+  };
+  // 뿌릴 데이터 종류 전달
+  const LOCAL_CODE = GetCode(selectFirstItem);
+  const firstItemList = GetSidoList(); // 문자열로 된 배열 반환
+  const secondItemList = GetGunguList(`${LOCAL_CODE}`);
 
   /* -------------------------------------------------------------------------- */
   // 신규 유저 데이터
@@ -161,36 +215,65 @@ const SignUp = () => {
     password: passwordValue,
     passwordConfirm: passwordCheckValue,
     nickname: nicknameValue,
-    state: 'test',
-    city: 'test',
+    state: selectFirstItem,
+    city: selectSecondItem,
   };
+  /* -------------------------------------------------------------------------- */
+  // 최종 버튼 활성화 조건 버튼 변경 & 데이터 보내기
+  const [variant, setVariant] = useState<'submit' | 'disabled'>('disabled');
+  useEffect(() => {
+    if (
+      emailValue !== '' &&
+      valiEmailDouble === true &&
+      valiPasswordForm === true &&
+      passwordValue === passwordCheckValue &&
+      nicknameValue !== '' &&
+      valiNickDouble === true &&
+      selectFirstItem !== '' &&
+      selectSecondItem !== ''
+    ) {
+      setVariant('submit');
+    } else {
+      setVariant('disabled');
+    }
+  }, [
+    emailValue,
+    valiEmailDouble,
+    valiPasswordForm,
+    passwordValue,
+    passwordCheckValue,
+    nicknameValue,
+    valiNickDouble,
+    selectFirstItem,
+    selectSecondItem,
+  ]);
 
-  // 최종 버튼 활성화 & 데이터 보내기 : 버튼 베리언트를 변경
-  const [variant, setVariant] = useState<'submit' | 'disabled'>('submit');
-  if (
-    // 인풋값이 모두 참일때
-    emailValue &&
-    passwordValue &&
-    passwordCheckValue &&
-    nicknameValue
-  ) {
-    setVariant('submit');
-  }
-  // 유저 데이터 보내기
+  // 유저 데이터 pb에 쓰기
   const createUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (variant === 'submit') {
-      const userData = await createData('users', newUserData);
-      return userData;
+      try {
+        const userData = await createData('users', newUserData);
+        // 로그인 정보 지우고 넣는 함수
+        await pb
+          .collection('users')
+          .authWithPassword(emailValue, passwordValue);
+        //페이지 이동하는 함수
+        window.location.href = '/welcome';
+        return userData;
+      } catch (error) {
+        console.error('회원가입 유저 데이터 보내기 에러났슈:', error);
+      }
     }
   };
 
+  /* -------------------------------------------------------------------------- */
   /* -------------------------------------------------------------------------- */
   // jsx 반환
   return (
     <>
       <div className="flex flex-col items-center ">
-        <Header isShowPrev={true} children="회원가입" />
+        <Header isShowPrev={true} children="회원가입" empty={true} />
         <div className="flex flex-col items-center">
           <form className="w-375px px-20px pt-30px" onSubmit={createUser}>
             <InputForm
@@ -205,6 +288,7 @@ const SignUp = () => {
               onClickDoubleCheck={handleDoubleCheckEmail}
               onClickDelete={handleDeleteEmail}
               alertCase={alertEmail}
+              disabledDoubleCheck={!valiEmailForm}
             />
             <InputForm
               ref={passwordRef}
@@ -214,6 +298,7 @@ const SignUp = () => {
               placeholder="비밀번호를 입력해주세요."
               value={passwordValue}
               onChange={handlePassword}
+              iconDoubleCheck={false}
               iconDelete={!!passwordValue}
               iconEyeToggle={true}
               onClickDelete={handleDeletePassword}
@@ -228,6 +313,7 @@ const SignUp = () => {
               placeholder="비밀번호를 다시 한번 입력해주세요."
               value={passwordCheckValue}
               onChange={handlePasswordCheck}
+              iconDoubleCheck={false}
               iconDelete={!!passwordCheckValue}
               iconEyeToggle={true}
               onClickDelete={handleDeletePasswordCheck}
@@ -246,7 +332,8 @@ const SignUp = () => {
               iconDelete={!!nicknameValue}
               onClickDoubleCheck={handleDoubleCheckNickname}
               onClickDelete={handleDeleteNickname}
-              // alertCase="doubleCheckNickname"
+              alertCase={alertNickname}
+              disabledDoubleCheck={!nicknameValue}
             />
             <div className="mt-10px flex h-48px w-full items-center justify-between ">
               <input
@@ -258,26 +345,34 @@ const SignUp = () => {
                 placeholder="거주지역을 선택해주세요"
               />
               <ButtonSelectItem
-                firstName="시/도"
-                secondName="군/구"
-                onClickFirst={handleCategorySelection}
-                onClickSecond={handleCategorySelection}
+                firstName={selectFirstItem || '시/도'}
+                secondName={selectSecondItem || '군/구'}
+                onClickFirst={handleFirstItem} // 컴포넌트 렌더 실행
+                onClickSecond={handleSecondItem}
+                disabledSecond={disabledSecond}
               />
             </div>
-            <div className="box-border flex flex-col items-center gap-[1rem]	pt-60px">
+            <div className="box-border flex flex-col items-center gap-[1rem]	pt-80px">
               <ButtonVariable buttonText="완료" variant={variant} />
             </div>
           </form>
-          {isSelectingCategory && (
-            <SelectCategoryList
-              title={'거주지를 선택하세요.'}
-              dataList={localData}
-            />
-          )}
         </div>
-        <div className="absolute bottom-0 ">
-          <Navigation />
-        </div>
+        {renderFirstList && (
+          <SelectCategoryList
+            title={'거주하시는 시/도를 선택하세요.'}
+            dataList={firstItemList}
+            getSelectItem={handleSelectFirstItem} // 선택 아이템 가져옴
+            onClose={() => setRenderFirstList(false)} // 바깥 영역 누르면 사라짐
+          />
+        )}
+        {renderSecondList && (
+          <SelectCategoryList
+            title={'거주하시는 군/구를 선택하세요.'}
+            dataList={secondItemList}
+            getSelectItem={handleSelectSecondItem}
+            onClose={() => setRenderSecondList(false)}
+          />
+        )}
       </div>
     </>
   );

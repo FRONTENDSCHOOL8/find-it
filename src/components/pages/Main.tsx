@@ -1,4 +1,6 @@
 import { pb } from '@/lib/utils/pb';
+import { Link } from 'react-router-dom';
+
 import GetTimeDiff from '@/components/common/atom/GetTimeDiff';
 
 import Header from '../Header/Header';
@@ -13,21 +15,22 @@ import icon_right from '@/assets/icons/icon_right.svg';
 /*                                  유저 이름 렌더링                              */
 /* -------------------------------------------------------------------------- */
 
-const userData = await pb.collection('users').getOne('h1d5vbnyi4o0faj', {
-  expand: 'nickname',
-});
+// 로그인시 로컬 스토리지에 저장된 유저 닉네임 가져오기
+const loginUserData = localStorage.getItem('pocketbase_auth');
+const localData = loginUserData && JSON.parse(loginUserData);
+const userNickname = localData?.model?.nickname;
 
-const { nickname } = userData;
-
+// 타입 지정
 interface ProfileBoxProps {
   userName?: string;
 }
 
+// 프로필 영역
 const ProfileBox: React.FC<ProfileBoxProps> = ({
-  userName = nickname || '방문자',
+  userName = userNickname || '방문자',
 }) => {
   let profileName: string;
-  if (nickname.length > 5) {
+  if (userNickname?.length > 5) {
     profileName = `${userName.slice(0, 4)}...`;
   } else {
     profileName = userName;
@@ -35,12 +38,12 @@ const ProfileBox: React.FC<ProfileBoxProps> = ({
 
   return (
     <div className="h-140px w-180px rounded-20px bg-skyblue-300 transition-all duration-300 hover:shadow-lg">
-      <a href="/" className="block h-full p-5">
+      <Link to="/mypageentry" className="block h-full p-5">
         <span className="text-17px">
           <b className="text-24px font-normal">{profileName}</b> 님 <br />
           안녕하세요!
         </span>
-      </a>
+      </Link>
     </div>
   );
 };

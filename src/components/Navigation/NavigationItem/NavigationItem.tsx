@@ -10,6 +10,7 @@ import icon_lost_true from '@/assets/navigation/icon_lost_true.svg';
 import icon_lost_false from '@/assets/navigation/icon_lost_false.svg';
 import icon_profile_true from '@/assets/navigation/icon_profile_true.svg';
 import icon_profile_false from '@/assets/navigation/icon_profile_false.svg';
+import { Link } from 'react-router-dom';
 
 interface NavigationItemProps {
   isHomeActive?: boolean;
@@ -93,18 +94,11 @@ const NavigationItem: React.FC<NavigationItemProps> = ({
 
   return (
     <div className="flex h-44px w-48px flex-col content-between items-center justify-center gap-7px">
-      <a
-        href="./"
-        onClick={(e) => {
-          e.preventDefault();
-        }}
-      >
-        {iconHome}
-        {iconBox}
-        {iconLost}
-        {iconBoard}
-        {iconProfile}
-      </a>
+      <Link to="/">{iconHome}</Link>
+      {iconBox}
+      {iconLost}
+      {iconBoard}
+      <Link to="/mypageentry">{iconProfile}</Link>
       {homeLogo}
       {paragraph}
     </div>

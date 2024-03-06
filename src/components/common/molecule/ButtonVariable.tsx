@@ -1,13 +1,13 @@
 interface ButtonVariableProps {
-  buttonText?: string;
-  variant?:
+  buttonText: string;
+  variant:
     | 'submit'
     | 'disabled'
     | 'lineStyle'
     | 'blackSolidThin'
     | 'blackLineThin'
     | 'primarySolidThin';
-  onClick?: () => void;
+  onClick?: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 const ButtonVariable: React.FC<ButtonVariableProps> = ({
   buttonText = '확인',
@@ -23,7 +23,7 @@ const ButtonVariable: React.FC<ButtonVariableProps> = ({
       background = '#4785ff';
       color = 'white';
       borderColor = '#4785ff';
-      width = '100%';
+      width = '334px';
       height = '66px';
       break;
     case 'disabled':
@@ -31,7 +31,7 @@ const ButtonVariable: React.FC<ButtonVariableProps> = ({
       background = '#666666';
       color = '#BCBCBC';
       borderColor = '#666666';
-      width = '100%';
+      width = '334px';
       height = '66px';
 
       break;
@@ -40,7 +40,7 @@ const ButtonVariable: React.FC<ButtonVariableProps> = ({
       background = 'white';
       color = '#4785ff';
       borderColor = '#4785ff';
-      width = '100%';
+      width = '334px';
       height = '66px';
       break;
     case 'blackSolidThin':
@@ -74,7 +74,7 @@ const ButtonVariable: React.FC<ButtonVariableProps> = ({
   return (
     <button
       type={buttonType}
-      onClick={onClick}
+      onClick={onClick as unknown as React.MouseEventHandler<HTMLButtonElement>}
       style={{
         width,
         height,
