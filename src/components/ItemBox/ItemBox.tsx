@@ -52,7 +52,12 @@ const ItemBox: React.FC<itemTypeProps> = ({ itemType, item }) => {
 
             <div className="p-10px">
               <img
-                src={itemData.item_image}
+                src={
+                  itemData.item_image ===
+                  'https://www.lost112.go.kr/lostnfs/images/sub/img02_no_img.gif'
+                    ? default_item
+                    : itemData.item_image
+                }
                 alt="물품 사진"
                 className="size-120px rounded-14px"
               />
