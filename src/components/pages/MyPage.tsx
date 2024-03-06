@@ -123,9 +123,9 @@ const Menu = () => {
   return (
     <ul className="flex flex-col gap-8px py-26px">
       <li className="transition-all duration-300 hover:rounded hover:bg-gray-100">
-        <a href="/" className="flex items-center py-1">
+        <Link to="/notice" className="flex items-center py-1">
           <span className="text-12px text-gray-500">공지사항</span>
-        </a>
+        </Link>
       </li>
       <li className="transition-all duration-300 hover:rounded hover:bg-gray-100">
         <Link to="/credit" className="flex items-center py-1">
