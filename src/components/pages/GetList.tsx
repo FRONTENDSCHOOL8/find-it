@@ -2,57 +2,65 @@ import Header from '../Header/Header';
 import ItemBox from '../ItemBox/ItemBox';
 import Navigation from '../Navigation/Navigation';
 import { getAllData } from '@/lib/utils/getAPIData';
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import loading from '@/assets/loading.svg';
 
 const GetList = () => {
   const [items, setItems] = useState([]);
   const [page, setPage] = useState(1);
+  const [fetching, setFetching] = useState(false);
+  const scrollContainerRef = useRef(null);
+
+  const fetchData = async (pageNo) => {
+    const data = await getAllData({
+      pageNo: pageNo,
+      numOfRows: 6,
+    });
+    setItems((prevItems) => [...prevItems, ...data.body.items.item]);
+  };
+
+  const fetchMoreItems = async () => {
+    setFetching(true);
+    setPage((prevPage) => {
+      const nextPage = prevPage + 1;
+      fetchData(nextPage).then(() => setFetching(false));
+      return nextPage;
+    });
+  };
+
+  const handleScroll = (event) => {
+    const { scrollTop, scrollHeight, clientHeight } = event.target;
+    if (scrollTop + clientHeight >= scrollHeight && !fetching) {
+      fetchMoreItems();
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await getAllData({
-        pageNo: page,
-        numOfRows: 6,
-      });
-      setItems((prevItems) => [...prevItems, ...data.body.items.item]);
-    };
-
-    fetchData();
-  }, [page]);
-
-  const observer = useRef();
-  const lastItemElementRef = useCallback(
-    (node) => {
-      if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver(async (entries) => {
-        if (entries[0].isIntersecting) {
-          const data = await getAllData({
-            pageNo: page + 1,
-            numOfRows: 6,
-          });
-          setPage((prevPage) => prevPage + 1);
-        }
-      });
-
-      if (node) observer.current.observe(node);
-    },
-    [page] // 수정된 부분: page를 의존성 배열에 추가
-  );
+    fetchData(page);
+    const scrollContainer = scrollContainerRef.current;
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', handleScroll);
+      return () => {
+        scrollContainer.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, []);
 
   return (
     <div className="min-h-667px w-375px bg-gray-200">
       <Header isShowSymbol={true} children="습득물 찾기" isShowSearch={true} />
-      <div className="h-[calc(100vh-73px-80px)] overflow-auto">
+      <div
+        ref={scrollContainerRef}
+        className="h-[calc(100vh-73px-80px)] overflow-auto"
+      >
         <ul className="mt-18px flex flex-col items-center">
           {items.map((item, index) => (
-            <li
-              key={index}
-              ref={index === items.length - 1 ? lastItemElementRef : null}
-            >
+            <li key={index}>
               <ItemBox item={item} itemType="get" />
             </li>
           ))}
         </ul>
+        {fetching && <img src={loading} alt="로딩 중" className="mx-auto" />}
       </div>
       <Navigation />
     </div>
