@@ -10,7 +10,7 @@ import {
 import ButtonVariable from '@/components/common/molecule/ButtonVariable';
 import ButtonSelectItem from '@/components/common/molecule/ButtonSelectItem';
 import SelectCategoryList from '@/components/common/molecule/SelectCategoryList';
-
+///머지
 /* -------------------------------------------------------------------------- */
 // 타입 정의
 type AlertProps =
