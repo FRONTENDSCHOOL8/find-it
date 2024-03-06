@@ -6,6 +6,7 @@ import {
   SignIn,
   SignUp,
   Credit,
+  Notice,
   Welcome,
   MypageEntry,
 } from '@/components/pages/index';
@@ -30,6 +31,7 @@ const App = () => {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/welcome" element={<Welcome />} />
+          <Route path="/notice" element={<Notice />} />
           <Route path="/credit" element={<Credit />} />
         </Routes>
       </BrowserRouter>
