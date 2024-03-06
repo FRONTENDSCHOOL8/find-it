@@ -1,3 +1,4 @@
+import { pb } from '@/lib/utils/pb';
 import { useEffect, useRef, useState } from 'react';
 import { createData, getData } from '@/lib/utils/crud';
 import Header from '@/components/Header/Header';
@@ -253,6 +254,10 @@ const SignUp = () => {
     if (variant === 'submit') {
       try {
         const userData = await createData('users', newUserData);
+        // 로그인 정보 지우고 넣는 함수
+        await pb
+          .collection('users')
+          .authWithPassword(emailValue, passwordValue);
         //페이지 이동하는 함수
         window.location.href = '/welcome';
         return userData;

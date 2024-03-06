@@ -87,10 +87,9 @@ const SignIn = () => {
       if (emailData === emailValue) {
         /// 이메일 같을 경우 권한 db 전송
         try {
-          const authData = await pb
+          await pb
             .collection('users')
             .authWithPassword(emailValue, passwordValue);
-          alert(`${authData.record?.nickname}님 좋은 하루 보내세요!`);
           window.location.href = '/';
         } catch (error) {
           alert('비밀번호를 확인해주세요.');
@@ -100,11 +99,6 @@ const SignIn = () => {
       }
     })();
   };
-  // 로그아웃 기능
-  // const handleSignOut = () => {
-  //   pb.authStore.clear();
-  // };
-
   /* -------------------------------------------------------------------------- */
   /* -------------------------------------------------------------------------- */
   // 마크업

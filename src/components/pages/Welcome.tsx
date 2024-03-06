@@ -2,7 +2,7 @@ import ButtonVariable from '@/components/common/molecule/ButtonVariable';
 import welcomeImg from '@/assets/img_welcome.png';
 const Welcome = () => {
   const handleButton = () => {
-    alert('버튼 클릭');
+    window.location.href = '/';
   };
   return (
     <div className="mt-120px flex flex-col items-center ">

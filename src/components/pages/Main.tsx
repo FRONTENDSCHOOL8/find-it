@@ -1,4 +1,6 @@
 import { pb } from '@/lib/utils/pb';
+import { Link } from 'react-router-dom';
+
 import GetTimeDiff from '@/components/common/atom/GetTimeDiff';
 
 import Header from '../Header/Header';
@@ -36,12 +38,12 @@ const ProfileBox: React.FC<ProfileBoxProps> = ({
 
   return (
     <div className="h-140px w-180px rounded-20px bg-skyblue-300 transition-all duration-300 hover:shadow-lg">
-      <a href="/" className="block h-full p-5">
+      <Link to="/mypageentry" className="block h-full p-5">
         <span className="text-17px">
           <b className="text-24px font-normal">{profileName}</b> 님 <br />
           안녕하세요!
         </span>
-      </a>
+      </Link>
     </div>
   );
 };
