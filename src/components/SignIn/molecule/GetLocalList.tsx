@@ -1,82 +1,103 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import useGetToken from '@/lib/utils/useGetToken';
 
+/* -------------------------------------------------------------------------- */
+// 타입 정의
 interface AddressData {
   result: { addr_name: string; cd: number }[];
 }
-const CONSUMERKEY = '7d560967125d42e48900';
-const CONSUMERSECRET = '84ea54c3e889409a9841';
-const VITE_AUTH_API_URL =
-  'https://sgisapi.kostat.go.kr/OpenAPI3/auth/authentication.json';
-const VITE_LOCAL_API_URL =
-  'https://sgisapi.kostat.go.kr/OpenAPI3/addr/stage.json';
-const LOCAL_CODE = 11;
-const MAX_AUTH_ATTEMPTS = 200;
-const TOKEN_REFRESH_INTERVAL = 3.6e6; //3시간마다 재발급
-
-const useAccessToken = () => {
-  const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [attemptCount, setAttemptCount] = useState<number>(0);
-
-  const getAccessToken = async () => {
-    if (attemptCount >= MAX_AUTH_ATTEMPTS) {
-      throw new Error('API 인증 시도 횟수를 초과했습니다.');
-    }
-    const URL = `${VITE_AUTH_API_URL}?consumer_key=${CONSUMERKEY}&consumer_secret=${CONSUMERSECRET}`;
-    try {
-      const response = await fetch(URL);
-      if (!response.ok) {
-        throw new Error('API 인증에 실패했습니다.');
-      }
-      const jsonData = await response.json();
-      setAccessToken(jsonData.result.accessToken);
-      setAttemptCount((prevCount) => prevCount + 1);
-    } catch (error) {
-      console.error('에러남: ' + error);
-    }
-  };
-
-  useEffect(() => {
-    getAccessToken();
-    const interval = setInterval(getAccessToken, TOKEN_REFRESH_INTERVAL);
-    return () => clearInterval(interval);
-  }, []);
-  return accessToken;
-};
-
-const useLocalList = (accessToken) => {
+/* -------------------------------------------------------------------------- */
+// 시도 리스트
+export const GetSidoList = () => {
+  const accessToken = useGetToken();
   const [localList, setLocalList] = useState<string[]>([]);
+  const SIDOURL = `${import.meta.env.VITE_LOCAL_API_URL}?accessToken=${accessToken}`; // 시도코드
 
   useEffect(() => {
-    const fetchLocalList = async () => {
+    const getLocalList = async () => {
       if (!accessToken) return;
 
       try {
-        const SIDOURL = `${VITE_LOCAL_API_URL}?accessToken=${accessToken}`;
-        // const GUNGUURL = `${VITE_LOCAL_API_URL}?accessToken=${accessToken}&cd=${LOCAL_CODE}`;
         const response = await fetch(SIDOURL);
 
         if (!response.ok) {
-          throw new Error('목록을 불러오는데 실패했습니다.');
+          throw new Error('시/도 목록을 불러오는데 실패했습니다.');
         }
         const jsonData: AddressData = await response.json();
-        const items = jsonData.result;
-        const nameList = items.map((item) => item.addr_name);
-        // const codeList = items.map((item) => Number(item.cd));
+        const items = jsonData.result; // 최종 데이터
+
+        const nameList = items.map((item) => item.addr_name); // 가져온 데이터에서 이름 뿌리기
         setLocalList(nameList);
       } catch (error) {
         console.error('에러남: ' + error);
       }
     };
-    fetchLocalList();
-  }, [accessToken]);
+    getLocalList();
+  }, [accessToken, SIDOURL]);
   return localList;
 };
 
-const GetLocalList = () => {
-  const accessToken = useAccessToken();
-  const localList = useLocalList(accessToken);
-  // console.log(accessToken);
-  return localList;
+/* -------------------------------------------------------------------------- */
+// 시도 코드 가져오기
+
+export const GetCode = (addrName: string) => {
+  const accessToken = useGetToken();
+  const [localCode, setLocalCode] = useState<string | null>();
+
+  useEffect(() => {
+    const getLocalList = async () => {
+      if (!accessToken) return;
+
+      try {
+        const SIDOURL = `${import.meta.env.VITE_LOCAL_API_URL}?accessToken=${accessToken}`;
+        const response = await fetch(SIDOURL);
+
+        if (!response.ok) {
+          throw new Error('시/도 목록을 불러오는데 실패했습니다.');
+        }
+        const jsonData: AddressData = await response.json();
+        const data = jsonData.result; // 최종 데이터
+        const code = data?.find((item) =>
+          item.addr_name.includes(addrName)
+        )?.cd;
+        setLocalCode(code?.toString());
+      } catch (error) {
+        console.error('에러남: ' + error);
+      }
+    };
+    getLocalList();
+  }, [accessToken, addrName]);
+  return localCode;
 };
 
-export default GetLocalList;
+/* -------------------------------------------------------------------------- */
+//군구 리스트
+
+export const GetGunguList = (props: string) => {
+  const [localList, setLocalList] = useState<string[]>([]);
+  const accessToken = useGetToken();
+  const GUNGUURL = `${import.meta.env.VITE_LOCAL_API_URL}?accessToken=${accessToken}&cd=${props}`; // 군구코드
+
+  useEffect(() => {
+    const getLocalList = async () => {
+      if (!accessToken) return;
+
+      try {
+        const response = await fetch(GUNGUURL);
+
+        if (!response.ok) {
+          throw new Error('군/구 목록을 불러오는데 실패했습니다.');
+        }
+        const jsonData: AddressData = await response.json();
+        const items = jsonData.result; // 최종데이터
+
+        const nameList = items.map((item) => item.addr_name); // 가져온 데이터에서 이름 뿌리기
+        setLocalList(nameList);
+      } catch (error) {
+        console.error('에러남: ' + error);
+      }
+    };
+    getLocalList();
+  }, [accessToken, GUNGUURL]);
+  return localList;
+};
