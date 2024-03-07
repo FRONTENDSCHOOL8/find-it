@@ -9,6 +9,8 @@ import {
   Notice,
   Welcome,
   MypageEntry,
+  MypageEdit,
+  MypageDelete,
   GetList,
 } from '@/components/pages/index';
 import Detail from '@/components/Detail/Detail';
@@ -29,6 +31,8 @@ const App = () => {
           <Route path="/searchresult" element={<SearchResult />} />
           <Route path="/mypageentry" element={<MypageEntry />} />
           <Route path="/mypage" element={<MyPage />} />
+          <Route path="/mypageedit" element={<MypageEdit />} />
+          <Route path="/mypagedelete" element={<MypageDelete />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/welcome" element={<Welcome />} />

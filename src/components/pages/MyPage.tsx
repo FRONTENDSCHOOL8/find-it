@@ -40,12 +40,12 @@ const Profile = () => {
       <div className="flex flex-col gap-6px">
         <div className="flex items-center gap-4px">
           <h1 className="text-20px">{userNickname}</h1>
-          <a
-            href="/"
+          <Link
+            to="/mypageedit"
             className="p-1.5 transition-all duration-300 hover:rounded hover:bg-gray-100"
           >
             <img src={icon_pencil} alt="프로필 수정하기" />
-          </a>
+          </Link>
         </div>
         <span className="text-12px text-gray-450">{userEmail}</span>
       </div>
