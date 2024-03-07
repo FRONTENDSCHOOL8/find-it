@@ -3,7 +3,14 @@ import { useEffect, useState } from 'react';
 
 type itemTypeProps = {
   itemType: 'get' | 'lost' | 'main';
-  item: any;
+  item: Item;
+};
+
+type Item = {
+  fdPrdtNm: { '#text': string };
+  fdYmd: { '#text': string };
+  depPlace: { '#text': string };
+  fdFilePathImg: { '#text': string };
 };
 
 interface GetItemType {
@@ -16,13 +23,21 @@ interface GetItemType {
 const ItemBox: React.FC<itemTypeProps> = ({ itemType, item }) => {
   const [itemData, setItemData] = useState<GetItemType | null>(null);
   useEffect(() => {
-    const newItem: GetItemType = {
-      item_name: item.fdPrdtNm['#text'],
-      date: item.fdYmd['#text'],
-      storage: item.depPlace['#text'],
-      item_image: item.fdFilePathImg['#text'],
-    };
-    setItemData(newItem);
+    if (
+      item &&
+      item.fdPrdtNm &&
+      item.fdYmd &&
+      item.depPlace &&
+      item.fdFilePathImg
+    ) {
+      const newItem: GetItemType = {
+        item_name: item.fdPrdtNm['#text'],
+        date: item.fdYmd['#text'],
+        storage: item.depPlace['#text'],
+        item_image: item.fdFilePathImg['#text'],
+      };
+      setItemData(newItem);
+    }
   }, [item]);
 
   return (
