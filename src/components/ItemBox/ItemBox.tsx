@@ -3,15 +3,12 @@ import { useEffect, useState } from 'react';
 
 type itemTypeProps = {
   itemType: 'get' | 'lost' | 'main';
-
-  item: Item;
-};
-
-type Item = {
-  fdPrdtNm: string;
-  fdYmd: string;
-  depPlace: string;
-  fdFilePathImg: string;
+  item?: {
+    fdPrdtNm: string;
+    fdYmd: string;
+    depPlace: string;
+    fdFilePathImg: string;
+  };
 };
 
 interface GetItemType {
