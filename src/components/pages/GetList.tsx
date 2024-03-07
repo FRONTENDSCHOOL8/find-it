@@ -2,8 +2,9 @@ import Header from '../Header/Header';
 import ItemBox from '../ItemBox/ItemBox';
 import Navigation from '../Navigation/Navigation';
 import { getAllData } from '@/lib/utils/getAPIData';
-import { useEffect, useState, useRef, UIEvent } from 'react';
+import { useEffect, useState, useRef, UIEvent, useCallback } from 'react';
 import loading from '@/assets/loading.svg';
+import { JsonArray } from '@/types/types';
 
 const GetList = () => {
   const [items, setItems] = useState([]);
@@ -17,29 +18,33 @@ const GetList = () => {
       numOfRows: 6,
     });
 
-    const dataArray = Array.isArray(data)
-      ? data
-      : setItems((prevItems) => [...prevItems, ...dataArray]);
-  };
+    console.log(data);
 
-  const fetchMoreItems = async () => {
-    setFetching(true);
-    setPage((prevPage) => {
-      const nextPage = prevPage + 1;
-      fetchData(nextPage).then(() => setFetching(false));
-      return nextPage;
+    setItems((prev) => {
+      return [...prev, ...(data as JsonArray)];
     });
+
+    setFetching(false);
   };
 
-  const handleScroll = (event: UIEvent<HTMLDivElement>) => {
-    const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
-    if (scrollTop + clientHeight >= scrollHeight && !fetching) {
-      fetchMoreItems();
+  const fetchMoreItems = useCallback(async () => {
+    if (!fetching) {
+      setFetching(true);
+      setPage((prevPage) => prevPage + 1);
     }
-  };
+  }, [fetching]);
+
+  const handleScroll = useCallback(
+    (event: UIEvent<HTMLDivElement>) => {
+      const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
+      if (scrollTop + clientHeight >= scrollHeight && !fetching) {
+        fetchMoreItems();
+      }
+    },
+    [fetching, fetchMoreItems]
+  );
 
   useEffect(() => {
-    fetchData(page);
     const scrollContainer = scrollContainerRef.current;
     if (scrollContainer) {
       scrollContainer.addEventListener('scroll', handleScroll);
@@ -47,6 +52,10 @@ const GetList = () => {
         scrollContainer.removeEventListener('scroll', handleScroll);
       };
     }
+  }, [handleScroll]);
+
+  useEffect(() => {
+    fetchData(page);
   }, [page]);
 
   return (
