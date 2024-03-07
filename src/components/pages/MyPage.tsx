@@ -149,7 +149,7 @@ const MyPage = () => {
     const script = document.createElement('script');
     script.async = true;
     script.src = 'https://embed.tawk.to/65e52f1d9131ed19d9746a7d/1ho3k035v';
-    script.charset = 'UTF-8';
+    // script.charset = 'UTF-8';
     script.setAttribute('crossorigin', '*');
 
     document.body.appendChild(script);
