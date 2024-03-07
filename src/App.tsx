@@ -13,6 +13,7 @@ import {
 import Detail from '@/components/Detail/Detail';
 import SearchFindDetail from '@/components/SearchDetail/pages/SearchFindDetail';
 import SearchLostDetail from '@/components/SearchDetail/pages/SearchLostDetail';
+import SearchResult from '@/components/SearchResult/SearchResult';
 
 const App = () => {
   return (
@@ -21,11 +22,10 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/splash" element={<Splash />} />
-
           <Route path="/detail" element={<Detail />} />
           <Route path="/searchfind" element={<SearchFindDetail />} />
           <Route path="/searchlost" element={<SearchLostDetail />} />
-
+          <Route path="/searchresult" element={<SearchResult />} />
           <Route path="/mypageentry" element={<MypageEntry />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/signin" element={<SignIn />} />
