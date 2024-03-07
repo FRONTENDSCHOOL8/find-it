@@ -54,7 +54,7 @@ const Profile = () => {
 };
 
 const List01 = () => {
-  const [inboxAlert, setInBoxAlert] = useState(false);
+  const [inboxAlert] = useState(false);
 
   return (
     <section className="pb-26px">
@@ -90,7 +90,7 @@ const List01 = () => {
 };
 
 const List02 = () => {
-  const [keywordAlert, setKeywordAlert] = useState(false);
+  const [keywordAlert] = useState(false);
 
   return (
     <section className="py-26px">

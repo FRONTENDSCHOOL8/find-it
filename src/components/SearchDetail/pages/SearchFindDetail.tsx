@@ -9,11 +9,11 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { xmlToJson } from '@/lib/utils/xmlToJson';
 // import { raiseValue } from '@/lib/utils/raiseValue';
-import { JsonObject } from '@/types/types';
+// import { JsonObject } from '@/types/types';
 
-function isJsonObject(value: unknown): value is JsonObject {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
+// function isJsonObject(value: unknown): value is JsonObject {
+//   return typeof value === 'object' && value !== null && !Array.isArray(value);
+// }
 interface SearchData {
   body?: {
     items?: {
