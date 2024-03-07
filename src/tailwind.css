@@ -1,12 +1,12 @@
 @font-face {
   font-family: 'OAGothic';
-  src: url('@/fonts/OAGothic-medium.woff') format('woff');
+  src: url('./fonts/OAGothic-Medium.woff') format('woff');
   font-weight: 500;
 }
 
 @font-face {
   font-family: 'OAGothic';
-  src: url('@/fonts/OAGothic-ExtraBold.woff') format('woff');
+  src: url('./fonts/OAGothic-ExtraBold.woff') format('woff');
   font-weight: 800;
 }
 
@@ -21,7 +21,7 @@
 
   .date-input::-webkit-calendar-picker-indicator {
     @apply block h-20px w-20px bg-cover bg-center bg-no-repeat;
-    background-image: url('@/assets/icons/icon_calendar.svg');
+    background-image: url('./assets/icons/icon_calendar.svg');
     color: rgba(0, 0, 0, 0);
     opacity: 1;
   }
