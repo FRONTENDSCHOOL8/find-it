@@ -7,10 +7,10 @@ type itemTypeProps = {
 };
 
 type Item = {
-  fdPrdtNm: { '#text': string };
-  fdYmd: { '#text': string };
-  depPlace: { '#text': string };
-  fdFilePathImg: { '#text': string };
+  fdPrdtNm: string;
+  fdYmd: string;
+  depPlace: string;
+  fdFilePathImg: string;
 };
 
 interface GetItemType {
@@ -31,10 +31,10 @@ const ItemBox: React.FC<itemTypeProps> = ({ itemType, item }) => {
       item.fdFilePathImg
     ) {
       const newItem: GetItemType = {
-        item_name: item.fdPrdtNm['#text'],
-        date: item.fdYmd['#text'],
-        storage: item.depPlace['#text'],
-        item_image: item.fdFilePathImg['#text'],
+        item_name: item.fdPrdtNm,
+        date: item.fdYmd,
+        storage: item.depPlace,
+        item_image: item.fdFilePathImg,
       };
       setItemData(newItem);
     }
