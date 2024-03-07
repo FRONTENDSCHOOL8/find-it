@@ -1,13 +1,18 @@
-import { useId, useState } from 'react';
+import { useId } from 'react';
 import SearchParagraph from '../atom/SearchParagraph';
 
 interface SearchDateProps {
   children: string;
+  selectDate: string;
+  setSelectDate: (date: string) => void;
 }
 
-const SearchDate: React.FC<SearchDateProps> = ({ children }) => {
+const SearchDate: React.FC<SearchDateProps> = ({
+  children,
+  selectDate,
+  setSelectDate,
+}) => {
   const dateInputId = useId();
-  const [selectDate, setSelectDate] = useState('날짜를 선택하세요.');
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const date = e.target.value;
