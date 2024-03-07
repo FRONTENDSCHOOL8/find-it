@@ -1,9 +1,9 @@
-import { create } from 'zustand';
+// import { create } from 'zustand';
 
-interface DetailType {
-  bookmark: boolean;
-}
+// interface DetailType {
+//   bookmark: boolean;
+// }
 
-const useDetailDataStore = create((set) => ({}));
+// const useDetailDataStore = create((set) => ({}));
 
-export default useDetailDataStore;
+// export default useDetailDataStore;
