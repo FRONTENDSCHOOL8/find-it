@@ -16,6 +16,8 @@ const GetList = () => {
       pageNo: pageNo,
       numOfRows: 6,
     });
+
+    console.log(data);
     setItems((prevItems) => [...prevItems, ...data.body.items.item]);
   };
 

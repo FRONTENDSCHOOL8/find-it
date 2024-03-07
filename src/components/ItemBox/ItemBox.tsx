@@ -24,7 +24,6 @@ interface GetItemType {
 const ItemBox: React.FC<itemTypeProps> = ({ itemType, item }) => {
   const [itemData, setItemData] = useState<GetItemType | null>(null);
   useEffect(() => {
-
     if (
       item &&
       item.fdPrdtNm &&
@@ -40,7 +39,6 @@ const ItemBox: React.FC<itemTypeProps> = ({ itemType, item }) => {
       };
       setItemData(newItem);
     }
-
   }, [item]);
 
   return (

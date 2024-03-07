@@ -2,6 +2,8 @@ import bookmark_icon from '@/assets/icons/icon_bookmark_detail.svg';
 import bookmark_icon_fill from '@/assets/icons/icon_bookmark_detail_fill.svg';
 import useBookmarkStore from '@/store/bookmark/bookmark';
 import KakaoMap from '@/components/Detail/atom/KakaoMap';
+import { useEffect } from 'react';
+import { getSearchId } from '@/lib/utils/getAPIData';
 
 interface DetailType {
   item_name: string;
@@ -12,8 +14,7 @@ interface DetailType {
   storage: string;
   phone: string;
   mgmt_num: string;
-  item_type_A: string;
-  item_type_B: string;
+  item_type: string;
 }
 
 const isEmpty = (value: string) => {
@@ -29,8 +30,7 @@ const data: DetailType = {
   storage: '멋쟁이 사자처럼',
   phone: '010-1234-5678',
   mgmt_num: 'ff123456',
-  item_type_A: '가방',
-  item_type_B: '종이가방',
+  item_type: '가방 > 종이가방',
 }; // 실제 데이터는 API를 통해 받아온다.
 
 const Detail: React.FC = () => {
@@ -42,6 +42,14 @@ const Detail: React.FC = () => {
     }
     return bookmark_icon;
   };
+
+  useEffect(() => {
+    (async () => {
+      const data = await getSearchId('F2024030600000059');
+
+      console.log(data);
+    })();
+  });
 
   return (
     <div className="w-375px leading-[1.3]">
@@ -100,9 +108,7 @@ const Detail: React.FC = () => {
           <li>
             <dl className="flex gap-22px">
               <dt className="">물품분류</dt>
-              <dd className="text-gray-400">
-                {data.item_type_A} &gt; {data.item_type_B}
-              </dd>
+              <dd className="text-gray-400">{data.item_type}</dd>
             </dl>
           </li>
           <li>
