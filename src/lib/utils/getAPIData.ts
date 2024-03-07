@@ -35,6 +35,9 @@ export const getAllData = async (query = {}) => {
     ) {
       const result = raiseValue(json.response?.body.items.item);
 
+      const pageNo = json.response;
+      console.log(pageNo);
+
       return result;
     }
   } catch (error) {
