@@ -54,7 +54,7 @@ const Profile = () => {
 };
 
 const List01 = () => {
-  const [inboxAlert, setInBoxAlert] = useState(false);
+  const [inboxAlert] = useState(false);
 
   return (
     <section className="pb-26px">
@@ -90,7 +90,7 @@ const List01 = () => {
 };
 
 const List02 = () => {
-  const [keywordAlert, setKeywordAlert] = useState(false);
+  const [keywordAlert] = useState(false);
 
   return (
     <section className="py-26px">
@@ -149,7 +149,6 @@ const MyPage = () => {
     const script = document.createElement('script');
     script.async = true;
     script.src = 'https://embed.tawk.to/65e52f1d9131ed19d9746a7d/1ho3k035v';
-    script.charset = 'UTF-8';
     script.setAttribute('crossorigin', '*');
 
     document.body.appendChild(script);

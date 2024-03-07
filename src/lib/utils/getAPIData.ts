@@ -27,9 +27,16 @@ export const getAllData = async (query = {}) => {
       throw new Error('json is string');
     }
 
-    const result = raiseValue(json.response);
+    if (
+      isJsonObject(json) &&
+      isJsonObject(json.response) &&
+      isJsonObject(json.response.body) &&
+      isJsonObject(json.response.body.items)
+    ) {
+      const result = raiseValue(json.response?.body.items.item);
 
-    return result;
+      return result;
+    }
   } catch (error) {
     console.error('error: ' + error);
   }
