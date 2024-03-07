@@ -95,11 +95,11 @@ const NavigationItem: React.FC<NavigationItemProps> = ({
   return (
     <div className="flex h-44px w-48px flex-col content-between items-center justify-center gap-7px">
       <Link to="/">{iconHome}</Link>
-      {iconBox}
+      <Link to="/getlist">{iconBox}</Link>
       {iconLost}
       {iconBoard}
       <Link to="/mypageentry">{iconProfile}</Link>
-      {homeLogo}
+      <Link to="/">{homeLogo}</Link>
       {paragraph}
     </div>
   );

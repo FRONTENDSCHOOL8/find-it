@@ -7,3 +7,4 @@ export { default as SignUp } from '@/components/pages/SignUp';
 export { default as Welcome } from '@/components/pages/Welcome';
 export { default as Credit } from '@/components/pages/Credit';
 export { default as Notice } from '@/components/pages/Notice';
+export { default as GetList } from '@/components/pages/GetList';
