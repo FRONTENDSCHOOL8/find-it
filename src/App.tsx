@@ -9,6 +9,7 @@ import {
   Notice,
   Welcome,
   MypageEntry,
+  GetList,
 } from '@/components/pages/index';
 import Detail from '@/components/Detail/Detail';
 import SearchFindDetail from '@/components/SearchDetail/pages/SearchFindDetail';
@@ -21,7 +22,7 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Main />} />
-          <Route path="/splash" element={<Splash />} />
+          <Route path="/getlist" element={<GetList />} />
           <Route path="/detail" element={<Detail />} />
           <Route path="/searchfind" element={<SearchFindDetail />} />
           <Route path="/searchlost" element={<SearchLostDetail />} />
@@ -33,6 +34,7 @@ const App = () => {
           <Route path="/welcome" element={<Welcome />} />
           <Route path="/notice" element={<Notice />} />
           <Route path="/credit" element={<Credit />} />
+          <Route path="/splash" element={<Splash />} />
         </Routes>
       </BrowserRouter>
     </>
