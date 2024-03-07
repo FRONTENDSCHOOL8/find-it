@@ -239,6 +239,14 @@ const SearchFindDetail: React.FC = () => {
     setSelectedAreaValue(value);
   };
 
+  const getFormattedDate = (dateString) => {
+    const dateParts = dateString.split(' ');
+    const year = dateParts[0]?.replace('년', '') || '';
+    const month = dateParts[1]?.replace('월', '').padStart(2, '0') || '';
+    const day = dateParts[2]?.replace('일', '').padStart(2, '0') || '';
+    return `${year}${month}${day}`;
+  };
+
   const getSearchData = async (query = {}) => {
     try {
       const params = new URLSearchParams(query);
@@ -279,6 +287,14 @@ const SearchFindDetail: React.FC = () => {
         PRDT_CL_CD_01: selectedMainCategoryValue,
         PRDT_CL_CD_02: selectedSubCategoryValue,
         N_FD_LCT_CD: selectedAreaValue,
+        START_YMD:
+          selectStartDate !== '날짜를 선택하세요.'
+            ? getFormattedDate(selectStartDate)
+            : '',
+        END_YMD:
+          selectEndDate !== '날짜를 선택하세요.'
+            ? getFormattedDate(selectEndDate)
+            : '',
         pageNo: 1,
         numOfRows: 10,
       });
@@ -290,7 +306,13 @@ const SearchFindDetail: React.FC = () => {
     }, 500);
 
     return () => clearTimeout(delaySearch);
-  }, [selectedMainCategoryValue, selectedSubCategoryValue, selectedAreaValue]);
+  }, [
+    selectedMainCategoryValue,
+    selectedSubCategoryValue,
+    selectedAreaValue,
+    selectStartDate,
+    selectEndDate,
+  ]);
 
   return (
     <div className="flex flex-col items-center">
