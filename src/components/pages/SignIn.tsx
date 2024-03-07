@@ -3,7 +3,6 @@ import { pb } from '@/lib/api/getPbData';
 import { getData } from '@/lib/utils/crud';
 import Header from '@/components/Header/Header';
 import InputForm from '@/components/SignIn/molecule/InputForm';
-import Navigation from '@/components/Navigation/Navigation';
 import ButtonVariable from '@/components/common/molecule/ButtonVariable';
 
 /* -------------------------------------------------------------------------- */
@@ -15,7 +14,8 @@ type AlertProps =
   | 'invalidValue'
   | 'invalidEmail'
   | 'invalidPassword'
-  | 'userDelete'
+  | 'userEmail'
+  | 'userEmailDouble'
   | '';
 
 const SignIn = () => {
@@ -143,9 +143,6 @@ const SignIn = () => {
               />
             </div>
           </form>
-        </div>
-        <div className="absolute bottom-0 ">
-          <Navigation />
         </div>
       </div>
     </>
