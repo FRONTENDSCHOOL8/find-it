@@ -2,7 +2,7 @@ import Header from '../Header/Header';
 import ItemBox from '../ItemBox/ItemBox';
 import Navigation from '../Navigation/Navigation';
 import { getAllData } from '@/lib/utils/getAPIData';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, UIEvent } from 'react';
 import loading from '@/assets/loading.svg';
 
 const GetList = () => {
@@ -11,12 +11,15 @@ const GetList = () => {
   const [fetching, setFetching] = useState(false);
   const scrollContainerRef = useRef(null);
 
-  const fetchData = async (pageNo) => {
+  const fetchData = async (pageNo: number) => {
     const data = await getAllData({
       pageNo: pageNo,
       numOfRows: 6,
     });
-    setItems((prevItems) => [...prevItems, ...data.body.items.item]);
+
+    const dataArray = Array.isArray(data)
+      ? data
+      : setItems((prevItems) => [...prevItems, ...dataArray]);
   };
 
   const fetchMoreItems = async () => {
@@ -28,8 +31,8 @@ const GetList = () => {
     });
   };
 
-  const handleScroll = (event) => {
-    const { scrollTop, scrollHeight, clientHeight } = event.target;
+  const handleScroll = (event: UIEvent<HTMLDivElement>) => {
+    const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
     if (scrollTop + clientHeight >= scrollHeight && !fetching) {
       fetchMoreItems();
     }
@@ -44,7 +47,7 @@ const GetList = () => {
         scrollContainer.removeEventListener('scroll', handleScroll);
       };
     }
-  }, []);
+  }, [page]);
 
   return (
     <div className="min-h-667px w-375px bg-gray-200">
