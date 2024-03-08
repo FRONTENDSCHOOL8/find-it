@@ -1,7 +1,6 @@
-// import { pb } from '@/lib/utils/pb';
 import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
-import { createData, getData } from '@/lib/utils/crud';
+import { updateData, getData } from '@/lib/utils/crud';
 import {
   GetSidoList,
   GetGunguList,
@@ -17,11 +16,9 @@ import SelectCategoryList from '@/components/common/molecule/SelectCategoryList'
 
 // 타입 정의
 type AlertProps =
-  | 'doubleCheckEmail'
   | 'doubleCheckNickname'
   | 'doubleCheckPassword'
   | 'invalidValue'
-  | 'invalidEmail'
   | 'invalidPassword'
   | '';
 type ConfirmProps = 'doubleCheckEmail' | 'doubleCheckNickname' | '';
@@ -31,48 +28,66 @@ const MypageEdit = () => {
   /* -------------------------------------------------------------------------- */
   // 유효성 검사
   const regex = {
-    emailRegex: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+    pwRegex: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,}$/,
   };
   /* -------------------------------------------------------------------------- */
   //로컬 데이터 가져오기
   const loginUserData = localStorage.getItem('pocketbase_auth');
   const localData = loginUserData && JSON.parse(loginUserData);
   const userNickname = localData?.model?.nickname;
-  const userEmail = localData?.model?.email;
   const userId = localData?.model?.id;
   const userAvatar = localData?.model?.avatar;
   const userSido = localData?.model?.state;
   const userGungu = localData?.model?.city;
 
   /* -------------------------------------------------------------------------- */
-  // 이메일 & 닉네임 입력값
-  const [emailValue, setEmailValue] = useState('');
-  const [valiEmailDouble, setValiEmailDouble] = useState(false);
-  const [valiEmailForm, setValiEmailForm] = useState(false);
-  const [alertEmail, setAlertEmail] = useState<AlertProps>();
-  const [confirmEmail, setConfirmEmail] = useState<ConfirmProps>();
+  // 입력값
+
+  const [passwordValue, setPasswordValue] = useState('');
+  const [passwordDefaultValue, setPasswordDefaultValue] = useState('');
+  const [valiPasswordForm, setValiPasswordForm] = useState(false);
+  const [passwordType, setPasswordType] = useState('password');
+  const [passwordDefaultType, setPasswordDefaultType] = useState('password');
+  const [passwordCheckValue, setPasswordCheckValue] = useState('');
+  const [passwordCheckType, setPasswordCheckType] = useState('password');
+  const [alertPassword, setAlertPassword] = useState<AlertProps>();
+  const [alertPasswordCheck, setAlertPasswordCheck] = useState<AlertProps>();
 
   const [nicknameValue, setNicknameValue] = useState('');
   const [valiNickDouble, setValiNickDouble] = useState(false);
   const [alertNickname, setAlertNickname] = useState<AlertProps>();
   const [confirmNickname, setConfirmNickname] = useState<ConfirmProps>();
 
-  const emailRef = useRef(null);
   const nicknameRef = useRef(null);
+  const passwordRef = useRef(null);
+  const passwordDefaultRef = useRef(null);
+  const passwordCheckRef = useRef(null);
 
-  // 이메일 & 정규식 검사
-  const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
+  // 비밀번호1 입력 & 정규식 검사
+  const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
-    setEmailValue(newValue);
-    setConfirmEmail('');
-
-    if (!newValue.match(regex.emailRegex)) {
-      setAlertEmail('invalidEmail');
-      setValiEmailForm(false);
+    setPasswordValue(newValue);
+    if (!newValue.match(regex.pwRegex)) {
+      setAlertPassword('invalidPassword');
+      setValiPasswordForm(false);
     } else {
-      setAlertEmail('');
-      setValiEmailForm(true);
+      setAlertPassword('');
+      setValiPasswordForm(true);
+    }
+  };
+  // 비밀번호 기존 입력
+  const handlePasswordDefault = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setPasswordDefaultValue(newValue);
+  };
+  // 비밀번호2 입력 & 동일 검사
+  const handlePasswordCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setPasswordCheckValue(newValue);
+    if (newValue !== passwordValue) {
+      setAlertPasswordCheck('doubleCheckPassword');
+    } else {
+      setAlertPasswordCheck('');
     }
   };
   //닉네임 입력 & 중복검사 문구 지우기, 중복검사 상태 지우기
@@ -82,27 +97,6 @@ const MypageEdit = () => {
     setAlertNickname('');
     setConfirmNickname('');
     setValiNickDouble(false);
-  };
-
-  // 이메일 중복확인
-  const handleDoubleCheckEmail = async () => {
-    try {
-      const records = await getData('users', {
-        filter: `email="${emailValue}"`,
-      });
-      const realdata = records && records[0];
-      const emailData = realdata && realdata.email;
-      if (emailData === emailValue) {
-        setAlertEmail('doubleCheckEmail');
-        setValiEmailDouble(false);
-      } else {
-        setAlertEmail('');
-        setConfirmEmail('doubleCheckEmail');
-        setValiEmailDouble(true);
-      }
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   // 닉네임 중복확인
@@ -125,21 +119,43 @@ const MypageEdit = () => {
       console.log(error);
     }
   };
-
-  // 이메일 & 닉네임 삭제 버튼
-  const handleDeleteEmail = () => {
-    setEmailValue('');
-    setAlertEmail('');
-    setConfirmEmail('');
-    setValiEmailDouble(false);
+  // 비번 보이기 눈 버튼 : 인풋 타입을 텍스트로 바꿈
+  const handleEyePassword = () => {
+    setPasswordType((passwordType === 'password' && 'text') || 'password');
   };
+  const handleEyePasswordDefault = () => {
+    setPasswordDefaultType(
+      (passwordDefaultType === 'password' && 'text') || 'password'
+    );
+  };
+  const handleEyePasswordCheck = () => {
+    setPasswordCheckType(
+      (passwordCheckType === 'password' && 'text') || 'password'
+    );
+  };
+  // 삭제 버튼
   const handleDeleteNickname = () => {
     setNicknameValue('');
     setAlertNickname('');
     setConfirmNickname('');
     setValiNickDouble(false);
+    setSubmit(false);
   };
 
+  const handleDeletePassword = () => {
+    setPasswordValue('');
+    setAlertPassword('');
+    setSubmit(false);
+  };
+  const handleDeletePasswordDefault = () => {
+    setPasswordDefaultValue('');
+    setSubmit(false);
+  };
+  const handleDeletePasswordCheck = () => {
+    setPasswordCheckValue('');
+    setAlertPasswordCheck('');
+    setSubmit(false);
+  };
   /* -------------------------------------------------------------------------- */
   // 지역 선택 버튼
 
@@ -177,9 +193,10 @@ const MypageEdit = () => {
   /* -------------------------------------------------------------------------- */
   // 업데이트 데이터
   const updateUserData = {
-    email: emailValue,
-    emailVisibility: true,
     nickname: nicknameValue,
+    oldPassword: `${passwordDefaultValue}`,
+    password: `${passwordValue}`,
+    passwordConfirm: `${passwordCheckValue}`,
     state: selectFirstItem,
     city: selectSecondItem,
   };
@@ -189,23 +206,43 @@ const MypageEdit = () => {
   useEffect(() => {
     if (
       valiNickDouble &&
-      valiEmailDouble &&
       selectFirstItem &&
-      selectSecondItem
+      selectSecondItem &&
+      passwordDefaultValue !== '' &&
+      passwordValue === passwordCheckValue &&
+      valiPasswordForm === true
     ) {
       setSubmit(true);
     }
-  }, [valiNickDouble, valiEmailDouble, selectFirstItem, selectSecondItem]);
+  }, [
+    valiNickDouble,
+    selectFirstItem,
+    selectSecondItem,
+    valiPasswordForm,
+    passwordDefaultValue,
+    passwordValue,
+    passwordCheckValue,
+  ]);
   //완료 버튼
-  const isComplete = () => {
-    return false;
+  const buttonSubmit = async () => {
+    try {
+      await updateData('users', userId, updateUserData);
+      alert('수정이 완료되었습니다.');
+    } catch (error) {
+      console.log(error);
+      alert('에러가 발생했습니다. 다시 시도해주세요.');
+    }
   };
+
   /* -------------------------------------------------------------------------- */
   /* -------------------------------------------------------------------------- */
   // 마크업
   return (
     <>
-      <div className="mx-auto my-0 flex w-375px flex-col ">
+      <form
+        className="mx-auto my-0 flex w-375px flex-col "
+        onSubmit={buttonSubmit}
+      >
         <Header
           isShowPrev={true}
           children={'프로필 수정'}
@@ -237,27 +274,69 @@ const MypageEdit = () => {
               />
             </div>
           </li>
-          <li className="mt-16px flex items-baseline justify-between ">
-            <h2 className="text-12px">이메일</h2>
+          <li className=" py-26px">
+            <Horizon lineBold="thin" lineWidth="short" />
+          </li>
+          <li className="flex items-baseline justify-between ">
+            <h2 className="text-12px">기존 비밀번호</h2>
             <div className="w-232px">
               <InputFormSlim
-                ref={emailRef}
-                type="email"
-                title="useremail"
-                placeholder={userEmail}
-                value={emailValue}
-                onChange={handleEmail}
-                iconDoubleCheck={true}
-                iconDelete={!!emailValue}
-                onClickDoubleCheck={handleDoubleCheckEmail}
-                onClickDelete={handleDeleteEmail}
-                alertCase={alertEmail}
-                confirmCase={confirmEmail}
-                disabledDoubleCheck={!valiEmailForm}
+                ref={passwordDefaultRef}
+                type={passwordDefaultType}
+                title="userpassword"
+                placeholder="기존 비밀번호를 입력해주세요."
+                value={passwordDefaultValue}
+                onChange={handlePasswordDefault}
+                iconDoubleCheck={false}
+                iconDelete={!!passwordDefaultValue}
+                iconEyeToggle={true}
+                onClickDelete={handleDeletePasswordDefault}
+                onClickEye={handleEyePasswordDefault}
               />
             </div>
           </li>
-          <li className="mt-24px flex items-baseline justify-between ">
+          <li className="mt-26px flex items-baseline justify-between ">
+            <h2 className="text-12px">비밀번호 변경</h2>
+            <div className="w-232px">
+              <InputFormSlim
+                ref={passwordRef}
+                type={passwordType}
+                title="userpassword"
+                placeholder="변경할 비밀번호를 입력해주세요."
+                value={passwordValue}
+                onChange={handlePassword}
+                iconDoubleCheck={false}
+                iconDelete={!!passwordValue}
+                iconEyeToggle={true}
+                onClickDelete={handleDeletePassword}
+                onClickEye={handleEyePassword}
+                alertCase={alertPassword}
+              />
+            </div>
+          </li>
+          <li className="mt-16px flex items-baseline justify-between ">
+            <h2 className="text-12px">비밀번호 확인</h2>
+            <div className="w-232px">
+              <InputFormSlim
+                ref={passwordCheckRef}
+                type={passwordCheckType}
+                title="userpasswordCheck"
+                placeholder="한번 더 입력해주세요."
+                value={passwordCheckValue}
+                onChange={handlePasswordCheck}
+                iconDoubleCheck={false}
+                iconDelete={!!passwordCheckValue}
+                iconEyeToggle={true}
+                onClickDelete={handleDeletePasswordCheck}
+                onClickEye={handleEyePasswordCheck}
+                alertCase={alertPasswordCheck}
+              />
+            </div>
+          </li>
+          <li className=" py-26px">
+            <Horizon lineBold="thin" lineWidth="short" />
+          </li>
+          <li className="flex items-baseline justify-between ">
             <h2 className="text-12px">거주지역</h2>
             <ButtonSelectItem
               firstName={selectFirstItem || userSido}
@@ -267,6 +346,7 @@ const MypageEdit = () => {
               disabledSecond={disabledSecond}
             />
           </li>
+
           <li className=" py-26px">
             <Horizon lineBold="thin" lineWidth="short" />
           </li>
@@ -279,8 +359,8 @@ const MypageEdit = () => {
             </Link>
           </li>
         </ul>
-      </div>
-      <button onClick={isComplete}>확인</button>
+      </form>
+      {/* <button onClick={buttonSubmit}>확인</button> */}
 
       {renderFirstList && (
         <SelectCategoryList
