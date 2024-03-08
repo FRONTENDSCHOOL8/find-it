@@ -95,7 +95,7 @@ const Header: React.FC<HeaderProps> = ({
       );
     } else {
       submitButton = (
-        <button type="submit" className="text-gray-400">
+        <button type="submit" disabled className="text-gray-400">
           완료
         </button>
       );

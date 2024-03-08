@@ -37,10 +37,12 @@ const SignIn = () => {
     e.preventDefault();
     const newValue = e.target.value;
     setEmailValue(newValue);
+    setAlertEmail('');
   };
   const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setPasswordValue(newValue);
+    setAlertPassword('');
   };
 
   // 비번 눈 보이기
@@ -92,10 +94,10 @@ const SignIn = () => {
             .authWithPassword(emailValue, passwordValue);
           window.location.href = '/';
         } catch (error) {
-          alert('비밀번호를 확인해주세요.');
+          setAlertPassword('invalidValue');
         }
       } else {
-        alert('회원정보가 없습니다.');
+        setAlertEmail('userEmail');
       }
     })();
   };

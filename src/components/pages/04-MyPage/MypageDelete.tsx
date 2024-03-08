@@ -45,11 +45,6 @@ const MypageDelete = () => {
     e.preventDefault();
     const newValue = e.target.value;
     setEmailCheckValue(newValue);
-    if (emailValue === emailCheckValue) {
-      setAlertEmailCheck('userEmailDouble');
-    } else {
-      setAlertEmailCheck('');
-    }
   };
 
   // 이메일 삭제 버튼
@@ -88,27 +83,26 @@ const MypageDelete = () => {
   const isComplete = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (emailValue !== userEmail) {
-      setAlertEmail('userEmail');
+      setAlertEmail('userEmailDouble');
     } else {
       setAlertEmail('');
       deleteData();
       alert('회원탈퇴가 완료되었습니다.');
-      // 모달창 띄우고 삭제
-      // 홈으로 가게
+      window.location.href = '/';
     }
   };
   /* -------------------------------------------------------------------------- */
   /* -------------------------------------------------------------------------- */
   return (
     <div className="mx-auto my-0 flex w-375px flex-col">
-      <Header isShowPrev={true} children={''} empty={true} />
+      <Header isShowPrev={true} children={'  '} empty={true} />
       <form className="stext-left mx-30px mt-20px" onSubmit={isComplete}>
-        <h1 className="text-20px leading-8">
+        <h1 className="leading-7.5 text-20px">
           회원 확인을 위해
           <br />
           이메일을 입력해주세요.
         </h1>
-        <span className="inline-block w-244px pt-14px text-left text-12px text-secondary">
+        <span className="inline-block w-244px pt-12px text-left text-14px text-gray-400">
           회원 탈퇴 처리 후 복구가 불가합니다.
         </span>
         <li className="mt-40px flex items-baseline justify-between">
