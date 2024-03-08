@@ -174,16 +174,29 @@ const MypageEdit = () => {
 
   /* -------------------------------------------------------------------------- */
   /* -------------------------------------------------------------------------- */
+  // 업데이트 데이터
+  const updateUserData = {
+    email: emailValue,
+    emailVisibility: true,
+    nickname: nicknameValue,
+    state: selectFirstItem,
+    city: selectSecondItem,
+  };
   // 완료 조건
-  const isComplete = () => {
+  const [submit, setSubmit] = useState(false);
+
+  useEffect(() => {
     if (
       valiNickDouble &&
       valiEmailDouble &&
       selectFirstItem &&
       selectSecondItem
     ) {
-      return true;
+      setSubmit(true);
     }
+  }, [valiNickDouble, valiEmailDouble, selectFirstItem, selectSecondItem]);
+  //완료 버튼
+  const isComplete = () => {
     return false;
   };
   /* -------------------------------------------------------------------------- */
@@ -195,7 +208,7 @@ const MypageEdit = () => {
         <Header
           isShowPrev={true}
           children={'프로필 수정'}
-          isShowSubmit={false}
+          isShowSubmit={!!submit} // Fix: Convert submit to boolean
         />
         <img
           className="mx-auto my-30px size-88px rounded-full"
