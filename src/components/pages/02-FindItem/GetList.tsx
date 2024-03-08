@@ -65,7 +65,7 @@ const GetList = () => {
         ref={scrollContainerRef}
         className="h-[calc(100vh-73px-80px)] overflow-auto"
       >
-        <ul className="mt-18px flex flex-col items-center">
+        <ul className="flex flex-col items-center">
           {items.map((item, index) => (
             <li key={index}>
               <ItemBox item={item} itemType="get" />
