@@ -1,6 +1,6 @@
-import Header from '../Header/Header';
-import ItemBox from '../ItemBox/ItemBox';
-import Navigation from '../Navigation/Navigation';
+import Header from '../../Header/Header';
+import ItemBox from '../../ItemBox/ItemBox';
+import Navigation from '../../Navigation/Navigation';
 import { getAllData } from '@/lib/utils/getAPIData';
 import { useEffect, useState, useRef, UIEvent, useCallback } from 'react';
 import loading from '@/assets/loading.svg';

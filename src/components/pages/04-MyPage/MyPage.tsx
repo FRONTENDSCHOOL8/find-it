@@ -9,9 +9,9 @@ import icon_docs from '@/assets/icons/icon_docs.svg';
 import icon_envelope from '@/assets/icons/icon_envelope.svg';
 import icon_search from '@/assets/icons/icon_search_16.svg';
 import icon_bell from '@/assets/icons/icon_bell.svg';
-import Horizon from '../common/atom/Horizon';
+import Horizon from '../../common/atom/Horizon';
 import getPbImgURL from '@/lib/utils/getPbImgURL';
-import Header from '../Header/Header';
+import Header from '../../Header/Header';
 
 /* -------------------------------------------------------------------------- */
 // 로그인 유저 정보 가져오기

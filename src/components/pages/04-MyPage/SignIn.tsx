@@ -105,7 +105,7 @@ const SignIn = () => {
   return (
     <>
       <div className="flex flex-col items-center ">
-        <Header children="로그인" />
+        <Header children="로그인" empty={true} isShowPrev={true} />
         <div className="flex flex-col items-center">
           <form className="w-375px px-20px pt-30px" onSubmit={handleSignIn}>
             <div className="flex flex-col gap-20px">

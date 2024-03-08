@@ -27,6 +27,7 @@ type AlertProps =
 type ConfirmProps = 'doubleCheckEmail' | 'doubleCheckNickname' | '';
 
 const MypageEdit = () => {
+  //머지 테스트
   /* -------------------------------------------------------------------------- */
   // 유효성 검사
   const regex = {

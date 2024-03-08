@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import Header from '@/components/Header/Header';
 import Modal from '@/components/common/molecule/Modal';
 import InputFormSlim from '@/components/SignIn/molecule/InputFormSlim';
-import ButtonVariable from '../common/molecule/ButtonVariable';
+import ButtonVariable from '../../common/molecule/ButtonVariable';
 
 // 타입 정의
 type AlertProps =
