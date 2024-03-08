@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 
 import GetTimeDiff from '@/components/common/atom/GetTimeDiff';
 
-import Header from '../Header/Header';
-import Shortcut from '../Shortcut/Shortcut';
-import SwiperItem from '../ItemBox/SwiperItem';
-import Navigation from '../Navigation/Navigation';
+import Header from '../../Header/Header';
+import Shortcut from '../../Shortcut/Shortcut';
+import SwiperItem from '../../ItemBox/SwiperItem';
+import Navigation from '../../Navigation/Navigation';
 
 import icon_search from '@/assets/icons/icon_search_36.svg';
 import icon_right from '@/assets/icons/icon_right.svg';
