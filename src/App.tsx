@@ -8,10 +8,11 @@ import {
   Credit,
   Notice,
   Welcome,
-  MypageEntry,
-  MypageEdit,
-  MypageDelete,
   GetList,
+  NotFound,
+  MypageEdit,
+  MypageEntry,
+  MypageDelete,
 } from '@/components/pages/index';
 import Detail from '@/components/Detail/Detail';
 import SearchFindDetail from '@/components/SearchDetail/pages/SearchFindDetail';
@@ -37,6 +38,7 @@ const App = () => {
           <Route path="/notice" element={<Notice />} />
           <Route path="/credit" element={<Credit />} />
           <Route path="/splash" element={<Splash />} />
+          <Route path="/*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </>
