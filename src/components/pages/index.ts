@@ -1,5 +1,6 @@
 export { default as Main } from '@/components/pages/01-Main/Main';
 export { default as Splash } from '@/components/pages/01-Main/Splash';
+export { default as NotFound } from '@/components/pages/01-Main/NotFound';
 export { default as GetList } from '@/components/pages/02-FindItem/GetList';
 export { default as MypageEntry } from '@/components/pages/04-MyPage/MypageEntry';
 export { default as MyPage } from '@/components/pages/04-MyPage/MyPage';
