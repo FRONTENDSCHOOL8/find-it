@@ -11,3 +11,6 @@ export { default as SignUp } from '@/components/pages/04-MyPage/SignUp';
 export { default as Welcome } from '@/components/pages/04-MyPage/Welcome';
 export { default as Credit } from '@/components/pages/04-MyPage/Credit';
 export { default as Notice } from '@/components/pages/04-MyPage/Notice';
+export { default as PostList } from '@/components/pages/05-Community/PostList';
+export { default as PostDetail } from '@/components/Community/PostDetail';
+export { default as CreatePost } from '@/components/Community/CreatePost';
