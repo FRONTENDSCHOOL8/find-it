@@ -6,9 +6,9 @@ function isJsonObject(value: unknown): value is JsonObject {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
-export const getAllData = async (query = {}) => {
+export const getAllData = async (options = {}) => {
   try {
-    const params = new URLSearchParams(query);
+    const params = new URLSearchParams(options);
 
     const response = await fetch(
       `${import.meta.env.VITE_GETITEMS_ALL_API}?serviceKey=${import.meta.env.VITE_PUBLICINFO_API_KEY_INC}&${params.toString()}`
