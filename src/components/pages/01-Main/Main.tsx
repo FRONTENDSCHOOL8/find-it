@@ -1,12 +1,12 @@
 import { pb } from '@/lib/utils/pb';
-import { getTimeDiff } from '@/lib/utils/getTimeDiff';
 import { Link } from 'react-router-dom';
+import { getTimeDiff } from '@/lib/utils/getTimeDiff';
 import Header from '../../Header/Header';
 import Shortcut from '../../Shortcut/Shortcut';
 import SwiperItem from '../../ItemBox/SwiperItem';
 import Navigation from '../../Navigation/Navigation';
-import icon_search from '@/assets/icons/icon_search_36.svg';
 import icon_right from '@/assets/icons/icon_right.svg';
+import icon_search from '@/assets/icons/icon_search_36.svg';
 
 /* -------------------------------------------------------------------------- */
 /*                                  유저 이름 렌더링                              */
@@ -64,7 +64,7 @@ const FindItemBox = () => {
 };
 
 /* -------------------------------------------------------------------------- */
-/*                             자유게시판 데이터 렌더링                             */
+/*                             자유게시판 최근 게시물 렌더링                             */
 /* -------------------------------------------------------------------------- */
 
 const recentPost = await pb.collection('community').getList(1, 2, {
@@ -87,7 +87,7 @@ const CommunityBox = () => {
         <div className="">
           <div className="flex items-center gap-2 pb-1">
             <span className="text-14px">{recentPost1}</span>
-            {getTimeDiff({ createdAt: postTime2 })}
+            {getTimeDiff({ createdAt: postTime1 })}
           </div>
           <div className="flex items-center gap-2">
             <span className="text-14px">{recentPost2}</span>
@@ -113,7 +113,7 @@ const Main = () => {
         </div>
         <div className="pb-5px pl-10px pt-3">
           <Shortcut
-            link="/"
+            link="/getlist"
             text="주인을 찾아요!"
             alt="습득물 페이지 바로가기"
           />
