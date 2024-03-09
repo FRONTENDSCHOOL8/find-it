@@ -42,7 +42,7 @@ const App = () => {
           <Route path="/credit" element={<Credit />} />
           <Route path="/splash" element={<Splash />} />
           <Route path="/postlist" element={<PostList />} />
-          <Route path="/postdetail" element={<PostDetail />} />
+          <Route path="/postdetail/:id" element={<PostDetail />} />
           <Route path="/createpost" element={<CreatePost />} />
           <Route path="/*" element={<NotFound />} />
         </Routes>

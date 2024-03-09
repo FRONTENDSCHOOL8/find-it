@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getData } from '@/lib/utils/crud';
 import GetTimeDiff from '@/components/common/atom/GetTimeDiff';
@@ -26,23 +27,22 @@ const PostBox = () => {
     <>
       {communityData.map((item, index) => (
         <>
-          <section
-            className="relative h-160px w-335px px-10px pt-10px"
-            key={index}
-          >
-            <GetTimeDiff createdAt={communityData[index].created} />
-            <h1 className="truncate pt-8px text-16px text-black">
-              {item.title}
-            </h1>
-            <span className="w-full	 whitespace-normal pt-8px text-12px		text-gray-700">
-              {(item.content.length > 64 &&
-                item.content.slice(0, 64) + '...') ||
-                item.content}
-            </span>
-            <span className="absolute bottom-14px block text-12px text-gray-450">
-              #{item.tag}
-            </span>
-          </section>
+          <Link to={`/postdetail/${item.id}`} key={item.id}>
+            <section className="relative h-160px w-335px px-10px pt-10px">
+              <GetTimeDiff createdAt={communityData[index].created} />
+              <h1 className="truncate pt-8px text-16px text-black">
+                {item.title}
+              </h1>
+              <span className="w-full	 whitespace-normal pt-8px text-12px		text-gray-700">
+                {(item.content.length > 64 &&
+                  item.content.slice(0, 64) + '...') ||
+                  item.content}
+              </span>
+              <span className="absolute bottom-14px block text-12px text-gray-450">
+                #{item.tag}
+              </span>
+            </section>
+          </Link>
           {Bar}
         </>
       ))}
