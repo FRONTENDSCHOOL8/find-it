@@ -246,7 +246,7 @@ const MypageEdit = () => {
         <Header
           isShowPrev={true}
           children={'프로필 수정'}
-          isShowSubmit={!!submit} // Fix: Convert submit to boolean
+          isShowSubmit={!!submit}
         />
         <img
           className="mx-auto my-30px size-88px rounded-full"

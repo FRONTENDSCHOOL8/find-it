@@ -97,7 +97,7 @@ const NavigationItem: React.FC<NavigationItemProps> = ({
       <Link to="/">{iconHome}</Link>
       <Link to="/getlist">{iconBox}</Link>
       {iconLost}
-      {iconBoard}
+      <Link to="/postlist">{iconBoard}</Link>
       <Link to="/mypageentry">{iconProfile}</Link>
       <Link to="/">{homeLogo}</Link>
       {paragraph}
