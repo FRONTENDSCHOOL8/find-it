@@ -3,7 +3,7 @@ import bookmark_icon_fill from '@/assets/icons/icon_bookmark_detail_fill.svg';
 import useBookmarkStore from '@/store/bookmark/bookmark';
 import KakaoMap from '@/components/Detail/atom/KakaoMap';
 import { useEffect } from 'react';
-import { getSearchId } from '@/lib/utils/getAPIData';
+import { lostAllData } from '@/lib/utils/lostAPIData';
 
 interface DetailType {
   item_name: string;
@@ -18,7 +18,7 @@ interface DetailType {
 }
 
 const isEmpty = (value: string) => {
-  return value !== '';
+  return value.length !== 0;
 };
 
 const data: DetailType = {
@@ -45,11 +45,20 @@ const Detail: React.FC = () => {
 
   useEffect(() => {
     (async () => {
-      const data = await getSearchId('F2024030600000059');
+      // const data = await lostSearchData('가방');
 
-      console.log(data);
+      // console.log(data);
+
+      // const detailData = await lostSearchId('L2024030800000026');
+
+      // console.log(detailData);
+
+      const lostData = await lostAllData();
+
+      console.log('lostAllData');
+      console.log(lostData);
     })();
-  });
+  }, []);
 
   return (
     <div className="w-375px leading-[1.3]">
@@ -159,3 +168,6 @@ const Detail: React.FC = () => {
 };
 
 export default Detail;
+function loatSearchData(arg0: string) {
+  throw new Error('Function not implemented.');
+}
