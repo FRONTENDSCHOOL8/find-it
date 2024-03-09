@@ -3,21 +3,20 @@ import { useState } from 'react';
 
 const Categories = () => {
   const [activeButton, setActiveButton] = useState('notice');
-
-  const handleClick = (type: string) => {
-    setActiveButton(type);
+  const handleClick = (button) => {
+    setActiveButton(button);
   };
 
   return (
     <div className="flex">
       <button
-        className="w-1/2 border-b-[1px] border-black pb-12px pt-13px text-center text-14px"
+        className={`w-1/2 border-b-[1px] pb-12px pt-13px text-center text-14px transition-colors duration-300 ${activeButton === 'notice' ? 'border-black' : 'text-gray-400'}`}
         onClick={() => handleClick('notice')}
       >
         내 키워드 알림
       </button>
       <button
-        className="w-1/2 border-b-[1px] pb-12px pt-13px text-center text-14px"
+        className={`w-1/2 border-b-[1px] pb-12px pt-13px text-center text-14px transition-colors duration-300 ${activeButton === 'setting' ? 'border-black' : 'text-gray-400'}`}
         onClick={() => handleClick('setting')}
       >
         키워드 설정
