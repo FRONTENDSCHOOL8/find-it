@@ -34,7 +34,7 @@ const BodyText = ({
           placeholder="이야기하고 싶은 내용을 입력하세요."
           className="mt-16px h-200px w-full whitespace-normal text-20px  leading-30px text-gray-700"
           style={{ outline: 'none', resize: 'none' }}
-          maxLength={150}
+          maxLength={300}
           value={bodyValue}
           onChange={handleBodyValue}
         />
