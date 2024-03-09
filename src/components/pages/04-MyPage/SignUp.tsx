@@ -125,7 +125,7 @@ const SignUp = () => {
         setValiEmailDouble(true);
       }
     } catch (error) {
-      console.log(error);
+      console.log('이메일 중복확인 에러', error);
     }
   };
 
@@ -146,7 +146,7 @@ const SignUp = () => {
         setValiNickDouble(true);
       }
     } catch (error) {
-      console.log(error);
+      console.log('닉네임 중복확인 에러', error);
     }
   };
   // 비번 보이기 눈 버튼 : 인풋 타입을 텍스트로 바꿈

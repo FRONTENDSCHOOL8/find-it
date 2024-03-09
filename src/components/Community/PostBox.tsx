@@ -1,35 +1,21 @@
-import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+// import { Link } from 'react-router-dom';
 import { getData } from '@/lib/utils/crud';
 import GetTimeDiff from '@/components/common/atom/GetTimeDiff';
+import { Link } from 'react-router-dom';
 
+// pb 데이터 뿌리기
+const data = await getData('community', { sort: '-created' });
 const Bar = (
-  <div className=" h-10px w-full border-t border-t-gray-300 bg-gray-200" />
+  <div className="h-10px w-full border-t border-t-gray-300 bg-gray-200" />
 );
-
 const PostBox = () => {
-  const [communityData, setCommunityData] = useState([]);
-
-  //pb 데이터 뿌리기
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getData('community', { sort: '-created' });
-        setCommunityData(data);
-      } catch (error) {
-        console.error('pb 통신 오류:', error);
-      }
-    };
-    fetchData();
-  }, []);
-
   return (
     <>
-      {communityData.map((item, index) => (
-        <>
-          <Link to={`/postdetail/${item.id}`} key={item.id}>
-            <section className="relative h-160px w-335px px-10px pt-10px">
-              <GetTimeDiff createdAt={communityData[index].created} />
+      {data.map((item, index) => (
+        <div key={item.id} className="w-screen">
+          <Link to={`/postdetail/${item.id}`}>
+            <section className="relative mx-auto my-0 h-160px w-335px px-10px pt-10px">
+              <GetTimeDiff createdAt={data[index].created} />
               <h1 className="truncate pt-8px text-16px text-black">
                 {item.title}
               </h1>
@@ -44,7 +30,7 @@ const PostBox = () => {
             </section>
           </Link>
           {Bar}
-        </>
+        </div>
       ))}
     </>
   );
