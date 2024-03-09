@@ -9,6 +9,7 @@ import {
   Notice,
   Welcome,
   GetList,
+  LostList,
   NotFound,
   MypageEdit,
   MypageEntry,
@@ -39,6 +40,7 @@ const App = () => {
           <Route path="/credit" element={<Credit />} />
           <Route path="/splash" element={<Splash />} />
           <Route path="/*" element={<NotFound />} />
+          <Route path="/lostlist" element={<LostList />} />
         </Routes>
       </BrowserRouter>
     </>
