@@ -3,12 +3,7 @@ import bookmark_icon_fill from '@/assets/icons/icon_bookmark_detail_fill.svg';
 import useBookmarkStore from '@/store/bookmark/bookmark';
 import KakaoMap from '@/components/Detail/atom/KakaoMap';
 import { useEffect } from 'react';
-import { getAllData, getSearchId } from '@/lib/utils/getAPIData';
-import {
-  lostAllData,
-  lostSearchData,
-  lostSearchId,
-} from '@/lib/utils/lostAPIData';
+import { lostAllData } from '@/lib/utils/lostAPIData';
 
 interface DetailType {
   item_name: string;
