@@ -2,7 +2,7 @@ interface timeProps {
   createdAt: string;
 }
 
-const GetTimeDiff: React.FC<timeProps> = ({ createdAt }) => {
+export const getTimeDiff: React.FC<timeProps> = ({ createdAt }) => {
   const milliSeconds = new Date().getTime() - new Date(createdAt).getTime();
   const seconds = milliSeconds / 1000;
 
@@ -56,5 +56,3 @@ const GetTimeDiff: React.FC<timeProps> = ({ createdAt }) => {
     <span className="text-10px text-gray-450">{Math.floor(years)}년 전</span>
   );
 };
-
-export default GetTimeDiff;

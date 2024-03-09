@@ -12,3 +12,4 @@ export { default as SignUp } from '@/components/pages/04-MyPage/SignUp';
 export { default as Welcome } from '@/components/pages/04-MyPage/Welcome';
 export { default as Credit } from '@/components/pages/04-MyPage/Credit';
 export { default as Notice } from '@/components/pages/04-MyPage/Notice';
+export { default as LostList } from '@/components/pages/03-LostItem/LostList';

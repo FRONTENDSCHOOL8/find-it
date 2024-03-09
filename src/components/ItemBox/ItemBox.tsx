@@ -84,10 +84,12 @@ const ItemBox: React.FC<itemTypeProps> = ({ itemType, item }) => {
           <div className="mb-3 flex h-140px w-335px justify-between rounded-[20px] bg-white transition-all duration-300 hover:cursor-pointer hover:shadow-lg">
             <div className="flex flex-col items-start py-18px pl-20px">
               <h1 className="pb-2 text-20px font-medium leading-[1.3] tracking-tighter">
-                물품명
+                {itemData.item_name.length > 10
+                  ? itemData.item_name.slice(0, 8) + '...'
+                  : itemData.item_name}
               </h1>
               <span className="rounded-full border-[1px] border-primary px-3 py-3px text-10px font-medium leading-[1.3] tracking-tighter text-primary ">
-                분실장소
+                {itemData.storage}
               </span>
 
               <div className="mt-13px flex flex-col gap-1">
@@ -95,13 +97,21 @@ const ItemBox: React.FC<itemTypeProps> = ({ itemType, item }) => {
                   잃어버린 날
                 </span>
                 <span className="text-12px font-medium leading-[1.3] tracking-tighter">
-                  2024년 2월 26일
+                  {itemData.date}
                 </span>
               </div>
             </div>
 
             <div className="p-10px">
-              <img src={default_item} alt="등록된 물품 사진 없음" />
+              <img
+                src={
+                  itemData.item_image ===
+                  'https://www.lost112.go.kr/lostnfs/images/sub/img02_no_img.gif'
+                    ? default_item
+                    : itemData.item_image
+                }
+                alt="등록된 물품 사진 없음"
+              />
             </div>
           </div>
         </a>
