@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { createData } from '@/lib/utils/crud';
 import Header from '@/components/Header/Header';
-import BodyText from '@/components/Community/BodyText';
+import CreateBodyText from '@/components/Community/CreateBodyText';
 
 /* -------------------------------------------------------------------------- */
 //로컬 데이터 가져오기
@@ -40,26 +40,32 @@ const CreatePost = () => {
 
   // 완료 조건
   useEffect(() => {
-    if (titleValue !== '') {
+    if (titleValue !== '' && bodyValue !== '' && tagValue !== '') {
       setSubmit(true);
+    } else {
+      setSubmit(false);
     }
-  }, [titleValue]);
+  }, [titleValue, bodyValue, tagValue]);
 
   //완료 버튼
-  const buttonSubmit = async () => {
+  const buttonSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     await createData('community', newPostData);
     window.location.href = '/postlist';
   };
 
   return (
     <>
-      <div className="flex w-full flex-col items-center justify-center">
+      <form
+        className="flex w-full flex-col items-center justify-center"
+        onSubmit={buttonSubmit}
+      >
         <Header
           isShowPrev={true}
           children="글쓰기"
           isShowSubmit={!!submit} // Fix: Convert submit to boolean
         />
-        <BodyText
+        <CreateBodyText
           titleValue={titleValue}
           onChangeTitle={receiveTitleValue}
           tagValue={tagValue}
@@ -67,8 +73,7 @@ const CreatePost = () => {
           bodyValue={bodyValue}
           onChangeBody={receiveBodyValue}
         />
-        <button onClick={buttonSubmit}>완료</button>
-      </div>
+      </form>
     </>
   );
 };

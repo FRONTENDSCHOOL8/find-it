@@ -38,7 +38,7 @@ const PostBody = () => {
   // const userAvatar = '이미지가져오는건따로';
 
   return (
-    <div className="w-315px pt-30px">
+    <div className="w-315px pt-10px">
       {/* <section className="flex gap-8px">
         <img
           src={getPbImgURL(userId, userAvatar)}
@@ -52,7 +52,7 @@ const PostBody = () => {
       </section> */}
       <section className="flex flex-col">
         <h1 className="text-24px text-black">{title}</h1>
-        <p className="w-full whitespace-normal pt-10px	text-14px leading-5	text-gray-700">
+        <p className="w-full whitespace-normal break-keep	pt-10px text-16px leading-26px	text-gray-700">
           {bodyText}
         </p>
         <span className="block pt-30px text-14px text-primary">#{tag}</span>

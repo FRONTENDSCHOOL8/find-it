@@ -19,7 +19,7 @@ const PostBox = () => {
               <h1 className="truncate pt-8px text-16px text-black">
                 {item.title}
               </h1>
-              <span className="w-full	 whitespace-normal pt-8px text-12px		text-gray-700">
+              <span className="w-full	 whitespace-normal pt-8px text-12px text-gray-700">
                 {(item.content.length > 64 &&
                   item.content.slice(0, 64) + '...') ||
                   item.content}

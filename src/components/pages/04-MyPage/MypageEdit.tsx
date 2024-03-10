@@ -224,13 +224,15 @@ const MypageEdit = () => {
     passwordCheckValue,
   ]);
   //완료 버튼
-  const buttonSubmit = async () => {
+  const buttonSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
       await updateData('users', userId, updateUserData);
       alert('수정이 완료되었습니다.');
+      window.location.reload();
     } catch (error) {
       console.log(error);
-      alert('에러가 발생했습니다. 다시 시도해주세요.');
+      alert('서버 통신이 원활하지 않습니다. 잠시 후 다시 시도해주세요.');
     }
   };
 
@@ -360,7 +362,6 @@ const MypageEdit = () => {
           </li>
         </ul>
       </form>
-      {/* <button onClick={buttonSubmit}>확인</button> */}
 
       {renderFirstList && (
         <SelectCategoryList

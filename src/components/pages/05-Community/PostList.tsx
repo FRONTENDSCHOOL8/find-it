@@ -9,7 +9,7 @@ const PostList = () => {
   return (
     <>
       <div className="flex w-full flex-col items-center justify-center">
-        <Header isShowSymbol={true} children="자유게시판" isShowSearch={true} />
+        <Header isShowPrev={true} children="자유게시판" isShowSearch={true} />
 
         <PostBox />
       </div>
@@ -18,7 +18,7 @@ const PostList = () => {
           <img
             src={IconPlus}
             alt="글쓰기 버튼"
-            className="absolute bottom-20px right-24px z-10 size-60px"
+            className="fixed bottom-20px right-24px z-10 size-60px drop-shadow-xl hover:animate-bounce	 "
           />
         </Link>
       )}
