@@ -2,8 +2,10 @@ import { pb } from '@/lib/api/getPbData';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getData } from '@/lib/utils/crud';
-// import GetTimeDiff from '@/components/common/atom/GetTimeDiff';
-// import getPbImgURL from '@/lib/utils/getPbImgURL';
+import getPbImgURL from '@/lib/utils/getPbImgURL';
+import GetTimeDiff from '@/components/common/atom/GetTimeDiff';
+import profile from '@/assets/profile.svg';
+import Horizon from '@/components/common/atom/Horizon';
 
 // 포켓베이스 Auto cancellation 취소 명령어
 pb.autoCancellation(false);
@@ -11,6 +13,8 @@ pb.autoCancellation(false);
 const PostBody = () => {
   const { id } = useParams();
   const [thisData, setThisData] = useState(null);
+  const [userId, setUserId] = useState('');
+  const [userAvatar, setUserAvatar] = useState('');
 
   useEffect(() => {
     (async () => {
@@ -24,38 +28,48 @@ const PostBody = () => {
   }, [id]);
 
   if (!thisData) return null;
+  const { title, content: bodyText, tag, nickname, created } = thisData;
 
-  // 이미지 가져오기
-  // 1. 게시르 id 의 닉네임을 가져오고
-  // user 카테고리에서 닉네임이 해당하는ㄴ걸 filter로 차장서
-  // 유저 아이디의 이미지를 가져온다
-
-  //변수 재할당
-  // const { title, content: bodyText, tag, nickname, created } = thisData;
-  const { title, content: bodyText, tag } = thisData;
-
-  // const userId = '유저아이디가필요한가';
-  // const userAvatar = '이미지가져오는건따로';
+  // 커뮤니티 닉네임으로 유저에서 id, avartar 뽑기
+  (async () => {
+    try {
+      const records = await getData('users', {
+        filter: `nickname="${nickname}"`,
+      });
+      const realdata = records && records[0];
+      setUserId(realdata.id);
+      setUserAvatar(realdata.avatar);
+    } catch (error) {
+      console.error('유저 데이터에서 닉네임 잡기 통신 에러', error);
+    }
+  })();
 
   return (
-    <div className="w-315px pt-10px">
-      {/* <section className="flex gap-8px">
+    <div className="w-315px">
+      <Horizon lineBold="thin" lineWidth="short" />
+
+      <section className="itmes-center flex gap-8px pt-20px">
         <img
-          src={getPbImgURL(userId, userAvatar)}
-          alt="나의 프로필 사진"
+          src={
+            (userAvatar !== '' && getPbImgURL(userId, userAvatar)) || profile
+          }
+          alt="글쓴이 프로필 사진"
           className="size-34px rounded-full"
         />
-        <div className="flex flex-col gap-2px">
-          <span>{nickname}</span>
+        <div className="flex flex-col text-12px">
+          <span className="text-14px">{nickname}</span>
           <GetTimeDiff createdAt={created} />
         </div>
-      </section> */}
-      <section className="flex flex-col">
-        <h1 className="text-20px text-black">{title}</h1>
-        <p className="w-full whitespace-normal break-keep	pt-10px text-16px leading-26px	text-gray-700">
+      </section>
+
+      <section className="flex flex-col pt-18px">
+        <h1 className="text-24px tracking-tight text-black">{title}</h1>
+        <p className="w-full	whitespace-normal break-keep pt-10px	text-16px leading-28px tracking-tight	text-gray-700">
           {bodyText}
         </p>
-        <span className="block pt-30px text-14px text-primary">#{tag}</span>
+        <span className="block pt-30px text-14px tracking-tight text-primary">
+          #{tag}
+        </span>
       </section>
     </div>
   );
