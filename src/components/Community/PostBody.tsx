@@ -50,7 +50,7 @@ const PostBody = () => {
           <GetTimeDiff createdAt={created} />
         </div>
       </section> */}
-      <section className="flex flex-col pt-30px">
+      <section className="flex flex-col">
         <h1 className="text-24px text-black">{title}</h1>
         <p className="w-full whitespace-normal pt-10px	text-14px leading-5	text-gray-700">
           {bodyText}

@@ -4,6 +4,8 @@ import PostBox from '@/components/Community/PostBox';
 import IconPlus from '@/assets/icons/icon_plus.svg';
 
 const PostList = () => {
+  const loginUserData = localStorage.getItem('pocketbase_auth');
+
   return (
     <>
       <div className="flex w-full flex-col items-center justify-center">
@@ -11,13 +13,15 @@ const PostList = () => {
 
         <PostBox />
       </div>
-      <Link to="/createpost">
-        <img
-          src={IconPlus}
-          alt="글쓰기 버튼"
-          className="absolute bottom-20px right-24px z-10 size-60px"
-        />
-      </Link>
+      {loginUserData && (
+        <Link to="/createpost">
+          <img
+            src={IconPlus}
+            alt="글쓰기 버튼"
+            className="absolute bottom-20px right-24px z-10 size-60px"
+          />
+        </Link>
+      )}
     </>
   );
 };
