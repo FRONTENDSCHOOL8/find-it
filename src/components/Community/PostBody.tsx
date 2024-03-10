@@ -51,7 +51,7 @@ const PostBody = () => {
         </div>
       </section> */}
       <section className="flex flex-col">
-        <h1 className="text-24px text-black">{title}</h1>
+        <h1 className="text-20px text-black">{title}</h1>
         <p className="w-full whitespace-normal break-keep	pt-10px text-16px leading-26px	text-gray-700">
           {bodyText}
         </p>
