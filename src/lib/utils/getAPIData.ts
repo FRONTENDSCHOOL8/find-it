@@ -141,7 +141,7 @@ export const getSearchFindData = async (query = {}) => {
       isJsonObject(json.response.body) &&
       isJsonObject(json.response.body.items)
     ) {
-      const result = raiseValue(json.response);
+      const result = raiseValue(json.response?.body.items.item);
 
       // const pageNo = json.response;
       // console.log(pageNo);
