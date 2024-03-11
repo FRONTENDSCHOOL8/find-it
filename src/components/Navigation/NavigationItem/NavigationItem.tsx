@@ -96,10 +96,8 @@ const NavigationItem: React.FC<NavigationItemProps> = ({
     <div className="flex h-44px w-48px flex-col content-between items-center justify-center gap-7px">
       <Link to="/">{iconHome}</Link>
       <Link to="/getlist">{iconBox}</Link>
-
-      {iconLost}
+      <Link to="/lostlist">{iconLost}</Link>
       <Link to="/postlist">{iconBoard}</Link>
-
       <Link to="/mypageentry">{iconProfile}</Link>
       <Link to="/">{homeLogo}</Link>
       {paragraph}
