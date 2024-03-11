@@ -1,9 +1,9 @@
 import { pb } from '@/lib/api/getPbData';
 import { useEffect, useRef, useState } from 'react';
 import Header from '@/components/Header/Header';
-import Modal from '@/components/common/molecule/Modal';
 import InputFormSlim from '@/components/SignIn/molecule/InputFormSlim';
-import ButtonVariable from '../../common/molecule/ButtonVariable';
+import ButtonVariable from '@/components/common/molecule/ButtonVariable';
+import ModalComp from '@/components/common/molecule/ModalComp';
 
 // 타입 정의
 type AlertProps =
@@ -29,7 +29,6 @@ const MypageDelete = () => {
   const [emailValue, setEmailValue] = useState('');
   const [emailCheckValue, setEmailCheckValue] = useState('');
   const [alertEmail, setAlertEmail] = useState<AlertProps>();
-  const [alertEmailCheck, setAlertEmailCheck] = useState<AlertProps>();
 
   const emailRef = useRef(null);
   const emailCheckRef = useRef(null);
@@ -39,6 +38,7 @@ const MypageDelete = () => {
     e.preventDefault();
     const newValue = e.target.value;
     setEmailValue(newValue);
+    setAlertEmail('');
   };
   // 이메일2 입력갑 확인 & 1과 비교
   const handleEmailCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,7 +54,6 @@ const MypageDelete = () => {
   };
   const handleDeleteEmailCheck = () => {
     setEmailCheckValue('');
-    setAlertEmailCheck('');
   };
   /* -------------------------------------------------------------------------- */
   // 최종 버튼 활성화 조건 = 입력값 동일시 & 버튼 변경
@@ -72,6 +71,8 @@ const MypageDelete = () => {
   }, [emailValue, emailCheckValue]);
 
   // 최종 버튼 && 유저 이메일 비교
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const deleteData = async () => {
     try {
       await pb.collection('users').delete(userId);
@@ -87,15 +88,20 @@ const MypageDelete = () => {
     } else {
       setAlertEmail('');
       deleteData();
-      alert('회원탈퇴가 완료되었습니다.');
-      window.location.href = '/';
+      setIsModalOpen(true);
     }
   };
+  const onClickConfirm = () => {
+    pb.authStore.clear();
+    window.location.href = '/';
+    setIsModalOpen(false);
+  };
+
   /* -------------------------------------------------------------------------- */
   /* -------------------------------------------------------------------------- */
   return (
     <div className="mx-auto my-0 flex w-375px flex-col">
-      <Header isShowPrev={true} children={'  '} empty={true} />
+      <Header isShowPrev={true} children={''} empty={true} />
       <form className="stext-left mx-30px mt-20px" onSubmit={isComplete}>
         <h1 className="leading-7.5 text-20px">
           회원 확인을 위해
@@ -133,7 +139,6 @@ const MypageDelete = () => {
               onChange={handleEmailCheck}
               iconDelete={!!emailCheckValue}
               onClickDelete={handleDeleteEmailCheck}
-              alertCase={alertEmailCheck}
             />
           </div>
         </li>
@@ -141,7 +146,13 @@ const MypageDelete = () => {
           <ButtonVariable buttonText="회원탈퇴" variant={variant} />
         </div>
       </form>
-      {/* <Modal confirmText="확인" children="회원 탈퇴가 완료되었습니다." /> */}
+      {isModalOpen && (
+        <ModalComp
+          children="회원 탈퇴가 완료되었습니다."
+          confirmText="확인"
+          onClickConfirm={onClickConfirm}
+        />
+      )}
     </div>
   );
 };

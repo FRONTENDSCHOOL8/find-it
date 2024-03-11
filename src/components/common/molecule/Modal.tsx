@@ -2,12 +2,16 @@ interface ModalProps {
   cancelText?: string;
   confirmText: string;
   children: string;
+  onClickCancel?: () => void;
+  onClickConfirm?: () => void;
 }
 
 const Modal: React.FC<ModalProps> = ({
   cancelText,
   confirmText = '확인',
   children,
+  onClickCancel,
+  onClickConfirm,
 }) => {
   let cancelButton;
   const buttonTextStyle =
@@ -15,7 +19,11 @@ const Modal: React.FC<ModalProps> = ({
 
   if (cancelText !== undefined) {
     cancelButton = (
-      <button className={`${buttonTextStyle} text-gray-700`}>
+      <button
+        type="button"
+        onClick={onClickCancel}
+        className={`${buttonTextStyle} text-gray-700`}
+      >
         {cancelText}
       </button>
     );
@@ -26,7 +34,11 @@ const Modal: React.FC<ModalProps> = ({
       <p className="w-280px text-center text-14px text-gray-400">{children}</p>
       <div className="flex h-21px w-150px items-center justify-center gap-90px">
         {cancelButton}
-        <button className={`${buttonTextStyle} text-primary`}>
+        <button
+          type="button"
+          onClick={onClickConfirm}
+          className={`${buttonTextStyle} text-primary`}
+        >
           {confirmText}
         </button>
       </div>
