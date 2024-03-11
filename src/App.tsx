@@ -14,6 +14,9 @@ import {
   MypageEdit,
   MypageEntry,
   MypageDelete,
+  PostList,
+  PostDetail,
+  CreatePost,
 } from '@/components/pages/index';
 import Detail from '@/components/Detail/Detail';
 import SearchFindDetail from '@/components/SearchDetail/pages/SearchFindDetail';
@@ -39,6 +42,9 @@ const App = () => {
           <Route path="/notice" element={<Notice />} />
           <Route path="/credit" element={<Credit />} />
           <Route path="/splash" element={<Splash />} />
+          <Route path="/postlist" element={<PostList />} />
+          <Route path="/postdetail/:id" element={<PostDetail />} />
+          <Route path="/createpost" element={<CreatePost />} />
           <Route path="/*" element={<NotFound />} />
           <Route path="/lostlist" element={<LostList />} />
         </Routes>

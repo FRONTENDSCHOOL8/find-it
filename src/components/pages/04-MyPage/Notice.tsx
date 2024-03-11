@@ -1,5 +1,4 @@
 import Header from '@/components/Header/Header';
-import Navigation from '@/components/Navigation/Navigation';
 import NoticeItem from '@/components/Notice/NoticeItem';
 
 const Notice = () => {
@@ -24,7 +23,6 @@ const Notice = () => {
           bodytext="짜장이냐, 짬뽕이냐, 그것이 문제입니다."
         />
       </ul>
-      <Navigation />
     </>
   );
 };

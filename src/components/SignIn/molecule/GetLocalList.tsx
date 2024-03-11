@@ -29,7 +29,7 @@ export const GetSidoList = () => {
         const nameList = items.map((item) => item.addr_name); // 가져온 데이터에서 이름 뿌리기
         setLocalList(nameList);
       } catch (error) {
-        console.error('에러남: ' + error);
+        console.error('시도 리스트 뿌리기 에러남: ' + error);
       }
     };
     getLocalList();
@@ -62,7 +62,7 @@ export const GetCode = (addrName: string) => {
         )?.cd;
         setLocalCode(code?.toString());
       } catch (error) {
-        console.error('에러남: ' + error);
+        console.error('시도 코드 가져오기 에러남: ' + error);
       }
     };
     getLocalList();
@@ -94,7 +94,7 @@ export const GetGunguList = (props: string) => {
         const nameList = items.map((item) => item.addr_name); // 가져온 데이터에서 이름 뿌리기
         setLocalList(nameList);
       } catch (error) {
-        console.error('에러남: ' + error);
+        console.error('군구 리스트 뿌리기 에러남: ' + error);
       }
     };
     getLocalList();
