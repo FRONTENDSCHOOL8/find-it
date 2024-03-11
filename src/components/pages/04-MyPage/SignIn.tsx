@@ -3,7 +3,6 @@ import { pb } from '@/lib/api/getPbData';
 import { getData } from '@/lib/utils/crud';
 import Header from '@/components/Header/Header';
 import InputForm from '@/components/SignIn/molecule/InputForm';
-import Navigation from '@/components/Navigation/Navigation';
 import ButtonVariable from '@/components/common/molecule/ButtonVariable';
 
 /* -------------------------------------------------------------------------- */
@@ -15,7 +14,8 @@ type AlertProps =
   | 'invalidValue'
   | 'invalidEmail'
   | 'invalidPassword'
-  | 'userDelete'
+  | 'userEmail'
+  | 'userEmailDouble'
   | '';
 
 const SignIn = () => {
@@ -37,10 +37,12 @@ const SignIn = () => {
     e.preventDefault();
     const newValue = e.target.value;
     setEmailValue(newValue);
+    setAlertEmail('');
   };
   const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setPasswordValue(newValue);
+    setAlertPassword('');
   };
 
   // 비번 눈 보이기
@@ -92,10 +94,10 @@ const SignIn = () => {
             .authWithPassword(emailValue, passwordValue);
           window.location.href = '/';
         } catch (error) {
-          alert('비밀번호를 확인해주세요.');
+          setAlertPassword('invalidValue');
         }
       } else {
-        alert('회원정보가 없습니다.');
+        setAlertEmail('userEmail');
       }
     })();
   };
@@ -105,7 +107,7 @@ const SignIn = () => {
   return (
     <>
       <div className="flex flex-col items-center ">
-        <Header children="로그인" />
+        <Header children="로그인" empty={true} isShowPrev={true} />
         <div className="flex flex-col items-center">
           <form className="w-375px px-20px pt-30px" onSubmit={handleSignIn}>
             <div className="flex flex-col gap-20px">
@@ -143,9 +145,6 @@ const SignIn = () => {
               />
             </div>
           </form>
-        </div>
-        <div className="absolute bottom-0 ">
-          <Navigation />
         </div>
       </div>
     </>

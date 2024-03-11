@@ -9,9 +9,9 @@ import icon_docs from '@/assets/icons/icon_docs.svg';
 import icon_envelope from '@/assets/icons/icon_envelope.svg';
 import icon_search from '@/assets/icons/icon_search_16.svg';
 import icon_bell from '@/assets/icons/icon_bell.svg';
-import Horizon from '../common/atom/Horizon';
+import Horizon from '../../common/atom/Horizon';
 import getPbImgURL from '@/lib/utils/getPbImgURL';
-import Header from '../Header/Header';
+import Header from '../../Header/Header';
 
 /* -------------------------------------------------------------------------- */
 // 로그인 유저 정보 가져오기
@@ -40,12 +40,12 @@ const Profile = () => {
       <div className="flex flex-col gap-6px">
         <div className="flex items-center gap-4px">
           <h1 className="text-20px">{userNickname}</h1>
-          <a
-            href="/"
+          <Link
+            to="/mypageedit"
             className="p-1.5 transition-all duration-300 hover:rounded hover:bg-gray-100"
           >
             <img src={icon_pencil} alt="프로필 수정하기" />
-          </a>
+          </Link>
         </div>
         <span className="text-12px text-gray-450">{userEmail}</span>
       </div>

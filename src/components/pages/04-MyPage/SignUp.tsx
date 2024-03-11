@@ -11,8 +11,7 @@ import {
 import ButtonVariable from '@/components/common/molecule/ButtonVariable';
 import ButtonSelectItem from '@/components/common/molecule/ButtonSelectItem';
 import SelectCategoryList from '@/components/common/molecule/SelectCategoryList';
-///머지
-/* -------------------------------------------------------------------------- */
+
 // 타입 정의
 type AlertProps =
   | 'doubleCheckEmail'
@@ -21,15 +20,17 @@ type AlertProps =
   | 'invalidValue'
   | 'invalidEmail'
   | 'invalidPassword'
-  | 'userDelete'
+  | 'userEmail'
+  | 'userEmailDouble'
   | '';
+type ConfirmProps = 'doubleCheckEmail' | 'doubleCheckNickname' | '';
 
 const SignUp = () => {
   /* -------------------------------------------------------------------------- */
   // 유효성 검사용 정규식 : 비번 8자이상 20자 이하영문 숫자 특수문자 포함
   const regex = {
     emailRegex: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-    pwRegex: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,20}$/,
+    pwRegex: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,}$/,
   };
   /* -------------------------------------------------------------------------- */
   const [emailValue, setEmailValue] = useState('');
@@ -47,9 +48,11 @@ const SignUp = () => {
   const [valiNickDouble, setValiNickDouble] = useState(false);
 
   const [alertEmail, setAlertEmail] = useState<AlertProps>();
+  const [confirmEmail, setConfirmEmail] = useState<ConfirmProps>();
   const [alertPassword, setAlertPassword] = useState<AlertProps>();
   const [alertPasswordCheck, setAlertPasswordCheck] = useState<AlertProps>();
   const [alertNickname, setAlertNickname] = useState<AlertProps>();
+  const [confirmNickname, setConfirmNickname] = useState<ConfirmProps>();
 
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
@@ -62,6 +65,7 @@ const SignUp = () => {
     e.preventDefault();
     const newValue = e.target.value;
     setEmailValue(newValue);
+    setConfirmEmail('');
 
     if (!newValue.match(regex.emailRegex)) {
       setAlertEmail('invalidEmail');
@@ -98,6 +102,7 @@ const SignUp = () => {
     const newValue = e.target.value;
     setNicknameValue(newValue);
     setAlertNickname('');
+    setConfirmNickname('');
     setValiNickDouble(false);
   };
 
@@ -116,7 +121,7 @@ const SignUp = () => {
         setValiEmailDouble(false);
       } else {
         setAlertEmail('');
-        alert('사용 가능한 이메일 입니다.'); /// ----------------------------------->> 모달 창으로 바꾸기
+        setConfirmEmail('doubleCheckEmail');
         setValiEmailDouble(true);
       }
     } catch (error) {
@@ -137,7 +142,7 @@ const SignUp = () => {
         setValiNickDouble(false);
       } else {
         setAlertNickname('');
-        alert('사용 가능한 닉네임 입니다.'); /// ----------------------------------->> 모달 창으로 바꾸기
+        setConfirmNickname('doubleCheckNickname');
         setValiNickDouble(true);
       }
     } catch (error) {
@@ -158,6 +163,7 @@ const SignUp = () => {
   const handleDeleteEmail = () => {
     setEmailValue('');
     setAlertEmail('');
+    setConfirmEmail('');
     setValiEmailDouble(false);
   };
   const handleDeletePassword = () => {
@@ -171,6 +177,7 @@ const SignUp = () => {
   const handleDeleteNickname = () => {
     setNicknameValue('');
     setAlertNickname('');
+    setConfirmNickname('');
     setValiNickDouble(false);
   };
 
@@ -288,6 +295,7 @@ const SignUp = () => {
               onClickDoubleCheck={handleDoubleCheckEmail}
               onClickDelete={handleDeleteEmail}
               alertCase={alertEmail}
+              confirmCase={confirmEmail}
               disabledDoubleCheck={!valiEmailForm}
             />
             <InputForm
@@ -310,7 +318,7 @@ const SignUp = () => {
               ref={passwordCheckRef}
               type={passwordCheckType}
               title="userpasswordCheck"
-              placeholder="비밀번호를 다시 한번 입력해주세요."
+              placeholder="비밀번호를 한번 더 입력해주세요."
               value={passwordCheckValue}
               onChange={handlePasswordCheck}
               iconDoubleCheck={false}
@@ -333,6 +341,7 @@ const SignUp = () => {
               onClickDoubleCheck={handleDoubleCheckNickname}
               onClickDelete={handleDeleteNickname}
               alertCase={alertNickname}
+              confirmCase={confirmNickname}
               disabledDoubleCheck={!nicknameValue}
             />
             <div className="mt-10px flex h-48px w-full items-center justify-between ">
