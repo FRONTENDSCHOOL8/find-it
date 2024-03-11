@@ -1,10 +1,10 @@
 import Header from '../../Header/Header';
+import loading from '@/assets/loading.svg';
 import ItemBox from '../../ItemBox/ItemBox';
 import Navigation from '../../Navigation/Navigation';
+import { JsonArray } from '@/types/types';
 import { getAllData } from '@/lib/utils/getAPIData';
 import { useEffect, useState, useRef, UIEvent, useCallback } from 'react';
-import loading from '@/assets/loading.svg';
-import { JsonArray } from '@/types/types';
 
 const GetList = () => {
   const [items, setItems] = useState([]);
@@ -17,8 +17,6 @@ const GetList = () => {
       pageNo: pageNo,
       numOfRows: 6,
     });
-
-    console.log(data);
 
     setItems((prev) => {
       return [...prev, ...(data as JsonArray)];

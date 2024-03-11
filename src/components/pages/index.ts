@@ -6,6 +6,7 @@ export { default as MypageEntry } from '@/components/pages/04-MyPage/MypageEntry
 export { default as MyPage } from '@/components/pages/04-MyPage/MyPage';
 export { default as MypageEdit } from '@/components/pages/04-MyPage/MypageEdit';
 export { default as MypageDelete } from '@/components/pages/04-MyPage/MypageDelete';
+export { default as Notification } from '@/components/pages/05-Notification/Notification';
 export { default as SignIn } from '@/components/pages/04-MyPage/SignIn';
 export { default as SignUp } from '@/components/pages/04-MyPage/SignUp';
 export { default as Welcome } from '@/components/pages/04-MyPage/Welcome';
