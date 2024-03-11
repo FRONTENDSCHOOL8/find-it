@@ -8,6 +8,7 @@ import {
 } from '@/components/SignIn/molecule/GetLocalList';
 import { pb } from '@/lib/api/getPbData';
 import profile from '@/assets/profile.svg';
+import profileIcon from '@/assets/icons/icon_camera.svg';
 import Header from '@/components/Header/Header';
 import getPbImgURL from '@/lib/utils/getPbImgURL';
 import Horizon from '@/components/common/atom/Horizon';
@@ -175,7 +176,7 @@ const MypageEdit = () => {
   };
 
   // 렌더된 리스트 (SelectCategoryList 컴포넌트) 에서 찍은거 가져오기
-  // 첫번째 아이템 리스트
+  // // 첫번째 아이템 리스트
   const [selectFirstItem, setSelectFirstItem] = useState('');
   const handleSelectFirstItem = (item: string) => {
     setSelectFirstItem(item);
@@ -237,20 +238,26 @@ const MypageEdit = () => {
   };
   /* -------------------------------------------------------------------------- */
   // 프로필 사진 변경
-  const fileInput = useRef(null);
   // 파일 선택
-  const [newformdata, setNewformdata] = useState(new FormData());
+  const [fileInput, setFileInput] = useState<HTMLInputElement | null>(null);
   const formData = new FormData();
+  useEffect(() => {
+    const input = document.getElementById('fileInput') as HTMLInputElement;
+    setFileInput(input);
+  }, []);
 
+  // 포켓베이스 파일 업로드 부분
   const handleFileInput = async () => {
-    // alert('프로필 사진 변경 기능은 준비중입니다.');
     try {
-      for (const file of fileInput.current.files) {
+      if (fileInput && fileInput.files && fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        console.log('업로드한 이미지:', file);
         formData.append('avatar', file);
       }
-      // const data = { avatar: formData };
-      setNewformdata(formData);
-      await pb.collection('users').create(newformdata);
+      console.log('폼데이터에 심은 업로드한 이미지:', formData.get('avatar'));
+
+      await pb.collection('users').create(formData);
+      // await pb.collection('users').update(userId, formData);
       alert('프로필 사진 변경이 완료되었습니다.');
       window.location.reload();
     } catch (error) {
@@ -259,7 +266,9 @@ const MypageEdit = () => {
   };
   //프로필 버튼 클릭시 파일 선택창 열기
   const handleProfileChange = () => {
-    fileInput.current.click();
+    if (fileInput) {
+      fileInput.click();
+    }
   };
 
   /* -------------------------------------------------------------------------- */
@@ -277,7 +286,7 @@ const MypageEdit = () => {
           isShowSubmit={!!submit}
         />
         <input
-          ref={fileInput}
+          id="fileInput"
           type="file"
           onChange={handleFileInput}
           className="hidden"
@@ -285,13 +294,18 @@ const MypageEdit = () => {
         <button
           type="button"
           onClick={handleProfileChange}
-          className="mx-auto my-30px"
+          className="relative mx-auto my-30px"
         >
           <img
-            className=" size-88px rounded-full"
+            className="size-88px rounded-full"
             src={userAvatar !== '' ? getPbImgURL(userId, userAvatar) : profile}
             alt="나의 프로필 사진"
           />
+          <img
+            className="absolute	bottom-0 right-0 z-10 size-32px translate-x-4px translate-y-4px "
+            src={profileIcon}
+            alt="프로필 사진 변경 버튼"
+          ></img>
         </button>
         <ul className="mx-30px">
           <li className="flex items-baseline justify-between ">
