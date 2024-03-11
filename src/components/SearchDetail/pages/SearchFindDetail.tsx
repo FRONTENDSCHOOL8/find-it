@@ -282,7 +282,6 @@ const SearchFindDetail: React.FC = () => {
 
         if (typeof searchData === 'object') {
           const resultData = (searchData as SearchData).body?.items?.item;
-          console.log(resultData);
           useSearchStore.setState({ resultData });
         }
       } catch (error) {
