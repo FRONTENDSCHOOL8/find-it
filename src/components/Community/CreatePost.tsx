@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { createData } from '@/lib/utils/crud';
 import Header from '@/components/Header/Header';
 import CreateBodyText from '@/components/Community/CreateBodyText';
+import Horizon from '@/components/common/atom/Horizon';
 
 /* -------------------------------------------------------------------------- */
 //로컬 데이터 가져오기
@@ -60,11 +61,9 @@ const CreatePost = () => {
         className="flex w-full flex-col items-center justify-center"
         onSubmit={buttonSubmit}
       >
-        <Header
-          isShowPrev={true}
-          children="글쓰기"
-          isShowSubmit={!!submit} // Fix: Convert submit to boolean
-        />
+        <Header isShowPrev={true} children="글쓰기" isShowSubmit={!!submit} />
+        <Horizon lineBold="thin" lineWidth="long" />
+
         <CreateBodyText
           titleValue={titleValue}
           onChangeTitle={receiveTitleValue}

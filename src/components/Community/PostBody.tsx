@@ -5,7 +5,6 @@ import { getData } from '@/lib/utils/crud';
 import getPbImgURL from '@/lib/utils/getPbImgURL';
 import { getTimeDiff } from '@/lib/utils/getTimeDiff';
 import profile from '@/assets/profile.svg';
-import Horizon from '@/components/common/atom/Horizon';
 
 // 포켓베이스 Auto cancellation 취소 명령어
 pb.autoCancellation(false);
@@ -46,8 +45,6 @@ const PostBody = () => {
 
   return (
     <div className="w-315px">
-      <Horizon lineBold="thin" lineWidth="short" />
-
       <section className="itmes-center flex gap-8px pt-20px">
         <img
           src={

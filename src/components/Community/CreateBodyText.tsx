@@ -30,7 +30,7 @@ const CreateBodyText = ({
         <input
           type="text"
           placeholder="제목을 입력하세요."
-          className="w-full text-24px tracking-tight text-black"
+          className="mt-10px w-full text-24px tracking-tight text-black"
           style={{ outline: 'none' }}
           maxLength={24}
           value={titleValue}
