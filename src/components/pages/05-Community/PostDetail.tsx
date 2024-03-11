@@ -1,6 +1,7 @@
 import Header from '@/components/Header/Header';
 import PostBody from '@/components/Community/PostBody';
 import Horizon from '@/components/common/atom/Horizon';
+import Navigation from '@/components/Navigation/Navigation';
 
 const PostDetail = () => {
   return (
@@ -10,6 +11,7 @@ const PostDetail = () => {
         <Horizon lineBold="thin" lineWidth="long" />
 
         <PostBody />
+        <Navigation />
       </div>
     </>
   );
