@@ -6,6 +6,7 @@ import {
   GetGunguList,
   GetCode,
 } from '@/components/SignIn/molecule/GetLocalList';
+import { pb } from '@/lib/api/getPbData';
 import profile from '@/assets/profile.svg';
 import Header from '@/components/Header/Header';
 import getPbImgURL from '@/lib/utils/getPbImgURL';
@@ -224,14 +225,41 @@ const MypageEdit = () => {
     passwordCheckValue,
   ]);
   //완료 버튼
-  const buttonSubmit = async () => {
+  const buttonSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
       await updateData('users', userId, updateUserData);
       alert('수정이 완료되었습니다.');
+      window.location.reload();
     } catch (error) {
-      console.log(error);
-      alert('에러가 발생했습니다. 다시 시도해주세요.');
+      console.error('회원정보 수정 페이지 통신 오류:', error);
     }
+  };
+  /* -------------------------------------------------------------------------- */
+  // 프로필 사진 변경
+  const fileInput = useRef(null);
+  // 파일 선택
+  const [newformdata, setNewformdata] = useState(new FormData());
+  const formData = new FormData();
+
+  const handleFileInput = async () => {
+    // alert('프로필 사진 변경 기능은 준비중입니다.');
+    try {
+      for (const file of fileInput.current.files) {
+        formData.append('avatar', file);
+      }
+      // const data = { avatar: formData };
+      setNewformdata(formData);
+      await pb.collection('users').create(newformdata);
+      alert('프로필 사진 변경이 완료되었습니다.');
+      window.location.reload();
+    } catch (error) {
+      console.error('프로필 변경 데이터 통신 오류:', error);
+    }
+  };
+  //프로필 버튼 클릭시 파일 선택창 열기
+  const handleProfileChange = () => {
+    fileInput.current.click();
   };
 
   /* -------------------------------------------------------------------------- */
@@ -246,13 +274,25 @@ const MypageEdit = () => {
         <Header
           isShowPrev={true}
           children={'프로필 수정'}
-          isShowSubmit={!!submit} // Fix: Convert submit to boolean
+          isShowSubmit={!!submit}
         />
-        <img
-          className="mx-auto my-30px size-88px rounded-full"
-          src={userAvatar !== '' ? getPbImgURL(userId, userAvatar) : profile}
-          alt="나의 프로필 사진"
+        <input
+          ref={fileInput}
+          type="file"
+          onChange={handleFileInput}
+          className="hidden"
         />
+        <button
+          type="button"
+          onClick={handleProfileChange}
+          className="mx-auto my-30px"
+        >
+          <img
+            className=" size-88px rounded-full"
+            src={userAvatar !== '' ? getPbImgURL(userId, userAvatar) : profile}
+            alt="나의 프로필 사진"
+          />
+        </button>
         <ul className="mx-30px">
           <li className="flex items-baseline justify-between ">
             <h2 className="text-12px">닉네임</h2>
@@ -360,7 +400,6 @@ const MypageEdit = () => {
           </li>
         </ul>
       </form>
-      {/* <button onClick={buttonSubmit}>확인</button> */}
 
       {renderFirstList && (
         <SelectCategoryList
