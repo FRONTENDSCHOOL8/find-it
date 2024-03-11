@@ -70,11 +70,11 @@ const SelectCategoryList: React.FC<SelectCategoryListProps> = ({
   /* -------------------------------------------------------------------------- */
   // jsx 반환
   return (
-    <div className="fixed inset-0	bg-[#00000045]">
+    <div className="fixed inset-0 z-30	bg-[#00000045]">
       <ul
         ref={ulRef}
         style={{ scrollbarWidth: 'none' }}
-        className="z-1 absolute bottom-0 h-3/4 w-full overflow-auto rounded-t-40px bg-white px-40px pt-40px"
+        className="absolute bottom-0 h-3/4 w-full overflow-auto rounded-t-40px bg-white px-40px pt-40px"
       >
         <h3 className="pb-36px text-18px">{title}</h3>
         {dataList.map((item, index) => (

@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import Header from '@/components/Header/Header';
 import PostBox from '@/components/Community/PostBox';
 import IconPlus from '@/assets/icons/icon_plus.svg';
+import Navigation from '@/components/Navigation/Navigation';
+import Horizon from '@/components/common/atom/Horizon';
 
 const PostList = () => {
   const loginUserData = localStorage.getItem('pocketbase_auth');
@@ -9,7 +11,8 @@ const PostList = () => {
   return (
     <>
       <div className="flex w-full flex-col items-center justify-center">
-        <Header isShowPrev={true} children="자유게시판" isShowSearch={true} />
+        <Header isShowSymbol={true} children="자유게시판" isShowSearch={true} />
+        <Horizon lineBold="thin" lineWidth="long" />
 
         <PostBox />
       </div>
@@ -18,10 +21,11 @@ const PostList = () => {
           <img
             src={IconPlus}
             alt="글쓰기 버튼"
-            className="fixed bottom-20px right-24px z-10 size-60px drop-shadow-xl hover:animate-bounce	 "
+            className="fixed bottom-100px right-24px z-10 size-60px drop-shadow-xl hover:animate-bounce	 "
           />
         </Link>
       )}
+      <Navigation />
     </>
   );
 };
