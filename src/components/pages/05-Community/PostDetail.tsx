@@ -1,5 +1,5 @@
 import Header from '@/components/Header/Header';
-import PostBody from '@/components/Community/PostBody';
+import PostDetailBody from '@/components/Community/PostDetailBody';
 import Horizon from '@/components/common/atom/Horizon';
 import Navigation from '@/components/Navigation/Navigation';
 
@@ -10,7 +10,7 @@ const PostDetail = () => {
         <Header isShowPrev={true} children="자유게시판" empty={true} />
         <Horizon lineBold="thin" lineWidth="long" />
 
-        <PostBody />
+        <PostDetailBody />
         <Navigation />
       </div>
     </>

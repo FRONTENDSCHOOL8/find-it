@@ -2,14 +2,14 @@ import { pb } from '@/lib/api/getPbData';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getData } from '@/lib/utils/crud';
-import getPbImgURL from '@/lib/utils/getPbImgURL';
 import { getTimeDiff } from '@/lib/utils/getTimeDiff';
+import getPbImgURL from '@/lib/utils/getPbImgURL';
 import profile from '@/assets/profile.svg';
 
 // 포켓베이스 Auto cancellation 취소 명령어
 pb.autoCancellation(false);
 
-const PostBody = () => {
+const PostDetailBody = () => {
   const { id } = useParams();
   const [thisData, setThisData] = useState(null);
   const [userId, setUserId] = useState('');
@@ -55,7 +55,7 @@ const PostBody = () => {
         />
         <div className="flex flex-col text-12px">
           <span className="text-14px">{nickname}</span>
-          {getTimeDiff(created)}
+          {getTimeDiff({ createdAt: created })}
         </div>
       </section>
 
@@ -72,4 +72,4 @@ const PostBody = () => {
   );
 };
 
-export default PostBody;
+export default PostDetailBody;

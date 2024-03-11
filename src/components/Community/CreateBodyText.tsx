@@ -13,9 +13,7 @@ const CreateBodyText = ({
     e.preventDefault();
     onChangeTitle(e.target.value);
   };
-  const handleTagValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChangeTag(e.target.value.replace(/^#/, ''));
-  };
+
   const handleBodyValue = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     e.preventDefault();
     onChangeBody(e.target.value);
@@ -24,6 +22,10 @@ const CreateBodyText = ({
       setHeight(workingHeight);
     }
   };
+  const handleTagValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onChangeTag(e.target.value);
+  };
+
   return (
     <>
       <form className="flex w-315px flex-col pt-10px">
@@ -52,7 +54,7 @@ const CreateBodyText = ({
         className="mb-40px mt-20px  flex w-315px text-16px tracking-tight text-black"
         style={{ outline: 'none' }}
         maxLength={15}
-        value={tagValue && `#${tagValue}`}
+        value={tagValue}
         onChange={handleTagValue}
       />
     </>
