@@ -11,7 +11,7 @@ const PostList = () => {
   return (
     <>
       <div className="flex w-full flex-col items-center justify-center">
-        <Header isShowPrev={true} children="자유게시판" isShowSearch={true} />
+        <Header isShowSymbol={true} children="자유게시판" isShowSearch={true} />
         <Horizon lineBold="thin" lineWidth="long" />
 
         <PostBox />
