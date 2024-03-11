@@ -8,3 +8,5 @@ export { default as Welcome } from '@/components/pages/Welcome';
 export { default as Credit } from '@/components/pages/Credit';
 export { default as Notice } from '@/components/pages/Notice';
 export { default as GetList } from '@/components/pages/GetList';
+export { default as GetDetail } from '@/components/pages/GetDetail';
+export { default as LostDetail } from '@/components/pages/LostDetail';

@@ -1,10 +1,63 @@
 import { xmlToJson } from '@/lib/utils/xmlToJson';
 import { raiseValue } from '@/lib/utils/raiseValue';
-import { JsonObject } from '@/types/types';
+import { JsonObject, DetailData } from '@/types/types';
+import { removePrefix } from './removePrefix';
 
-function isJsonObject(value: unknown): value is JsonObject {
+const isJsonObject = (value: unknown): value is JsonObject => {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
+};
+
+const parseDetailData = (json: JsonObject): Partial<DetailData> | null => {
+  const detailKeys: Array<keyof DetailData> = [
+    'atcId',
+    'csteSteNm',
+    'depPlace',
+    'filePathImg',
+    'hor',
+    'place',
+    'prdtNm',
+    'sn',
+    'ymd',
+    'keepOrgnSeNm',
+    'orgId',
+    'orgNm',
+    'prdtClNm',
+    'tel',
+    'uniq',
+  ];
+
+  const result: Partial<DetailData> = {};
+
+  detailKeys.forEach((key) => {
+    const value = json[key];
+    if (typeof value === 'string') {
+      result[key] = value;
+    }
+  });
+
+  return Object.keys(result).length > 0 ? result : null;
+};
+
+// Partial: 모든 속성을 선택적으로 만듦
+const isDetailData = (object: Partial<DetailData>): object is DetailData => {
+  return (
+    typeof object.atcId === 'string' &&
+    typeof object.csteSteNm === 'string' &&
+    typeof object.depPlace === 'string' &&
+    typeof object.filePathImg === 'string' &&
+    typeof object.hor === 'string' &&
+    typeof object.place === 'string' &&
+    typeof object.prdtNm === 'string' &&
+    typeof object.sn === 'string' &&
+    typeof object.ymd === 'string' &&
+    typeof object.keepOrgnSeNm === 'string' &&
+    typeof object.orgId === 'string' &&
+    typeof object.orgNm === 'string' &&
+    typeof object.prdtClNm === 'string' &&
+    typeof object.tel === 'string' &&
+    typeof object.uniq === 'string'
+  );
+};
 
 export const getAllData = async (options = {}) => {
   try {
@@ -78,7 +131,7 @@ export const getSearchData = async (query: string, options = {}) => {
   }
 };
 
-export const getSearchId = async (id: string) => {
+export const getSearchId = async (id: string): Promise<DetailData | null> => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_GETITEMS_DETAIL_API}?serviceKey=${import.meta.env.VITE_PUBLICINFO_API_KEY_INC}&ATC_ID=${id}&FD_SN=1`
@@ -102,9 +155,18 @@ export const getSearchId = async (id: string) => {
       isJsonObject(json.response) &&
       isJsonObject(json.response.body)
     ) {
-      const result = raiseValue(json.response?.body.item);
+      const item = raiseValue(json.response?.body.item);
+      const result = removePrefix(item);
 
-      return result;
+      if (isJsonObject(result)) {
+        const jsonObject: JsonObject = result;
+
+        const detailData = parseDetailData(jsonObject);
+
+        if (detailData !== null && isDetailData(detailData)) {
+          return detailData;
+        }
+      }
     }
   } catch (error) {
     console.error('error: ' + error);

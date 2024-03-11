@@ -1,10 +1,63 @@
 import { xmlToJson } from '@/lib/utils/xmlToJson';
 import { raiseValue } from '@/lib/utils/raiseValue';
-import { JsonObject } from '@/types/types';
+import { LostDetailData, JsonObject } from '@/types/types';
+import { removePrefix } from './removePrefix';
 
 function isJsonObject(value: unknown): value is JsonObject {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
+
+const parseDetailData = (json: JsonObject): Partial<LostDetailData> | null => {
+  const detailKeys: Array<keyof LostDetailData> = [
+    'atcId',
+    'lstFilePathImg',
+    'uniq',
+    'lstLctNm',
+    'lstPlace',
+    'lstPlaceSeNm',
+    'lstPrdtNm',
+    'lstSbjt',
+    'lstSteNm',
+    'lstYmd',
+    'orgId',
+    'orgNm',
+    'prdtClNm',
+    'tel',
+  ];
+
+  const result: Partial<LostDetailData> = {};
+
+  detailKeys.forEach((key) => {
+    const value = json[key];
+    if (typeof value === 'string') {
+      result[key] = value;
+    }
+  });
+
+  return Object.keys(result).length > 0 ? result : null;
+};
+
+// Partial: 모든 속성을 선택적으로 만듦
+const isDetailData = (
+  object: Partial<LostDetailData>
+): object is LostDetailData => {
+  return (
+    typeof object.atcId === 'string' &&
+    typeof object.lstFilePathImg === 'string' &&
+    typeof object.uniq === 'string' &&
+    typeof object.lstLctNm === 'string' &&
+    typeof object.lstPlace === 'string' &&
+    typeof object.lstPlaceSeNm === 'string' &&
+    typeof object.lstPrdtNm === 'string' &&
+    typeof object.lstSbjt === 'string' &&
+    typeof object.lstSteNm === 'string' &&
+    typeof object.lstYmd === 'string' &&
+    typeof object.orgId === 'string' &&
+    typeof object.orgNm === 'string' &&
+    typeof object.prdtClNm === 'string' &&
+    typeof object.tel === 'string'
+  );
+};
 
 export const lostAllData = async (option = {}) => {
   try {
@@ -96,12 +149,20 @@ export const lostSearchId = async (id: string) => {
     if (
       isJsonObject(json) &&
       isJsonObject(json.response) &&
-      isJsonObject(json.response.body) &&
-      isJsonObject(json.response.body.items)
+      isJsonObject(json.response.body)
     ) {
-      const result = raiseValue(json.response?.body.items.item);
+      const item = raiseValue(json.response?.body.item);
+      const result = removePrefix(item);
 
-      return result;
+      if (isJsonObject(result)) {
+        const jsonObject: JsonObject = result;
+
+        const detailData = parseDetailData(jsonObject);
+
+        if (detailData !== null && isDetailData(detailData)) {
+          return detailData;
+        }
+      }
     }
   } catch (error) {
     console.error('error: ' + error);
