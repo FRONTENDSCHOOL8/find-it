@@ -17,8 +17,8 @@ import {
   Notification,
   PostList,
   PostDetail,
+  SearchPost,
   CreatePost,
-
 } from '@/components/pages/index';
 import Detail from '@/components/Detail/Detail';
 import SearchFindDetail from '@/components/SearchDetail/pages/SearchFindDetail';
@@ -31,6 +31,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/getlist" element={<GetList />} />
+          <Route path="/lostlist" element={<LostList />} />
           <Route path="/detail" element={<Detail />} />
           <Route path="/searchfind" element={<SearchFindDetail />} />
           <Route path="/searchresult" element={<SearchResult />} />
@@ -48,8 +49,8 @@ const App = () => {
           <Route path="/postlist" element={<PostList />} />
           <Route path="/postdetail/:id" element={<PostDetail />} />
           <Route path="/createpost" element={<CreatePost />} />
+          <Route path="/searchpost" element={<SearchPost />} />
           <Route path="/*" element={<NotFound />} />
-          <Route path="/lostlist" element={<LostList />} />
         </Routes>
       </BrowserRouter>
     </>

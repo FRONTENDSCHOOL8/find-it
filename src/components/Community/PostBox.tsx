@@ -1,7 +1,6 @@
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { getData } from '@/lib/utils/crud';
 import { getTimeDiff } from '@/lib/utils/getTimeDiff';
-import { Link } from 'react-router-dom';
 
 // pb 데이터 뿌리기
 const data = await getData('community', { sort: '-created' });
