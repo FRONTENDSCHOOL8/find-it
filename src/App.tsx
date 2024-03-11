@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import {
   Main,
@@ -24,7 +25,7 @@ import Detail from '@/components/Detail/Detail';
 import SearchFindDetail from '@/components/SearchDetail/pages/SearchFindDetail';
 import SearchResult from '@/components/SearchResult/SearchResult';
 
-const App = () => {
+const Root = () => {
   return (
     <>
       <BrowserRouter>
@@ -45,7 +46,6 @@ const App = () => {
           <Route path="/welcome" element={<Welcome />} />
           <Route path="/notice" element={<Notice />} />
           <Route path="/credit" element={<Credit />} />
-          <Route path="/splash" element={<Splash />} />
           <Route path="/postlist" element={<PostList />} />
           <Route path="/postdetail/:id" element={<PostDetail />} />
           <Route path="/createpost" element={<CreatePost />} />
@@ -55,6 +55,20 @@ const App = () => {
       </BrowserRouter>
     </>
   );
+};
+
+const App = () => {
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setShowSplash(false);
+    }, 3500);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
+  return <>{(showSplash && <Splash />) || <Root />}</>;
 };
 
 export default App;
