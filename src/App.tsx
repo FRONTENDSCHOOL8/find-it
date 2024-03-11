@@ -9,6 +9,7 @@ import {
   Notice,
   Welcome,
   GetList,
+  LostList,
   NotFound,
   MypageEdit,
   MypageEntry,
@@ -45,6 +46,7 @@ const App = () => {
           <Route path="/postdetail/:id" element={<PostDetail />} />
           <Route path="/createpost" element={<CreatePost />} />
           <Route path="/*" element={<NotFound />} />
+          <Route path="/lostlist" element={<LostList />} />
         </Routes>
       </BrowserRouter>
     </>

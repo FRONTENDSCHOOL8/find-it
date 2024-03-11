@@ -5,21 +5,30 @@ type itemTypeProps = {
   itemType: 'get' | 'lost' | 'main';
   item?: {
     fdPrdtNm: string;
+    lstPrdtNm: string;
     fdYmd: string;
+    lstYmd: string;
     depPlace: string;
+    lstPlace: string;
     fdFilePathImg: string;
   };
 };
-
 interface GetItemType {
-  item_name: string;
-  date: string;
+  get_item_name: string;
+  get_date: string;
   storage: string;
   item_image: string;
 }
 
+interface LostItemType {
+  lost_item_name: string;
+  lost_date: string;
+  lost_place: string;
+}
+
 const ItemBox: React.FC<itemTypeProps> = ({ itemType, item }) => {
-  const [itemData, setItemData] = useState<GetItemType | null>(null);
+  const [getItemData, setGetItemData] = useState<GetItemType | null>(null);
+  const [lostItemData, setLostItemData] = useState<LostItemType | null>(null);
   useEffect(() => {
     if (
       item &&
@@ -28,29 +37,40 @@ const ItemBox: React.FC<itemTypeProps> = ({ itemType, item }) => {
       item.depPlace &&
       item.fdFilePathImg
     ) {
-      const newItem: GetItemType = {
-        item_name: item.fdPrdtNm,
-        date: item.fdYmd,
+      const newGetItem: GetItemType = {
+        get_item_name: item.fdPrdtNm,
+        get_date: item.fdYmd,
         storage: item.depPlace,
         item_image: item.fdFilePathImg,
       };
-      setItemData(newItem);
+      setGetItemData(newGetItem);
+    }
+  }, [item]);
+
+  useEffect(() => {
+    if (item && item.lstPrdtNm && item.lstYmd && item.lstPlace) {
+      const newLostItem: LostItemType = {
+        lost_item_name: item.lstPrdtNm,
+        lost_date: item.lstYmd,
+        lost_place: item.lstPlace,
+      };
+      setLostItemData(newLostItem);
     }
   }, [item]);
 
   return (
     <div>
-      {itemType === 'get' && itemData && (
+      {itemType === 'get' && getItemData && (
         <a href="/" className="block">
           <div className="mb-3 flex h-140px w-335px justify-between rounded-[20px] bg-white transition-all duration-300 hover:cursor-pointer hover:shadow-lg">
             <div className="flex flex-col items-start py-18px pl-20px">
               <h1 className="pb-2 text-20px font-medium leading-[1.3] tracking-tighter">
-                {itemData.item_name.length > 10
-                  ? itemData.item_name.slice(0, 8) + '...'
-                  : itemData.item_name}
+                {getItemData.get_item_name.length > 10
+                  ? getItemData.get_item_name.slice(0, 8) + '...'
+                  : getItemData.get_item_name}
               </h1>
               <span className="rounded-full bg-primary px-3 py-1 text-10px font-medium leading-[1.3] tracking-tighter text-white">
-                {itemData.storage}
+                {getItemData.storage}
               </span>
 
               <div className="mt-13px flex flex-col gap-1">
@@ -58,7 +78,7 @@ const ItemBox: React.FC<itemTypeProps> = ({ itemType, item }) => {
                   습득날짜
                 </span>
                 <span className="text-12px font-medium leading-[1.3] tracking-tighter">
-                  {itemData.date}
+                  {getItemData.get_date}
                 </span>
               </div>
             </div>
@@ -66,10 +86,10 @@ const ItemBox: React.FC<itemTypeProps> = ({ itemType, item }) => {
             <div className="p-10px">
               <img
                 src={
-                  itemData.item_image ===
+                  getItemData.item_image ===
                   'https://www.lost112.go.kr/lostnfs/images/sub/img02_no_img.gif'
                     ? default_item
-                    : itemData.item_image
+                    : getItemData.item_image
                 }
                 alt="물품 사진"
                 className="size-120px rounded-14px"
@@ -79,23 +99,25 @@ const ItemBox: React.FC<itemTypeProps> = ({ itemType, item }) => {
         </a>
       )}
 
-      {itemType === 'lost' && (
+      {itemType === 'lost' && lostItemData && (
         <a href="/" className="block">
           <div className="mb-3 flex h-140px w-335px justify-between rounded-[20px] bg-white transition-all duration-300 hover:cursor-pointer hover:shadow-lg">
             <div className="flex flex-col items-start py-18px pl-20px">
               <h1 className="pb-2 text-20px font-medium leading-[1.3] tracking-tighter">
-                물품명
+                {lostItemData.lost_item_name.length > 10
+                  ? lostItemData.lost_item_name.slice(0, 8) + '...'
+                  : lostItemData.lost_item_name}
               </h1>
               <span className="rounded-full border-[1px] border-primary px-3 py-3px text-10px font-medium leading-[1.3] tracking-tighter text-primary ">
-                분실장소
+                {lostItemData.lost_place}
               </span>
 
               <div className="mt-13px flex flex-col gap-1">
                 <span className="text-12px font-medium leading-[1.3] tracking-tighter text-gray-500">
-                  잃어버린 날
+                  분실날짜
                 </span>
                 <span className="text-12px font-medium leading-[1.3] tracking-tighter">
-                  2024년 2월 26일
+                  {lostItemData.lost_date}
                 </span>
               </div>
             </div>
