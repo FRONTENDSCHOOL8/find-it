@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { pb } from '@/lib/api/getPbData';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import profile from '@/assets/profile.svg';
 import icon_pencil from '@/assets/icons/icon_pencil.svg';
@@ -12,6 +12,15 @@ import icon_bell from '@/assets/icons/icon_bell.svg';
 import Horizon from '../../common/atom/Horizon';
 import getPbImgURL from '@/lib/utils/getPbImgURL';
 import Header from '../../Header/Header';
+
+declare global {
+  interface Window {
+    Tawk_API?: {
+      hideWidget: () => void;
+      showWidget: () => void;
+    };
+  }
+}
 
 /* -------------------------------------------------------------------------- */
 // 로그인 유저 정보 가져오기
@@ -145,18 +154,36 @@ const Menu = () => {
 };
 
 const MyPage = () => {
+  const location = useLocation();
   useEffect(() => {
     const script = document.createElement('script');
     script.async = true;
-    script.src = 'https://embed.tawk.to/65e52f1d9131ed19d9746a7d/1ho3k035v';
+    script.src = 'https://embed.tawk.to/65eeb6d69131ed19d977bab0/1hom7kdu6';
     script.setAttribute('crossorigin', '*');
 
     document.body.appendChild(script);
 
-    return () => {
-      document.body.removeChild(script);
+    const hideTawkToWidget = () => {
+      if (window.Tawk_API) {
+        window.Tawk_API.hideWidget();
+      }
     };
-  }, []);
+
+    const showTawkToWidget = () => {
+      if (window.Tawk_API) {
+        window.Tawk_API.showWidget();
+      }
+    };
+
+    if (location.pathname !== '/mypageentry') {
+      hideTawkToWidget();
+    } else {
+      showTawkToWidget();
+    }
+
+    return hideTawkToWidget;
+  }, [location]);
+
   return (
     <div className="min-w-375px">
       <Header isShowPrev={true} children="마이페이지" empty={true} />
