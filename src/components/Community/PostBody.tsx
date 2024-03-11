@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getData } from '@/lib/utils/crud';
 import getPbImgURL from '@/lib/utils/getPbImgURL';
-import GetTimeDiff from '@/components/common/atom/GetTimeDiff';
+import { getTimeDiff } from '@/lib/utils/getTimeDiff';
 import profile from '@/assets/profile.svg';
 import Horizon from '@/components/common/atom/Horizon';
 
@@ -58,7 +58,7 @@ const PostBody = () => {
         />
         <div className="flex flex-col text-12px">
           <span className="text-14px">{nickname}</span>
-          <GetTimeDiff createdAt={created} />
+          {getTimeDiff(created)}
         </div>
       </section>
 
