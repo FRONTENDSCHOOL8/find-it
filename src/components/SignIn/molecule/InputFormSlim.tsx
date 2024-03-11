@@ -4,7 +4,6 @@ import ConfirmText from '@/components/common/atom/ConfirmText';
 import InputIconButton from '@/components/SignIn/molecule/InputIconButton';
 
 interface InputFormProps {
-  marginTop?: string;
   type?: string;
   title: string;
   placeholder: string;
@@ -36,13 +35,13 @@ const InputForm: React.ForwardRefRenderFunction<
   InputFormProps
 > = (
   {
-    marginTop = '0px',
     type = 'text',
     title,
     placeholder,
     value,
     alertCase,
     confirmCase,
+
     onChange,
     iconDoubleCheck,
     iconDelete,
@@ -72,25 +71,21 @@ const InputForm: React.ForwardRefRenderFunction<
     setIsFocus(false);
   };
 
-  const defaultColor = '#e4e4e4';
+  const defaultColor = '#f5f5f5';
   const activeColor = '#4785ff';
   const borderColor = (isFocus && activeColor) || defaultColor;
 
   /* -------------------------------------------------------------------------- */
   // jsx 반환
   return (
-    <div
-      style={{
-        marginTop: `${marginTop}`,
-      }}
-    >
+    <>
       <div
-        className="flex h-48px w-full items-center justify-between"
-        style={{ borderBottom: `1.4px solid ${borderColor}` }}
+        className="flex h-36px w-full items-center justify-between bg-gray-100"
+        style={{ borderBottom: `1.5px solid ${borderColor}` }}
       >
         <label className="sr-only">{title}</label>
         <input
-          className="text-#989898 w-full pl-2.5 pr-2.5 text-14px"
+          className="w-full bg-gray-100 pl-2.5 pr-2.5 text-12px text-black"
           style={{ outline: 'none' }}
           ref={ref}
           type={type}
@@ -115,7 +110,7 @@ const InputForm: React.ForwardRefRenderFunction<
       </div>
       <AlertText alertCase={alertCase} />
       <ConfirmText confirmCase={confirmCase} />
-    </div>
+    </>
   );
 };
 

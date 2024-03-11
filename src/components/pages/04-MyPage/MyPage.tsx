@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { pb } from '@/lib/api/getPbData';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import profile from '@/assets/profile.svg';
 import icon_pencil from '@/assets/icons/icon_pencil.svg';
@@ -9,9 +9,18 @@ import icon_docs from '@/assets/icons/icon_docs.svg';
 import icon_envelope from '@/assets/icons/icon_envelope.svg';
 import icon_search from '@/assets/icons/icon_search_16.svg';
 import icon_bell from '@/assets/icons/icon_bell.svg';
-import Horizon from '../common/atom/Horizon';
+import Horizon from '../../common/atom/Horizon';
 import getPbImgURL from '@/lib/utils/getPbImgURL';
-import Header from '../Header/Header';
+import Header from '../../Header/Header';
+
+declare global {
+  interface Window {
+    Tawk_API?: {
+      hideWidget: () => void;
+      showWidget: () => void;
+    };
+  }
+}
 
 /* -------------------------------------------------------------------------- */
 // 로그인 유저 정보 가져오기
@@ -40,12 +49,12 @@ const Profile = () => {
       <div className="flex flex-col gap-6px">
         <div className="flex items-center gap-4px">
           <h1 className="text-20px">{userNickname}</h1>
-          <a
-            href="/"
+          <Link
+            to="/mypageedit"
             className="p-1.5 transition-all duration-300 hover:rounded hover:bg-gray-100"
           >
             <img src={icon_pencil} alt="프로필 수정하기" />
-          </a>
+          </Link>
         </div>
         <span className="text-12px text-gray-450">{userEmail}</span>
       </div>
@@ -102,7 +111,7 @@ const List02 = () => {
           </a>
         </li>
         <li className="transition-all duration-300 hover:rounded hover:bg-gray-100">
-          <a href="/" className="flex gap-10px py-4px">
+          <a href="/notification" className="flex gap-10px py-4px">
             <img src={icon_bell} alt="키워드 알림 보기" />
             <span className="flex gap-3px">
               키워드 알림
@@ -145,18 +154,36 @@ const Menu = () => {
 };
 
 const MyPage = () => {
+  const location = useLocation();
   useEffect(() => {
     const script = document.createElement('script');
     script.async = true;
-    script.src = 'https://embed.tawk.to/65e52f1d9131ed19d9746a7d/1ho3k035v';
+    script.src = 'https://embed.tawk.to/65eeb6d69131ed19d977bab0/1hom7kdu6';
     script.setAttribute('crossorigin', '*');
 
     document.body.appendChild(script);
 
-    return () => {
-      document.body.removeChild(script);
+    const hideTawkToWidget = () => {
+      if (window.Tawk_API) {
+        window.Tawk_API.hideWidget();
+      }
     };
-  }, []);
+
+    const showTawkToWidget = () => {
+      if (window.Tawk_API) {
+        window.Tawk_API.showWidget();
+      }
+    };
+
+    if (location.pathname !== '/mypageentry') {
+      hideTawkToWidget();
+    } else {
+      showTawkToWidget();
+    }
+
+    return hideTawkToWidget;
+  }, [location]);
+
   return (
     <div className="min-w-375px">
       <Header isShowPrev={true} children="마이페이지" empty={true} />

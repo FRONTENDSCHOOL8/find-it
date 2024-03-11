@@ -5,15 +5,12 @@ import SearchParagraph from '../atom/SearchParagraph';
 import ButtonVariable from '@/components/common/molecule/ButtonVariable';
 import Shortcut from '@/components/Shortcut/Shortcut';
 import select from '@/assets/search/select.svg';
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { xmlToJson } from '@/lib/utils/xmlToJson';
-// import { raiseValue } from '@/lib/utils/raiseValue';
-// import { JsonObject } from '@/types/types';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getSearchFindData } from '@/lib/utils/getAPIData';
+import useSearchStore from '@/store/search/searchStore';
+import getFormattedDate from '@/lib/utils/getFormattedDate';
 
-// function isJsonObject(value: unknown): value is JsonObject {
-//   return typeof value === 'object' && value !== null && !Array.isArray(value);
-// }
 interface SearchData {
   body?: {
     items?: {
@@ -28,15 +25,30 @@ interface Category {
 }
 
 const SearchFindDetail: React.FC = () => {
-  const [selectStartDate, setSelectStartDate] =
-    useState<string>('날짜를 선택하세요.');
-  const [selectEndDate, setSelectEndDate] =
-    useState<string>('날짜를 선택하세요.');
-  const [selectedMainCategoryValue, setSelectedMainCategoryValue] =
-    useState<string>('');
-  const [selectedSubCategoryValue, setSelectedSubCategoryValue] =
-    useState<string>('');
-  const [selectedAreaValue, setSelectedAreaValue] = useState<string>('');
+  // const [selectStartDate, setSelectStartDate] =
+  //   useState<string>('날짜를 선택하세요.');
+  // const [selectEndDate, setSelectEndDate] =
+  //   useState<string>('날짜를 선택하세요.');
+  // const [selectedMainCategoryValue, setSelectedMainCategoryValue] =
+  //   useState<string>('');
+  // const [selectedSubCategoryValue, setSelectedSubCategoryValue] =
+  //   useState<string>('');
+  // const [selectedAreaValue, setSelectedAreaValue] = useState<string>('');
+
+  const {
+    selectStartDate,
+    setSelectStartDate,
+    selectEndDate,
+    setSelectEndDate,
+    selectedMainCategoryValue,
+    setSelectedMainCategoryValue,
+    selectedSubCategoryValue,
+    setSelectedSubCategoryValue,
+    selectedAreaValue,
+    setSelectedAreaValue,
+  } = useSearchStore();
+
+  const navigate = useNavigate();
 
   const sectionStyle = 'flex flex-col gap-20px justify-center pt-20px';
   // const inputGroupStyle = 'flex justify-between items-center gap-25px';
@@ -239,58 +251,52 @@ const SearchFindDetail: React.FC = () => {
     setSelectedAreaValue(value);
   };
 
-  const getSearchData = async (query = {}) => {
-    try {
-      const params = new URLSearchParams(query);
-
-      const response = await fetch(
-        `${import.meta.env.VITE_GET_FIND_DATA_CATEGORY_API_URL}?serviceKey=${import.meta.env.VITE_GET_DATA_API_KEY_ENC}&${params.toString()}`
-      );
-
-      if (!response.ok) {
-        throw new Error('네트워크 응답 없음');
-      }
-
-      const data = await response.text();
-      const parser = new DOMParser();
-      const xml = parser.parseFromString(data, 'text/xml');
-      const json = xmlToJson(xml);
-
-      if (typeof json === 'string') {
-        throw new Error('json is string');
-      }
-
-      return json.response;
-    } catch (error) {
-      console.error('error: ' + error);
+  const handleSearchButtonClick = () => {
+    if (selectStartDate === '날짜를 선택하세요.') {
+      alert('습득 시작일을 선택하세요.');
+    } else if (selectEndDate === '날짜를 선택하세요.') {
+      alert('습득 종료일을 선택하세요.');
+    } else {
+      navigate('/searchresult');
     }
   };
 
   useEffect(() => {
-    const delaySearch = setTimeout(async () => {
-      // const data = await getAllData({
-      //   pageNo: 2,
-      //   numOfRows: 100,
-      // });
+    const fetchData = async () => {
+      try {
+        const searchData = await getSearchFindData({
+          PRDT_CL_CD_01: selectedMainCategoryValue,
+          PRDT_CL_CD_02: selectedSubCategoryValue,
+          N_FD_LCT_CD: selectedAreaValue,
+          START_YMD:
+            selectStartDate !== '날짜를 선택하세요.'
+              ? getFormattedDate(selectStartDate)
+              : '',
+          END_YMD:
+            selectEndDate !== '날짜를 선택하세요.'
+              ? getFormattedDate(selectEndDate)
+              : '',
+          pageNo: 1,
+          numOfRows: 6,
+        });
 
-      // console.log(data);
-
-      const searchData = await getSearchData({
-        PRDT_CL_CD_01: selectedMainCategoryValue,
-        PRDT_CL_CD_02: selectedSubCategoryValue,
-        N_FD_LCT_CD: selectedAreaValue,
-        pageNo: 1,
-        numOfRows: 10,
-      });
-
-      if (typeof searchData === 'object') {
-        const resultData = (searchData as SearchData).body?.items?.item;
-        console.log(resultData);
+        if (typeof searchData === 'object') {
+          const resultData = (searchData as SearchData).body?.items?.item;
+          useSearchStore.setState({ resultData });
+        }
+      } catch (error) {
+        console.error('error: ' + error);
       }
-    }, 500);
+    };
 
-    return () => clearTimeout(delaySearch);
-  }, [selectedMainCategoryValue, selectedSubCategoryValue, selectedAreaValue]);
+    fetchData();
+  }, [
+    selectedMainCategoryValue,
+    selectedSubCategoryValue,
+    selectedAreaValue,
+    selectStartDate,
+    selectEndDate,
+  ]);
 
   return (
     <div className="flex flex-col items-center">
@@ -392,9 +398,11 @@ const SearchFindDetail: React.FC = () => {
           </SearchDate>
         </section>
         <section className={`${sectionStyle} mt-40px items-center`}>
-          <Link to="/searchResult">
-            <ButtonVariable variant="primarySolidThin" buttonText="검색" />
-          </Link>
+          <ButtonVariable
+            variant="primarySolidThin"
+            buttonText="검색"
+            onClick={handleSearchButtonClick}
+          />
           <Shortcut
             link="/"
             text="분실물 검색으로 이동하기"
