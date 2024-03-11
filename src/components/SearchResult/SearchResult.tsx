@@ -1,41 +1,121 @@
 import Header from '../Header/Header';
-// import ItemBox from '../ItemBox/ItemBox';
+import useSearchStore from '@/store/search/searchStore';
+import { useEffect, useState, useRef, UIEvent, useCallback } from 'react';
+import loading from '@/assets/loading.svg';
+import { JsonArray } from '@/types/types';
+import ItemBox from '@/components/ItemBox/ItemBox';
+import { getSearchFindData } from '@/lib/utils/getAPIData';
+import getFormattedDate from '@/lib/utils/getFormattedDate';
+import Navigation from '../Navigation/Navigation';
+import { useNavigate } from 'react-router-dom';
 
 const SearchResult = () => {
+  const {
+    selectStartDate,
+    selectEndDate,
+    selectedMainCategoryValue,
+    selectedSubCategoryValue,
+    selectedAreaValue,
+  } = useSearchStore();
+
+  const [items, setItems] = useState([]);
+  const [page, setPage] = useState(1);
+  const [fetching, setFetching] = useState(false);
+
+  const scrollContainerRef = useRef(null);
+
+  const navigate = useNavigate();
+
+  const fetchData = async (pageNo: number) => {
+    setFetching(true);
+    const data = await getSearchFindData({
+      PRDT_CL_CD_01: selectedMainCategoryValue,
+      PRDT_CL_CD_02: selectedSubCategoryValue,
+      N_FD_LCT_CD: selectedAreaValue,
+      START_YMD:
+        selectStartDate !== '날짜를 선택하세요.'
+          ? getFormattedDate(selectStartDate)
+          : '',
+      END_YMD:
+        selectEndDate !== '날짜를 선택하세요.'
+          ? getFormattedDate(selectEndDate)
+          : '',
+      pageNo: pageNo,
+      numOfRows: 6,
+    });
+
+    if (typeof data === 'undefined') {
+      setFetching(false);
+      return setItems(null);
+    }
+
+    setItems((prev) => {
+      return [...prev, ...(data as JsonArray)];
+    });
+
+    setFetching(false);
+  };
+
+  const fetchMoreItems = useCallback(async () => {
+    if (!fetching) {
+      setFetching(true);
+      setPage((prevPage) => prevPage + 1);
+    }
+  }, [fetching]);
+
+  const handleScroll = useCallback(
+    (event: UIEvent<HTMLDivElement>) => {
+      const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
+      if (scrollTop + clientHeight >= scrollHeight && !fetching) {
+        fetchMoreItems();
+      }
+    },
+    [fetching, fetchMoreItems]
+  );
+
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', handleScroll);
+      return () => {
+        scrollContainer.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, [handleScroll]);
+
+  useEffect(() => {
+    if (selectStartDate === '날짜를 선택하세요.') {
+      navigate('/searchfind');
+    } else {
+      fetchData(page);
+    }
+  }, [page, navigate, selectStartDate]);
+
   return (
-    <div className="flex h-667px min-w-375px max-w-400px flex-col items-center overflow-y-auto bg-gray-200">
+    <div className="fixed left-1/2 flex h-screen w-375px -translate-x-1/2 flex-col items-center bg-gray-200">
       <Header isShowPrev={true} empty={true}>
         검색결과
       </Header>
       <div className="flex flex-col items-center justify-between">
-        <div>
-          <a href="/" className="block">
-            <div className="mb-3 flex h-140px w-335px justify-between rounded-[20px] bg-white transition-all duration-300 hover:cursor-pointer hover:shadow-lg">
-              <div className="flex flex-col items-start py-18px pl-20px">
-                <h1 className="pb-2 text-20px font-medium leading-[1.3] tracking-tighter">
-                  물품명
-                </h1>
-                <span className="rounded-full bg-primary px-3 py-1 text-10px font-medium leading-[1.3] tracking-tighter text-white">
-                  습득장소
-                </span>
-
-                <div className="mt-13px flex flex-col gap-1">
-                  <span className="text-12px font-medium leading-[1.3] tracking-tighter text-gray-500">
-                    습득한 날
-                  </span>
-                  <span className="text-12px font-medium leading-[1.3] tracking-tighter">
-                    2024년 2월 26일
-                  </span>
-                </div>
-              </div>
-
-              <div className="p-10px">
-                <img src="/" alt="등록된 물품 사진 없음" />
-              </div>
-            </div>
-          </a>
+        <div
+          ref={scrollContainerRef}
+          className="h-[calc(100vh-66px-80px)] overflow-auto"
+        >
+          {items === null ? (
+            <div className="text-center">검색 결과가 없습니다.</div>
+          ) : (
+            <ul className="flex flex-col items-center">
+              {items.map((item, index) => (
+                <li key={index}>
+                  <ItemBox item={item} itemType="get" />
+                </li>
+              ))}
+            </ul>
+          )}
+          {fetching && <img src={loading} alt="로딩 중" className="mx-auto" />}
         </div>
       </div>
+      <Navigation />
     </div>
   );
 };
