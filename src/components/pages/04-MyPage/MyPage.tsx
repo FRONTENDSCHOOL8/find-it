@@ -102,7 +102,7 @@ const List02 = () => {
           </a>
         </li>
         <li className="transition-all duration-300 hover:rounded hover:bg-gray-100">
-          <a href="/" className="flex gap-10px py-4px">
+          <a href="/notification" className="flex gap-10px py-4px">
             <img src={icon_bell} alt="키워드 알림 보기" />
             <span className="flex gap-3px">
               키워드 알림

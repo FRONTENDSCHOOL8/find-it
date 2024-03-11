@@ -1,10 +1,10 @@
 import Header from '../../Header/Header';
+import loading from '@/assets/loading.svg';
 import ItemBox from '../../ItemBox/ItemBox';
 import Navigation from '../../Navigation/Navigation';
-import loading from '@/assets/loading.svg';
+import { JsonArray } from '@/types/types';
 import { lostAllData } from '@/lib/utils/lostAPIData';
 import { useEffect, useState, useRef, UIEvent, useCallback } from 'react';
-import { JsonArray } from '@/types/types';
 
 const LostList = () => {
   const [items, setItems] = useState([]);
