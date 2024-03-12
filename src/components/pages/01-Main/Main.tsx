@@ -105,7 +105,7 @@ const CommunityBox = () => {
 const Main = () => {
   return (
     <>
-      <div className="flex w-full flex-col items-center justify-center">
+      <div className="flex w-full flex-col items-center">
         <Header isShowLogo={true} />
         <div className="w-375px px-5">
           <div className="flex gap-4">

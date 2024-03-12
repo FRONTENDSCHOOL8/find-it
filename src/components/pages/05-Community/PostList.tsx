@@ -10,7 +10,7 @@ const PostList = () => {
 
   return (
     <>
-      <div className="flex w-full flex-col items-center justify-center">
+      <div className="flex w-full flex-col items-center ">
         <Header isShowSymbol={true} children="자유게시판" isShowSearch={true} />
         <Horizon lineBold="thin" lineWidth="long" />
 

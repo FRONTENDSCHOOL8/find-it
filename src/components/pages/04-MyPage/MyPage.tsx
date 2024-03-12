@@ -185,7 +185,7 @@ const MyPage = () => {
   }, [location]);
 
   return (
-    <div className="min-w-375px">
+    <div className="flex w-full min-w-375px flex-col items-center">
       <Header isShowPrev={true} children="마이페이지" empty={true} />
       <div className="px-30px">
         <Profile />
