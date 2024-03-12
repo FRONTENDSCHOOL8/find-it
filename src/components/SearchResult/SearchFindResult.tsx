@@ -9,7 +9,7 @@ import getFormattedDate from '@/lib/utils/getFormattedDate';
 import Navigation from '../Navigation/Navigation';
 import { useNavigate } from 'react-router-dom';
 
-const SearchResult = () => {
+const SearchFindResult = () => {
   const {
     selectStartDate,
     selectEndDate,
@@ -120,4 +120,4 @@ const SearchResult = () => {
   );
 };
 
-export default SearchResult;
+export default SearchFindResult;
