@@ -58,7 +58,7 @@ const GetList = () => {
 
   return (
     <div className="flex h-screen w-full flex-col items-center bg-gray-200">
-      <Header isShowSymbol={true} children="습득물 찾기" isShowSearch={true} />
+      <Header isShowSymbol={true} children="습득물 찾기" isShowSearch={true} />{' '}
       <div className="w-375px">
         <div
           ref={scrollContainerRef}
