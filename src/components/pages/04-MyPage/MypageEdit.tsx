@@ -195,7 +195,7 @@ const MypageEdit = () => {
   /* -------------------------------------------------------------------------- */
   // 업데이트 데이터
   const updateUserData = {
-    nickname: nicknameValue,
+    nickname: nicknameValue || userNickname,
     oldPassword: `${passwordDefaultValue}`,
     password: `${passwordValue}`,
     passwordConfirm: `${passwordCheckValue}`,
@@ -207,14 +207,15 @@ const MypageEdit = () => {
 
   useEffect(() => {
     if (
-      valiNickDouble &&
-      selectFirstItem &&
-      selectSecondItem &&
-      passwordDefaultValue !== '' &&
-      passwordValue === passwordCheckValue &&
-      valiPasswordForm === true
+      valiNickDouble ||
+      (selectFirstItem && selectSecondItem) ||
+      (passwordDefaultValue !== '' &&
+        passwordValue === passwordCheckValue &&
+        valiPasswordForm === true)
     ) {
       setSubmit(true);
+    } else {
+      setSubmit(false);
     }
   }, [
     valiNickDouble,
@@ -310,17 +311,18 @@ const MypageEdit = () => {
           className="hidden"
         />
         <button
-          ref={avatarRef}
           type="button"
           onClick={handleProfileChange}
-          className="relative mx-auto my-30px"
+          className="relative mx-auto mb-30px mt-20px"
         >
           <img
+            ref={avatarRef}
             className="size-88px rounded-full"
             src={userAvatar !== '' ? getPbImgURL(userId, userAvatar) : profile}
             alt="나의 프로필 사진"
           />
           <img
+            ref={avatarRef}
             className="absolute	bottom-0 right-0 z-10 size-32px translate-x-4px translate-y-4px "
             src={profileIcon}
             alt="프로필 사진 변경 버튼"
