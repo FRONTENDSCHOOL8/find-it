@@ -2,7 +2,7 @@ import icon_prev from '@/assets/icons/icon_prev.svg';
 import LOGO_SYMBOL from '@/assets/icons/LOGO_SYMBOL.svg';
 import LOGOTYPE from '@/assets/icons/LOGOTYPE_true.svg';
 import icon_search from '@/assets/icons/icon_search.svg';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface HeaderProps {
   isShowLogo?: boolean;
@@ -36,9 +36,10 @@ const Header: React.FC<HeaderProps> = ({
   let emptyBox;
   const defaultStyle = 'h-26px flex w-375px items-center justify-around';
 
-  const handlePreviousPage = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    history.go(-1);
+  const navigate = useNavigate();
+
+  const handlePreviousPage = () => {
+    navigate(-1);
   };
 
   if (isShowLogo !== undefined) {
@@ -68,9 +69,9 @@ const Header: React.FC<HeaderProps> = ({
   if (isShowPrev !== undefined) {
     if (isShowPrev) {
       prevIcon = (
-        <a href="/" onClick={handlePreviousPage}>
+        <button onClick={handlePreviousPage}>
           <img src={icon_prev} alt="이전으로" />
-        </a>
+        </button>
       );
     } else {
       return prevIcon;
@@ -81,7 +82,6 @@ const Header: React.FC<HeaderProps> = ({
     if (isShowSearch) {
       searchIcon = (
         <Link to={link} onClick={handlePreviousPage}>
-
           <img src={icon_search} alt="검색하기" />
         </Link>
       );
