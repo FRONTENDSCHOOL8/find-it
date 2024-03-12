@@ -257,7 +257,7 @@ const SearchFindDetail: React.FC = () => {
     } else if (selectEndDate === '날짜를 선택하세요.') {
       alert('습득 종료일을 선택하세요.');
     } else {
-      navigate('/searchresult');
+      navigate('/searchfindresult');
     }
   };
 
