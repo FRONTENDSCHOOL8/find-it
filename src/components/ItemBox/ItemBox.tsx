@@ -19,7 +19,7 @@ interface GetItemType {
   get_item_name: string;
   get_date: string;
   storage: string;
-  item_image: string;
+  get_item_image: string;
 }
 
 interface LostItemType {
@@ -34,7 +34,7 @@ const ItemBox: React.FC<itemTypeProps> = ({ itemType, item }) => {
   const navigate = useNavigate();
 
   const handleClickedItem = (id: string) => {
-    itemType === 'get' && navigate(`/getlist/detail/${id}`);
+    itemType === 'get' || ('main' && navigate(`/getlist/detail/${id}`));
     itemType === 'lost' && navigate(`/lostlist/detail/${id}`);
   };
 
@@ -50,7 +50,7 @@ const ItemBox: React.FC<itemTypeProps> = ({ itemType, item }) => {
         get_item_name: item.fdPrdtNm,
         get_date: item.fdYmd,
         storage: item.depPlace,
-        item_image: item.fdFilePathImg,
+        get_item_image: item.fdFilePathImg,
       };
       setGetItemData(newGetItem);
     }
@@ -83,7 +83,7 @@ const ItemBox: React.FC<itemTypeProps> = ({ itemType, item }) => {
               </span>
 
               <div className="mt-13px flex flex-col gap-1">
-                <span className="text-12px font-medium leading-[1.3] tracking-tighter text-gray-500">
+                <span className="text-start text-12px font-medium leading-[1.3] tracking-tighter text-gray-500">
                   습득날짜
                 </span>
                 <span className="text-12px font-medium leading-[1.3] tracking-tighter">
@@ -95,10 +95,10 @@ const ItemBox: React.FC<itemTypeProps> = ({ itemType, item }) => {
             <div className="p-10px">
               <img
                 src={
-                  getItemData.item_image ===
+                  getItemData.get_item_image ===
                   'https://www.lost112.go.kr/lostnfs/images/sub/img02_no_img.gif'
                     ? default_item
-                    : getItemData.item_image
+                    : getItemData.get_item_image
                 }
                 alt="물품 사진"
                 className="size-120px rounded-14px"
@@ -122,7 +122,7 @@ const ItemBox: React.FC<itemTypeProps> = ({ itemType, item }) => {
               </span>
 
               <div className="mt-13px flex flex-col gap-1">
-                <span className="text-12px font-medium leading-[1.3] tracking-tighter text-gray-500">
+                <span className="text-start text-12px font-medium leading-[1.3] tracking-tighter text-gray-500">
                   분실날짜
                 </span>
                 <span className="text-12px font-medium leading-[1.3] tracking-tighter">
@@ -132,14 +132,18 @@ const ItemBox: React.FC<itemTypeProps> = ({ itemType, item }) => {
             </div>
 
             <div className="p-10px">
-              <img src={default_item} alt="등록된 물품 사진 없음" />
+              <img
+                src={default_item}
+                alt="등록된 사진이 없습니다."
+                className="size-120px rounded-14px"
+              />
             </div>
           </div>
         </button>
       )}
 
       {itemType === 'main' && getItemData && (
-        <button className="block">
+        <button className="block" onClick={() => handleClickedItem(item.atcId)}>
           <div className="mb-3 flex h-140px w-335px justify-between rounded-[20px] bg-primary transition-all duration-300 hover:cursor-pointer hover:shadow-lg">
             <div className="flex flex-col items-start py-18px pl-20px">
               <h1 className="pb-2 text-20px font-medium leading-[1.3] tracking-tighter text-white">
@@ -152,7 +156,7 @@ const ItemBox: React.FC<itemTypeProps> = ({ itemType, item }) => {
               </span>
 
               <div className="mt-13px flex flex-col gap-1">
-                <span className="text-12px font-medium leading-[1.3] tracking-tighter text-skyblue-400">
+                <span className="text-start text-12px font-medium leading-[1.3] tracking-tighter text-skyblue-400">
                   습득날짜
                 </span>
                 <span className="text-12px font-medium leading-[1.3] tracking-tighter text-white">
@@ -164,10 +168,10 @@ const ItemBox: React.FC<itemTypeProps> = ({ itemType, item }) => {
             <div className="p-10px">
               <img
                 src={
-                  getItemData.item_image ===
+                  getItemData.get_item_image ===
                   'https://www.lost112.go.kr/lostnfs/images/sub/img02_no_img.gif'
                     ? default_item
-                    : getItemData.item_image
+                    : getItemData.get_item_image
                 }
                 alt="물품 사진"
                 className="size-120px rounded-14px"
