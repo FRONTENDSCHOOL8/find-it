@@ -3,6 +3,8 @@ import LOGO_SYMBOL from '@/assets/icons/LOGO_SYMBOL.svg';
 import LOGOTYPE from '@/assets/icons/LOGOTYPE_true.svg';
 import icon_search from '@/assets/icons/icon_search.svg';
 import { Link } from 'react-router-dom';
+import { ReactNode } from 'react';
+import { JSX } from 'react/jsx-runtime';
 
 interface HeaderProps {
   isShowLogo?: boolean;
@@ -16,6 +18,13 @@ interface HeaderProps {
   children?: string;
 }
 
+type ElementType =
+  | string
+  | number
+  | boolean
+  | JSX.Element
+  | Iterable<ReactNode>;
+
 const Header: React.FC<HeaderProps> = ({
   isShowLogo,
   isShowPrev,
@@ -27,13 +36,14 @@ const Header: React.FC<HeaderProps> = ({
   customStyle,
   children,
 }) => {
-  let homeLogo;
-  let symbolLogo;
-  let prevIcon;
-  let searchIcon;
-  let paragraph;
-  let submitButton;
-  let emptyBox;
+  let homeLogo: ElementType;
+  let symbolLogo: ElementType;
+  let prevIcon: ElementType;
+  let searchIcon: ElementType;
+  let paragraph: ElementType;
+  let submitButton: ElementType;
+  let emptyBox: ElementType;
+
   const defaultStyle = 'h-26px flex w-375px items-center justify-around';
 
   const handlePreviousPage = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -80,8 +90,7 @@ const Header: React.FC<HeaderProps> = ({
   if (isShowSearch !== undefined) {
     if (isShowSearch) {
       searchIcon = (
-        <Link to={link} onClick={handlePreviousPage}>
-
+        <Link to={link}>
           <img src={icon_search} alt="검색하기" />
         </Link>
       );
