@@ -4,12 +4,12 @@ import { useEffect, useState, useRef, UIEvent, useCallback } from 'react';
 import loading from '@/assets/loading.svg';
 import { JsonArray } from '@/types/types';
 import ItemBox from '@/components/ItemBox/ItemBox';
-import { getSearchFindData } from '@/lib/utils/getAPIData';
+import { getSearchLostData } from '@/lib/utils/getAPIData';
 import getFormattedDate from '@/lib/utils/getFormattedDate';
 import Navigation from '../Navigation/Navigation';
 import { useNavigate } from 'react-router-dom';
 
-const SearchFindResult = () => {
+const SearchLostResult = () => {
   const {
     selectStartDate,
     selectEndDate,
@@ -28,10 +28,10 @@ const SearchFindResult = () => {
 
   const fetchData = async (pageNo: number) => {
     setFetching(true);
-    const data = await getSearchFindData({
+    const data = await getSearchLostData({
       PRDT_CL_CD_01: selectedMainCategoryValue,
       PRDT_CL_CD_02: selectedSubCategoryValue,
-      N_FD_LCT_CD: selectedAreaValue,
+      LST_LCT_CD: selectedAreaValue,
       START_YMD:
         selectStartDate !== '날짜를 선택하세요.'
           ? getFormattedDate(selectStartDate)
@@ -85,7 +85,7 @@ const SearchFindResult = () => {
 
   useEffect(() => {
     if (selectStartDate === '날짜를 선택하세요.') {
-      navigate('/searchfind');
+      navigate('/searchlost');
     } else {
       fetchData(page);
     }
@@ -107,7 +107,7 @@ const SearchFindResult = () => {
             <ul className="flex flex-col items-center">
               {items.map((item, index) => (
                 <li key={index}>
-                  <ItemBox item={item} itemType="get" />
+                  <ItemBox item={item} itemType="lost" />
                 </li>
               ))}
             </ul>
@@ -120,4 +120,4 @@ const SearchFindResult = () => {
   );
 };
 
-export default SearchFindResult;
+export default SearchLostResult;

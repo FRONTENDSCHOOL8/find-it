@@ -7,7 +7,7 @@ import Shortcut from '@/components/Shortcut/Shortcut';
 import select from '@/assets/search/select.svg';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getSearchFindData } from '@/lib/utils/getAPIData';
+import { getSearchLostData } from '@/lib/utils/getAPIData';
 import useSearchStore from '@/store/search/searchStore';
 import getFormattedDate from '@/lib/utils/getFormattedDate';
 import { mainCategories, subCategories, areas } from '../data';
@@ -20,7 +20,7 @@ interface SearchData {
   };
 }
 
-const SearchFindDetail: React.FC = () => {
+const SearchLostDetail: React.FC = () => {
   const {
     selectStartDate,
     setSelectStartDate,
@@ -60,21 +60,21 @@ const SearchFindDetail: React.FC = () => {
 
   const handleSearchButtonClick = () => {
     if (selectStartDate === '날짜를 선택하세요.') {
-      alert('습득 시작일을 선택하세요.');
+      alert('분실 시작일을 선택하세요.');
     } else if (selectEndDate === '날짜를 선택하세요.') {
-      alert('습득 종료일을 선택하세요.');
+      alert('분실 종료일을 선택하세요.');
     } else {
-      navigate('/searchfindresult');
+      navigate('/searchlostresult');
     }
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const searchData = await getSearchFindData({
+        const searchData = await getSearchLostData({
           PRDT_CL_CD_01: selectedMainCategoryValue,
           PRDT_CL_CD_02: selectedSubCategoryValue,
-          N_FD_LCT_CD: selectedAreaValue,
+          LST_LCT_CD: selectedAreaValue,
           START_YMD:
             selectStartDate !== '날짜를 선택하세요.'
               ? getFormattedDate(selectStartDate)
@@ -108,7 +108,7 @@ const SearchFindDetail: React.FC = () => {
   return (
     <div className="flex flex-col items-center">
       <Header isShowPrev={true} empty={true}>
-        습득물 상세검색
+        분실물 상세검색
       </Header>
       <form>
         <section className={sectionStyle}>
@@ -165,7 +165,7 @@ const SearchFindDetail: React.FC = () => {
         </section>
         <section className={sectionStyle}>
           <div className="flex items-center justify-between">
-            <SearchParagraph>습득 지역</SearchParagraph>
+            <SearchParagraph>분실 지역</SearchParagraph>
             <div className="flex h-25px w-274px justify-end gap-14px">
               <div className="relative inline-block">
                 <select
@@ -195,13 +195,13 @@ const SearchFindDetail: React.FC = () => {
             selectDate={selectStartDate}
             setSelectDate={setSelectStartDate}
           >
-            습득 시작일
+            분실 시작일
           </SearchDate>
           <SearchDate
             selectDate={selectEndDate}
             setSelectDate={setSelectEndDate}
           >
-            습득 종료일
+            분실 종료일
           </SearchDate>
         </section>
         <section className={`${sectionStyle} mt-40px items-center`}>
@@ -211,9 +211,9 @@ const SearchFindDetail: React.FC = () => {
             onClick={handleSearchButtonClick}
           />
           <Shortcut
-            link="/searchlost"
-            text="분실물 검색으로 이동하기"
-            alt="분실물 검색으로 이동하기"
+            link="/searchfind"
+            text="습득물 검색으로 이동하기"
+            alt="습득물물 검색으로 이동하기"
           />
         </section>
       </form>
@@ -221,4 +221,4 @@ const SearchFindDetail: React.FC = () => {
   );
 };
 
-export default SearchFindDetail;
+export default SearchLostDetail;
