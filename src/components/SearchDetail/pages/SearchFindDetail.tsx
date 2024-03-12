@@ -211,7 +211,7 @@ const SearchFindDetail: React.FC = () => {
             onClick={handleSearchButtonClick}
           />
           <Shortcut
-            link="/"
+            link="/searchlost"
             text="분실물 검색으로 이동하기"
             alt="분실물 검색으로 이동하기"
           />
