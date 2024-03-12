@@ -15,7 +15,7 @@ const LostList = () => {
   const fetchData = async (pageNo: number) => {
     const data = await lostAllData({
       pageNo: pageNo,
-      numOfRows: 6,
+      numOfRows: 10,
     });
 
     setItems((prev) => {
@@ -57,20 +57,22 @@ const LostList = () => {
   }, [page]);
 
   return (
-    <div className="min-h-667px w-375px bg-gray-200">
+    <div className="flex h-screen w-full flex-col items-center bg-gray-200">
       <Header isShowSymbol={true} children="분실물 확인" isShowSearch={true} />
-      <div
-        ref={scrollContainerRef}
-        className="h-[calc(100vh-73px-80px)] overflow-auto"
-      >
-        <ul className="flex flex-col items-center">
-          {items.map((item, index) => (
-            <li key={index}>
-              <ItemBox item={item} itemType="lost" />
-            </li>
-          ))}
-        </ul>
-        {fetching && <img src={loading} alt="로딩 중" className="mx-auto" />}
+      <div className="w-375px">
+        <div
+          ref={scrollContainerRef}
+          className="h-[calc(100vh-66px-80px)] overflow-auto"
+        >
+          <ul className="flex flex-col items-center">
+            {items.map((item, index) => (
+              <li key={index}>
+                <ItemBox item={item} itemType="lost" />
+              </li>
+            ))}
+          </ul>
+          {fetching && <img src={loading} alt="로딩 중" className="mx-auto" />}
+        </div>
       </div>
       <Navigation />
     </div>
