@@ -2,6 +2,7 @@ import icon_prev from '@/assets/icons/icon_prev.svg';
 import LOGO_SYMBOL from '@/assets/icons/LOGO_SYMBOL.svg';
 import LOGOTYPE from '@/assets/icons/LOGOTYPE_true.svg';
 import icon_search from '@/assets/icons/icon_search.svg';
+import { Link } from 'react-router-dom';
 
 interface HeaderProps {
   isShowLogo?: boolean;
@@ -10,6 +11,7 @@ interface HeaderProps {
   isShowSearch?: boolean;
   isShowSubmit?: boolean;
   empty?: boolean; // 헤더 영역에 2개 요소만 사용 시 해당 prop 전달 필요
+  link?: string;
   customStyle?: string;
   children?: string;
 }
@@ -21,6 +23,7 @@ const Header: React.FC<HeaderProps> = ({
   isShowSearch,
   isShowSubmit,
   empty,
+  link,
   customStyle,
   children,
 }) => {
@@ -77,9 +80,9 @@ const Header: React.FC<HeaderProps> = ({
   if (isShowSearch !== undefined) {
     if (isShowSearch) {
       searchIcon = (
-        <a href="/" onClick={handlePreviousPage}>
+        <Link to={link} onClick={handlePreviousPage}>
           <img src={icon_search} alt="이전으로" />
-        </a>
+        </Link>
       );
     } else {
       return searchIcon;
