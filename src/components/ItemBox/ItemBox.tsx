@@ -34,7 +34,8 @@ const ItemBox: React.FC<itemTypeProps> = ({ itemType, item }) => {
   const navigate = useNavigate();
 
   const handleClickedItem = (id: string) => {
-    itemType === 'get' || ('main' && navigate(`/getlist/detail/${id}`));
+    itemType === 'get' && navigate(`/getlist/detail/${id}`);
+    itemType === 'main' && navigate(`/getlist/detail/${id}`);
     itemType === 'lost' && navigate(`/lostlist/detail/${id}`);
   };
 
