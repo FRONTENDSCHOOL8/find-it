@@ -1,4 +1,6 @@
 import Header from '@/components/Header/Header';
+import Notice from '@/components/pages/06-Notification/Notice';
+import Setting from '@/components/pages/06-Notification/Setting';
 import { useState } from 'react';
 
 const Categories = () => {
@@ -30,6 +32,8 @@ const Notification = () => {
     <div>
       <Header isShowPrev={true} children="키워드 알림" empty={true} />
       <Categories />
+      {/* <Notice /> */}
+      <Setting />
     </div>
   );
 };
