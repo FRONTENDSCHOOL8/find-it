@@ -4,8 +4,6 @@ import icon_box_true from '@/assets/navigation/icon_box_true.svg';
 import icon_box_false from '@/assets/navigation/icon_box_false.svg';
 import icon_home_true from '@/assets/navigation/icon_home_true.svg';
 import icon_home_false from '@/assets/navigation/icon_home_false.svg';
-import LOGOTYPE_small_true from '@/assets/icons/LOGOTYPE_small_true.svg';
-import LOGOTYPE_small_false from '@/assets/icons/LOGOTYPE_small_false.svg';
 import icon_lost_true from '@/assets/navigation/icon_lost_true.svg';
 import icon_lost_false from '@/assets/navigation/icon_lost_false.svg';
 import icon_profile_true from '@/assets/navigation/icon_profile_true.svg';
@@ -45,10 +43,10 @@ const NavigationItem: React.FC<NavigationItemProps> = ({
   if (isHomeActive !== undefined) {
     if (isHomeActive) {
       iconHome = <img src={icon_home_true} alt="홈 아이콘" />;
-      homeLogo = <img src={LOGOTYPE_small_true} alt="찾아줘" />;
+      paragraph = <p className={PARAGRAPH_TRUE_STYLE}>{children}</p>;
     } else {
       iconHome = <img src={icon_home_false} alt="홈 아이콘" />;
-      homeLogo = <img src={LOGOTYPE_small_false} alt="찾아줘" />;
+      paragraph = <p className={PARAGRAPH_FALSE_STYLE}>{children}</p>;
     }
   }
 
@@ -93,13 +91,15 @@ const NavigationItem: React.FC<NavigationItemProps> = ({
   }
 
   return (
-    <div className="flex h-44px w-48px flex-col content-between items-center justify-center gap-7px">
-      <Link to="/">{iconHome}</Link>
-      <Link to="/getlist">{iconBox}</Link>
-      <Link to="/lostlist">{iconLost}</Link>
-      <Link to="/postlist">{iconBoard}</Link>
-      <Link to="/mypageentry">{iconProfile}</Link>
-      <Link to="/">{homeLogo}</Link>
+    <div className="flex h-60px w-54px flex-col items-center justify-center gap-5px">
+      <div className="flex h-26px w-26px flex-col items-center justify-center">
+        <Link to="/">{iconHome}</Link>
+        <Link to="/getlist">{iconBox}</Link>
+        <Link to="/lostlist">{iconLost}</Link>
+        <Link to="/postlist">{iconBoard}</Link>
+        <Link to="/mypageentry">{iconProfile}</Link>
+        <Link to="/">{homeLogo}</Link>
+      </div>
       {paragraph}
     </div>
   );
