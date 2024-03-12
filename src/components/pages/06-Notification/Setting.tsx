@@ -1,0 +1,138 @@
+import { useState, useEffect } from 'react';
+import Horizon from '@/components/common/atom/Horizon';
+import icon_delete from '@/assets/icons/icon_delete.svg';
+import { pb } from '@/lib/utils/pb';
+
+const pocketAuth = localStorage.getItem('pocketbase_auth');
+const pocketData = pocketAuth ? JSON.parse(pocketAuth) : null;
+
+interface KeywordType {
+  keywords: string;
+}
+
+interface KeywordProps {
+  keyword: string;
+  onDelete: (keyword: string) => void;
+}
+
+const Keyword = ({ keyword, onDelete }: KeywordProps) => {
+  return (
+    <div id={keyword} className="relative">
+      <div className="inline rounded-full border border-primary bg-white px-5 py-1 text-12px text-primary">
+        {keyword}
+      </div>
+      <button
+        className="absolute right-0 top-[-2px] size-3"
+        onClick={() => onDelete(keyword)}
+      >
+        <img src={icon_delete} alt="등록된 키워드 삭제하기" />
+      </button>
+    </div>
+  );
+};
+
+const Setting = () => {
+  const [userKeyword, setUserKeyword] = useState<KeywordType>({ keywords: '' });
+
+  useEffect(() => {
+    (async () => {
+      if (pocketData) {
+        const userKeyword: KeywordType = await pb
+          .collection('users')
+          .getOne(pocketData.model.id, {
+            fields: 'keywords',
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+            },
+          });
+
+        setUserKeyword(userKeyword);
+      }
+    })();
+  }, []);
+
+  const handleAddButton = async () => {
+    const keywordInput = document.getElementById(
+      'keywordInput'
+    ) as HTMLInputElement;
+    const newKeyword = keywordInput.value.trim();
+
+    if (newKeyword) {
+      // pb에 키워드 업데이트
+      const updateKeyword = userKeyword.keywords
+        ? `${userKeyword.keywords}, ${newKeyword}`
+        : newKeyword;
+
+      const data = {
+        keywords: updateKeyword,
+      };
+      await pb.collection('users').update(pocketData.model.id, data);
+
+      setUserKeyword({ keywords: updateKeyword });
+      keywordInput.value = '';
+    }
+  };
+
+  const handleClearButton = (keywordToDelete: string) => {
+    const updatedKeywords = userKeyword.keywords
+      .split(', ')
+      .filter((keyword) => keyword !== keywordToDelete)
+      .join(', ');
+
+    setUserKeyword({ keywords: updatedKeywords });
+
+    pb.collection('users').update(pocketData.model.id, {
+      keywords: updatedKeywords,
+    });
+  };
+
+  const keywordsArray = userKeyword.keywords.split(', ').filter((k) => k);
+
+  const noKeywordMessage = (
+    <span className="w-full pt-5 text-center text-14px text-gray-450">
+      등록된 키워드가 없습니다.
+    </span>
+  );
+
+  return (
+    <div className="p-30px">
+      <fieldset className="pb-30px">
+        <legend className="hidden">검색 폼</legend>
+        <div className="flex gap-3">
+          <input
+            id="keywordInput"
+            type="text"
+            placeholder="알림 받을 키워드를 입력해주세요."
+            className="h-32px w-240px rounded-full border-[1px] border-gray-350 px-5 text-12px"
+          />
+          <button
+            type="submit"
+            className="w-63px rounded-full bg-primary px-5 py-7px text-12px text-white"
+            onClick={handleAddButton}
+          >
+            추가
+          </button>
+        </div>
+      </fieldset>
+
+      <Horizon lineBold="thin" lineWidth="short" />
+
+      <section className="py-5">
+        <h1 className="pb-5 text-14px">키워드 관리</h1>
+        <div className="flex flex-wrap gap-14px">
+          {userKeyword.keywords === ''
+            ? noKeywordMessage
+            : keywordsArray.map((keyword, index) => (
+                <Keyword
+                  key={index}
+                  keyword={keyword}
+                  onDelete={handleClearButton}
+                />
+              ))}
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default Setting;
