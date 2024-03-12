@@ -16,5 +16,6 @@ export { default as Credit } from '@/components/pages/04-MyPage/Credit';
 export { default as Notice } from '@/components/pages/04-MyPage/Notice';
 export { default as PostList } from '@/components/pages/05-Community/PostList';
 export { default as PostDetail } from '@/components/pages/05-Community/PostDetail';
+export { default as SearchPost } from '@/components/pages/05-Community/SearchPost';
 export { default as CreatePost } from '@/components/Community/CreatePost';
 export { default as Notification } from '@/components/pages/06-Notification/Notification';

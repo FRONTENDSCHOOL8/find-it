@@ -105,23 +105,25 @@ const CommunityBox = () => {
 const Main = () => {
   return (
     <>
-      <Header isShowLogo={true} />
-      <div className="w-375px px-5">
-        <div className="flex gap-4">
-          <ProfileBox />
-          <FindItemBox />
+      <div className="flex w-full flex-col items-center justify-center">
+        <Header isShowLogo={true} />
+        <div className="w-375px px-5">
+          <div className="flex gap-4">
+            <ProfileBox />
+            <FindItemBox />
+          </div>
+          <div className="pb-5px pl-10px pt-3">
+            <Shortcut
+              link="/getlist"
+              text="주인을 찾아요!"
+              alt="습득물 페이지 바로가기"
+            />
+          </div>
+          <SwiperItem />
+          <CommunityBox />
         </div>
-        <div className="pb-5px pl-10px pt-3">
-          <Shortcut
-            link="/getlist"
-            text="주인을 찾아요!"
-            alt="습득물 페이지 바로가기"
-          />
-        </div>
-        <SwiperItem />
-        <CommunityBox />
+        <Navigation />
       </div>
-      <Navigation />
     </>
   );
 };

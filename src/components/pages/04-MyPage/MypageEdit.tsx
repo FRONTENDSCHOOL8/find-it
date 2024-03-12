@@ -15,6 +15,7 @@ import Horizon from '@/components/common/atom/Horizon';
 import InputFormSlim from '@/components/SignIn/molecule/InputFormSlim';
 import ButtonSelectItem from '@/components/common/molecule/ButtonSelectItem';
 import SelectCategoryList from '@/components/common/molecule/SelectCategoryList';
+import ModalComp from '@/components/common/molecule/ModalComp';
 
 // 타입 정의
 type AlertProps =
@@ -225,51 +226,57 @@ const MypageEdit = () => {
     passwordValue,
     passwordCheckValue,
   ]);
-  //완료 버튼
+  //완료 버튼 & 서버 보내고 모달창 뜨우기
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const buttonSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       await updateData('users', userId, updateUserData);
-      alert('수정이 완료되었습니다.');
-      window.location.reload();
+      setIsModalOpen(true);
     } catch (error) {
-      console.error('회원정보 수정 페이지 통신 오류:', error);
+      console.error('프로필 수정 페이지 통신 오류:', error);
     }
   };
+  const onClickConfirm = () => {
+    window.location.reload();
+    setIsModalOpen(false);
+  };
+
   /* -------------------------------------------------------------------------- */
   // 프로필 사진 변경
   // 파일 선택
-  const [fileInput, setFileInput] = useState<HTMLInputElement | null>(null);
-  const formData = new FormData();
-  useEffect(() => {
-    const input = document.getElementById('fileInput') as HTMLInputElement;
-    setFileInput(input);
-  }, []);
+  // const [fileInput, setFileInput] = useState<HTMLInputElement | null>(null);
+  // const formData = new FormData();
+  // useEffect(() => {
+  //   const input = document.getElementById('fileInput') as HTMLInputElement;
+  //   setFileInput(input);
+  // }, []);
 
-  // 포켓베이스 파일 업로드 부분
-  const handleFileInput = async () => {
-    try {
-      if (fileInput && fileInput.files && fileInput.files.length > 0) {
-        const file = fileInput.files[0];
-        console.log('업로드한 이미지:', file);
-        formData.append('avatar', file);
-      }
-      console.log('폼데이터에 심은 업로드한 이미지:', formData.get('avatar'));
+  // // 포켓베이스 파일 업로드 부분
+  // const handleFileInput = async () => {
+  //   try {
+  //     if (fileInput && fileInput.files && fileInput.files.length > 0) {
+  //       const file = fileInput.files[0];
+  //       console.log('업로드한 이미지:', file);
+  //       formData.append('avatar', file);
+  //     }
+  //     console.log('폼데이터에 심은 업로드한 이미지:', formData.get('avatar'));
 
-      await pb.collection('users').create(formData);
-      // await pb.collection('users').update(userId, formData);
-      alert('프로필 사진 변경이 완료되었습니다.');
-      window.location.reload();
-    } catch (error) {
-      console.error('프로필 변경 데이터 통신 오류:', error);
-    }
-  };
-  //프로필 버튼 클릭시 파일 선택창 열기
-  const handleProfileChange = () => {
-    if (fileInput) {
-      fileInput.click();
-    }
-  };
+  //     await pb.collection('users').create(formData);
+  //     // await pb.collection('users').update(userId, formData);
+  //     alert('프로필 사진 변경이 완료되었습니다.');
+  //     window.location.reload();
+  //   } catch (error) {
+  //     console.error('프로필 변경 데이터 통신 오류:', error);
+  //   }
+  // };
+  // //프로필 버튼 클릭시 파일 선택창 열기
+  // const handleProfileChange = () => {
+  //   if (fileInput) {
+  //     fileInput.click();
+  //   }
+  // };
 
   /* -------------------------------------------------------------------------- */
   /* -------------------------------------------------------------------------- */
@@ -285,15 +292,15 @@ const MypageEdit = () => {
           children={'프로필 수정'}
           isShowSubmit={!!submit}
         />
-        <input
+        {/* <input
           id="fileInput"
           type="file"
           onChange={handleFileInput}
           className="hidden"
-        />
+        /> */}
         <button
           type="button"
-          onClick={handleProfileChange}
+          // onClick={handleProfileChange}
           className="relative mx-auto my-30px"
         >
           <img
@@ -429,6 +436,13 @@ const MypageEdit = () => {
           dataList={secondItemList}
           getSelectItem={handleSelectSecondItem}
           onClose={() => setRenderSecondList(false)}
+        />
+      )}
+      {isModalOpen && (
+        <ModalComp
+          children="프로필 수정이 완료되었습니다."
+          confirmText="확인"
+          onClickConfirm={onClickConfirm}
         />
       )}
     </>
