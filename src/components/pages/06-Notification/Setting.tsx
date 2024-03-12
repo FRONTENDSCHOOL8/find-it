@@ -114,7 +114,7 @@ const Setting = () => {
   );
 
   return (
-    <div className="p-30px">
+    <div className="flex flex-col items-center p-30px">
       <fieldset className="pb-30px">
         <legend className="hidden">검색 폼</legend>
         <div className="flex gap-3">
@@ -136,7 +136,7 @@ const Setting = () => {
 
       <Horizon lineBold="thin" lineWidth="short" />
 
-      <section className="py-5">
+      <section className="w-375px p-5">
         <h1 className="pb-5 text-14px">키워드 관리</h1>
         <div className="flex flex-wrap gap-14px">
           {userKeyword.keywords === ''
@@ -152,7 +152,7 @@ const Setting = () => {
       </section>
       {isCountModal && (
         <ModalComp
-          children="노노"
+          children="키워드는 최대 10개 등록 가능합니다."
           confirmText="확인"
           onClickConfirm={onClickConfirm}
         />

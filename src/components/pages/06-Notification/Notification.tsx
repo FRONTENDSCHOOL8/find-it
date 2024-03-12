@@ -11,7 +11,7 @@ const Categories = ({ onChangeCategory }) => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex w-375px">
       <button
         className={`w-1/2 border-b-[1px] pb-12px pt-13px text-center text-14px transition-colors duration-300 ${activeButton === 'notice' ? 'border-black' : 'text-gray-400'}`}
         onClick={() => handleClick('notice')}
@@ -31,7 +31,7 @@ const Categories = ({ onChangeCategory }) => {
 const Notification = () => {
   const [activeCategory, setActiveCategory] = useState('notice');
   return (
-    <div>
+    <div className="flex w-full min-w-375px flex-col items-center">
       <Header isShowPrev={true} children="키워드 알림" empty={true} />
       <Categories onChangeCategory={setActiveCategory} />
       {activeCategory === 'notice' && <Notice />}
