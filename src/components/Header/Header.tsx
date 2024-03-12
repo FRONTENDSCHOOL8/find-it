@@ -2,6 +2,7 @@ import icon_prev from '@/assets/icons/icon_prev.svg';
 import LOGO_SYMBOL from '@/assets/icons/LOGO_SYMBOL.svg';
 import LOGOTYPE from '@/assets/icons/LOGOTYPE_true.svg';
 import icon_search from '@/assets/icons/icon_search.svg';
+import { ReactNode } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 interface HeaderProps {
@@ -16,6 +17,13 @@ interface HeaderProps {
   children?: string;
 }
 
+type ElementType =
+  | string
+  | number
+  | boolean
+  | JSX.Element
+  | Iterable<ReactNode>;
+
 const Header: React.FC<HeaderProps> = ({
   isShowLogo,
   isShowPrev,
@@ -27,13 +35,13 @@ const Header: React.FC<HeaderProps> = ({
   customStyle,
   children,
 }) => {
-  let homeLogo;
-  let symbolLogo;
-  let prevIcon;
-  let searchIcon;
-  let paragraph;
-  let submitButton;
-  let emptyBox;
+  let homeLogo: ElementType;
+  let symbolLogo: ElementType;
+  let prevIcon: ElementType;
+  let searchIcon: ElementType;
+  let paragraph: ElementType;
+  let submitButton: ElementType;
+  let emptyBox: ElementType;
   const defaultStyle = 'h-26px flex w-375px items-center justify-around';
 
   const navigate = useNavigate();
@@ -45,9 +53,9 @@ const Header: React.FC<HeaderProps> = ({
   if (isShowLogo !== undefined) {
     if (isShowLogo) {
       homeLogo = (
-        <a href="/">
+        <Link to="/">
           <img src={LOGOTYPE} alt="찾아줘!" />
-        </a>
+        </Link>
       );
     } else {
       return homeLogo;
@@ -57,9 +65,9 @@ const Header: React.FC<HeaderProps> = ({
   if (isShowSymbol !== undefined) {
     if (isShowSymbol) {
       symbolLogo = (
-        <a href="/">
+        <Link to="/">
           <img src={LOGO_SYMBOL} alt="메인으로" />
-        </a>
+        </Link>
       );
     } else {
       return symbolLogo;
