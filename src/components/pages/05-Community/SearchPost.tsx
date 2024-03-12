@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { getData } from '@/lib/utils/crud';
 import { getTimeDiff } from '@/lib/utils/getTimeDiff';
 import Header from '@/components/Header/Header';
@@ -8,6 +8,13 @@ import Horizon from '@/components/common/atom/Horizon';
 const SearchPost = () => {
   const [inputValue, setInputValue] = useState('');
   const [data, setData] = useState([]);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [showNoResult, setShowNoResult] = useState(false);
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
+
   // 인풋 값 잡기
   const inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -24,10 +31,7 @@ const SearchPost = () => {
       });
       setData(data);
       setInputValue('');
-      // if (data.length === 0) {
-      //   console.log('검색결과');
-      // }
-      // console.log('검색결과', data);
+      setShowNoResult(data.length === 0);
     } catch (error) {
       console.error('게시물 검색 pb 통신 에러 ', error);
     }
@@ -58,7 +62,9 @@ const SearchPost = () => {
     </>
   );
 
-  // const NoResult = <div className="text-center">검색 결과가 없습니다.</div>;
+  const NoResult = (
+    <div className="pt-20px text-center">검색 결과가 없습니다.</div>
+  );
   return (
     <>
       <div className="relative flex w-full flex-col items-center justify-center">
@@ -70,16 +76,17 @@ const SearchPost = () => {
           onSubmit={submitInput}
         >
           <input
+            ref={inputRef}
             type="search"
             value={inputValue}
             onChange={inputChange}
-            className="w-280px appearance-none rounded-full px-20px py-8px text-16px	"
+            className="w-280px appearance-none	rounded-full px-20px py-8px text-16px outline-none	"
             style={{ border: '1px solid #bcbcbc' }}
             placeholder="검색어를 입력하세요."
           />
         </form>
       </div>
-      {SearchResult}
+      {data.length > 0 ? SearchResult : showNoResult && NoResult}
     </>
   );
 };
