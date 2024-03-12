@@ -24,7 +24,7 @@ import {
   CreatePost,
 } from '@/components/pages/index';
 import SearchFindDetail from '@/components/SearchDetail/pages/SearchFindDetail';
-import SearchResult from '@/components/SearchResult/SearchResult';
+import SearchFindResult from '@/components/SearchResult/SearchFindResult';
 
 const App = () => {
   const [showSplash, setShowSplash] = useState(false);
