@@ -24,6 +24,7 @@ import {
   CreatePost,
 } from '@/components/pages/index';
 import SearchFindDetail from '@/components/SearchDetail/pages/SearchFindDetail';
+import SearchLostDetail from './components/SearchDetail/pages/SearchLostDetail';
 import SearchFindResult from '@/components/SearchResult/SearchFindResult';
 
 const App = () => {
@@ -52,6 +53,7 @@ const App = () => {
             <Route path="/lostlist/detail/:id" element={<LostDetail />} />
             <Route path="/searchfind" element={<SearchFindDetail />} />
             <Route path="/searchfindresult" element={<SearchFindResult />} />
+            <Route path="/searchlost" element={<SearchLostDetail />} />
             <Route path="/mypageentry" element={<MypageEntry />} />
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/mypageedit" element={<MypageEdit />} />
