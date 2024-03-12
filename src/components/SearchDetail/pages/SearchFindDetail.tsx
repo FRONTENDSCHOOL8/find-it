@@ -84,7 +84,7 @@ const SearchFindDetail: React.FC = () => {
               ? getFormattedDate(selectEndDate)
               : '',
           pageNo: 1,
-          numOfRows: 10,
+          numOfRows: 6,
         });
 
         if (typeof searchData === 'object') {
