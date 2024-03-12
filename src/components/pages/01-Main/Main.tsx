@@ -78,7 +78,7 @@ const postTime2 = recentPost.items[1].created;
 
 const CommunityBox = () => {
   return (
-    <a href="/" className="block">
+    <Link to="/postlist" className="block">
       <div className="mb-5 flex h-140px w-335px flex-col gap-20px rounded-20px border border-black p-5 transition-all duration-300 hover:cursor-pointer hover:shadow-lg">
         <div className="flex justify-between">
           <h1 className="text-20px">자유게시판</h1>
@@ -95,7 +95,7 @@ const CommunityBox = () => {
           </div>
         </div>
       </div>
-    </a>
+    </Link>
   );
 };
 
