@@ -90,8 +90,7 @@ const Header: React.FC<HeaderProps> = ({
   if (isShowSearch !== undefined) {
     if (isShowSearch) {
       searchIcon = (
-        <Link to={link} onClick={handlePreviousPage}>
-
+        <Link to={link}>
           <img src={icon_search} alt="검색하기" />
         </Link>
       );

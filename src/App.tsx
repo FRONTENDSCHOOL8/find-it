@@ -63,7 +63,6 @@ const App = () => {
             <Route path="/lostlist/detail/:id" element={<LostDetail />} />
             <Route path="/searchfind" element={<SearchFindDetail />} />
             <Route path="/searchresult" element={<SearchFindResult />} />
-            <Route path="/searchfindresult" element={<SearchFindResult />} />
             <Route path="/searchlost" element={<SearchLostDetail />} />
             <Route path="/searchlostresult" element={<SearchLostResult />} />
             <Route path="/mypageentry" element={<MypageEntry />} />
