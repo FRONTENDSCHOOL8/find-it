@@ -1,4 +1,4 @@
-export { default as LostDetail } from '@/components/pages/02-FindItem/LostDetail';
+export { default as LostDetail } from '@/components/pages/03-LostItem/LostDetail';
 export { default as GetDetail } from '@/components/pages/02-FindItem/GetDetail';
 export { default as Main } from '@/components/pages/01-Main/Main';
 export { default as Splash } from '@/components/pages/01-Main/Splash';
