@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import Detail from '@/components/Detail/Detail';
-import { getSearchId } from '@/lib/utils/getAPIData';
 import useDetailDataStore from '@/store/detail/useDetailDataStore';
+import { lostSearchId } from '@/lib/utils/lostAPIData';
 
 const GetDetail = () => {
   const setDetail = useDetailDataStore((state) => state.setDetail);
@@ -9,7 +9,7 @@ const GetDetail = () => {
 
   useEffect(() => {
     (async () => {
-      const data = await getSearchId('F2024030600000059');
+      const data = await lostSearchId('L2018120100000706');
 
       setDetail(data);
     })();

@@ -1,10 +1,50 @@
 import { xmlToJson } from '@/lib/utils/xmlToJson';
 import { raiseValue } from '@/lib/utils/raiseValue';
-import { JsonObject } from '@/types/types';
+import { DetailData, JsonObject } from '@/types/types';
 
 function isJsonObject(value: unknown): value is JsonObject {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
+
+const parseDetailData = (json: JsonObject): Partial<DetailData> | null => {
+  const detailKeys: Array<keyof DetailData> = [
+    'id',
+    'item_name',
+    'image',
+    'place',
+    'date',
+    'item_type',
+    'description',
+    'storage',
+    'contact',
+  ];
+
+  const result: Partial<DetailData> = {};
+
+  detailKeys.forEach((key) => {
+    const value = json[key];
+    if (typeof value === 'string') {
+      result[key] = value;
+    }
+  });
+
+  return Object.keys(result).length > 0 ? result : null;
+};
+
+// Partial: 모든 속성을 선택적으로 만듦
+const isDetailData = (object: Partial<DetailData>): object is DetailData => {
+  return (
+    typeof object.id === 'string' &&
+    typeof object.item_name === 'string' &&
+    typeof object.image === 'string' &&
+    typeof object.place === 'string' &&
+    typeof object.date === 'string' &&
+    typeof object.item_type === 'string' &&
+    typeof object.description === 'string' &&
+    typeof object.storage === 'string' &&
+    typeof object.contact === 'string'
+  );
+};
 
 export const lostAllData = async (option = {}) => {
   try {
@@ -96,12 +136,33 @@ export const lostSearchId = async (id: string) => {
     if (
       isJsonObject(json) &&
       isJsonObject(json.response) &&
-      isJsonObject(json.response.body) &&
-      isJsonObject(json.response.body.items)
+      isJsonObject(json.response.body)
     ) {
-      const result = raiseValue(json.response?.body.items.item);
+      const item = raiseValue(json.response?.body.item);
 
-      return result;
+      if (isJsonObject(item)) {
+        const result = {
+          id: item.atcId,
+          item_name: item.lstPrdtNm,
+          image: item.lstFilePathImg,
+          place: item.lstPlace,
+          date: item.lstYmd,
+          item_type: item.lstPlaceSeNm,
+          description: item.lstSbjt,
+          storage: item.lstLctNm,
+          contact: item.tel,
+        };
+
+        if (isJsonObject(result)) {
+          const jsonObject: JsonObject = result;
+
+          const detailData = parseDetailData(jsonObject);
+
+          if (detailData !== null && isDetailData(detailData)) {
+            return detailData;
+          }
+        }
+      }
     }
   } catch (error) {
     console.error('error: ' + error);
