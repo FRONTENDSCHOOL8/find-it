@@ -33,9 +33,9 @@ const Root = () => {
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/getlist" element={<GetList />} />
+          <Route path="/getlist/detail/:id" element={<GetDetail />} />
           <Route path="/lostlist" element={<LostList />} />
-          <Route path="/getdetail" element={<GetDetail />} />
-          <Route path="/lostdetail" element={<LostDetail />} />
+          <Route path="/lostlist/detail/:id" element={<LostDetail />} />
           <Route path="/searchfind" element={<SearchFindDetail />} />
           <Route path="/searchresult" element={<SearchResult />} />
           <Route path="/mypageentry" element={<MypageEntry />} />
