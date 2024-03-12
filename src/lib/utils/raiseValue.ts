@@ -1,4 +1,13 @@
-type JsonValue = string | number | boolean | null | JsonObject | JsonArray;
+import { DetailData } from '@/types/types';
+
+type JsonValue =
+  | string
+  | number
+  | boolean
+  | null
+  | JsonObject
+  | JsonArray
+  | DetailData;
 
 interface JsonObject {
   [key: string]: JsonValue;

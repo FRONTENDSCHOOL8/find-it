@@ -34,21 +34,15 @@ export interface LostDetailData {
 }
 
 export interface DetailData {
-  atcId: string;
-  csteSteNm: string;
-  depPlace: string;
-  filePathImg: string;
-  hor: string;
+  id: string;
+  item_name: string;
+  image: string;
   place: string;
-  prdtNm: string;
-  sn: string;
-  ymd: string;
-  keepOrgnSeNm: string;
-  orgId: string;
-  orgNm: string;
-  prdtClNm: string;
-  tel: string;
-  uniq: string;
+  date: string;
+  item_type: string;
+  description: string;
+  storage: string;
+  contact: string;
 }
 
 export type JsonValue =

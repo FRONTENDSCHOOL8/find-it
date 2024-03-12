@@ -12,8 +12,6 @@ const GetDetail = () => {
       const data = await lostSearchId('L2018120100000706');
 
       setDetail(data);
-
-      console.log(detail);
     })();
   }, []);
 

@@ -1,31 +1,25 @@
 import { xmlToJson } from '@/lib/utils/xmlToJson';
 import { raiseValue } from '@/lib/utils/raiseValue';
-import { LostDetailData, JsonObject } from '@/types/types';
-import { removePrefix } from './removePrefix';
+import { DetailData, JsonObject } from '@/types/types';
 
 function isJsonObject(value: unknown): value is JsonObject {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
-const parseDetailData = (json: JsonObject): Partial<LostDetailData> | null => {
-  const detailKeys: Array<keyof LostDetailData> = [
-    'atcId',
-    'lstFilePathImg',
-    'uniq',
-    'lstLctNm',
-    'lstPlace',
-    'lstPlaceSeNm',
-    'lstPrdtNm',
-    'lstSbjt',
-    'lstSteNm',
-    'lstYmd',
-    'orgId',
-    'orgNm',
-    'prdtClNm',
-    'tel',
+const parseDetailData = (json: JsonObject): Partial<DetailData> | null => {
+  const detailKeys: Array<keyof DetailData> = [
+    'id',
+    'item_name',
+    'image',
+    'place',
+    'date',
+    'item_type',
+    'description',
+    'storage',
+    'contact',
   ];
 
-  const result: Partial<LostDetailData> = {};
+  const result: Partial<DetailData> = {};
 
   detailKeys.forEach((key) => {
     const value = json[key];
@@ -38,24 +32,17 @@ const parseDetailData = (json: JsonObject): Partial<LostDetailData> | null => {
 };
 
 // Partial: 모든 속성을 선택적으로 만듦
-const isDetailData = (
-  object: Partial<LostDetailData>
-): object is LostDetailData => {
+const isDetailData = (object: Partial<DetailData>): object is DetailData => {
   return (
-    typeof object.atcId === 'string' &&
-    typeof object.lstFilePathImg === 'string' &&
-    typeof object.uniq === 'string' &&
-    typeof object.lstLctNm === 'string' &&
-    typeof object.lstPlace === 'string' &&
-    typeof object.lstPlaceSeNm === 'string' &&
-    typeof object.lstPrdtNm === 'string' &&
-    typeof object.lstSbjt === 'string' &&
-    typeof object.lstSteNm === 'string' &&
-    typeof object.lstYmd === 'string' &&
-    typeof object.orgId === 'string' &&
-    typeof object.orgNm === 'string' &&
-    typeof object.prdtClNm === 'string' &&
-    typeof object.tel === 'string'
+    typeof object.id === 'string' &&
+    typeof object.item_name === 'string' &&
+    typeof object.image === 'string' &&
+    typeof object.place === 'string' &&
+    typeof object.date === 'string' &&
+    typeof object.item_type === 'string' &&
+    typeof object.description === 'string' &&
+    typeof object.storage === 'string' &&
+    typeof object.contact === 'string'
   );
 };
 
@@ -152,15 +139,28 @@ export const lostSearchId = async (id: string) => {
       isJsonObject(json.response.body)
     ) {
       const item = raiseValue(json.response?.body.item);
-      const result = removePrefix(item);
 
-      if (isJsonObject(result)) {
-        const jsonObject: JsonObject = result;
+      if (isJsonObject(item)) {
+        const result = {
+          id: item.atcId,
+          item_name: item.lstPrdtNm,
+          image: item.lstFilePathImg,
+          place: item.lstPlace,
+          date: item.lstYmd,
+          item_type: item.lstPlaceSeNm,
+          description: item.lstSbjt,
+          storage: item.lstLctNm,
+          contact: item.tel,
+        };
 
-        const detailData = parseDetailData(jsonObject);
+        if (isJsonObject(result)) {
+          const jsonObject: JsonObject = result;
 
-        if (detailData !== null && isDetailData(detailData)) {
-          return detailData;
+          const detailData = parseDetailData(jsonObject);
+
+          if (detailData !== null && isDetailData(detailData)) {
+            return detailData;
+          }
         }
       }
     }

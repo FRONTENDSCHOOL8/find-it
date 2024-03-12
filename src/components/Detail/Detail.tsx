@@ -25,12 +25,12 @@ const Detail: React.FC<DetailProps> = ({ detail }) => {
   return (
     <div className="w-375px leading-[1.3]">
       <div className="flow-root h-250px w-full bg-slate-500">
-        {isEmpty(detail.filePathImg) && (
-          <img src={detail.filePathImg} alt="item_image" />
+        {isEmpty(detail.image) && (
+          <img src={detail.image} alt="item_image" className="w-full" />
         )}
-        <span className="mt-40px block text-center text-24px text-white">
+        {/* <span className="mt-40px block text-center text-24px text-white">
           사진 자리
-        </span>
+        </span> */}
       </div>
       <div className="relative">
         <form className="absolute right-30px top-2px">
@@ -55,7 +55,7 @@ const Detail: React.FC<DetailProps> = ({ detail }) => {
           <li>
             <dl>
               <dt className="sr-only">물품명</dt>
-              <dd className="text-20px">{detail.prdtNm}</dd>
+              <dd className="text-20px">{detail.item_name}</dd>
             </dl>
           </li>
           <li className="mt-20px">
@@ -67,25 +67,25 @@ const Detail: React.FC<DetailProps> = ({ detail }) => {
           <li>
             <dl className="flex gap-22px">
               <dt className="">습득일자</dt>
-              <dd>{detail.ymd}</dd>
+              <dd>{detail.date}</dd>
             </dl>
           </li>
           <li>
             <dl className="flex gap-22px">
               <dt>관리번호</dt>
-              <dd className="text-gray-400">{detail.orgId}</dd>
+              <dd className="text-gray-400">{detail.id}</dd>
             </dl>
           </li>
           <li>
             <dl className="flex gap-22px">
               <dt className="">물품분류</dt>
-              <dd className="text-gray-400">{detail.prdtClNm}</dd>
+              <dd className="text-gray-400">{detail.item_type}</dd>
             </dl>
           </li>
           <li>
             <dl>
               <dt>상세내용</dt>
-              <dd className="mt-8px text-gray-400">{'asdf'}</dd>
+              <dd className="mt-8px text-gray-400">{detail.description}</dd>
             </dl>
           </li>
         </ul>
@@ -104,18 +104,18 @@ const Detail: React.FC<DetailProps> = ({ detail }) => {
           <li>
             <dl className="flex gap-22px">
               <dt>보관장소</dt>
-              <dd>{detail.depPlace}</dd>
+              <dd>{detail.storage}</dd>
             </dl>
           </li>
           <li>
             <dl className="flex gap-22px">
               <dt>전화번호</dt>
-              <dd>{detail.tel}</dd>
+              <dd>{detail.contact}</dd>
             </dl>
           </li>
         </ul>
         <div className="mt-28px h-375px bg-slate-500 text-center text-24px text-white">
-          <KakaoMap place={detail.depPlace} className="h-full w-full" />
+          <KakaoMap place={detail.storage} className="h-full w-full" />
         </div>
 
         <button

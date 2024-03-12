@@ -1,7 +1,6 @@
 import { xmlToJson } from '@/lib/utils/xmlToJson';
 import { raiseValue } from '@/lib/utils/raiseValue';
 import { JsonObject, DetailData } from '@/types/types';
-import { removePrefix } from './removePrefix';
 
 const isJsonObject = (value: unknown): value is JsonObject => {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -9,21 +8,15 @@ const isJsonObject = (value: unknown): value is JsonObject => {
 
 const parseDetailData = (json: JsonObject): Partial<DetailData> | null => {
   const detailKeys: Array<keyof DetailData> = [
-    'atcId',
-    'csteSteNm',
-    'depPlace',
-    'filePathImg',
-    'hor',
+    'id',
+    'item_name',
+    'image',
     'place',
-    'prdtNm',
-    'sn',
-    'ymd',
-    'keepOrgnSeNm',
-    'orgId',
-    'orgNm',
-    'prdtClNm',
-    'tel',
-    'uniq',
+    'date',
+    'item_type',
+    'description',
+    'storage',
+    'contact',
   ];
 
   const result: Partial<DetailData> = {};
@@ -41,21 +34,15 @@ const parseDetailData = (json: JsonObject): Partial<DetailData> | null => {
 // Partial: 모든 속성을 선택적으로 만듦
 const isDetailData = (object: Partial<DetailData>): object is DetailData => {
   return (
-    typeof object.atcId === 'string' &&
-    typeof object.csteSteNm === 'string' &&
-    typeof object.depPlace === 'string' &&
-    typeof object.filePathImg === 'string' &&
-    typeof object.hor === 'string' &&
+    typeof object.id === 'string' &&
+    typeof object.item_name === 'string' &&
+    typeof object.image === 'string' &&
     typeof object.place === 'string' &&
-    typeof object.prdtNm === 'string' &&
-    typeof object.sn === 'string' &&
-    typeof object.ymd === 'string' &&
-    typeof object.keepOrgnSeNm === 'string' &&
-    typeof object.orgId === 'string' &&
-    typeof object.orgNm === 'string' &&
-    typeof object.prdtClNm === 'string' &&
-    typeof object.tel === 'string' &&
-    typeof object.uniq === 'string'
+    typeof object.date === 'string' &&
+    typeof object.item_type === 'string' &&
+    typeof object.description === 'string' &&
+    typeof object.storage === 'string' &&
+    typeof object.contact === 'string'
   );
 };
 
@@ -159,15 +146,30 @@ export const getSearchId = async (id: string): Promise<DetailData | null> => {
       isJsonObject(json.response.body)
     ) {
       const item = raiseValue(json.response?.body.item);
-      const result = removePrefix(item);
 
-      if (isJsonObject(result)) {
-        const jsonObject: JsonObject = result;
+      if (isJsonObject(item)) {
+        const result = {
+          id: item.atcId,
+          item_name: item.fdPrdtNm,
+          image: item.fdFilePathImg,
+          place: item.fdPlace,
+          date: item.fdYmd,
+          item_type: item.prdtClNm,
+          description: item.fndKeepOrgnSeNm,
+          contact: item.tel,
+          storage: item.depPlace,
+        };
 
-        const detailData = parseDetailData(jsonObject);
+        if (isJsonObject(result)) {
+          const jsonObject: JsonObject = result;
 
-        if (detailData !== null && isDetailData(detailData)) {
-          return detailData;
+          const detailData = parseDetailData(jsonObject);
+
+          if (detailData !== null && isDetailData(detailData)) {
+            return detailData;
+          }
+
+          return null;
         }
       }
     }
@@ -204,9 +206,6 @@ export const getSearchFindData = async (query = {}) => {
       isJsonObject(json.response.body.items)
     ) {
       const result = raiseValue(json.response?.body.items.item);
-
-      // const pageNo = json.response;
-      // console.log(pageNo);
 
       return result;
     }

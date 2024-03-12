@@ -12,8 +12,6 @@ const GetDetail = () => {
       const data = await getSearchId('F2024030600000059');
 
       setDetail(data);
-
-      console.log(detail);
     })();
   }, []);
 
