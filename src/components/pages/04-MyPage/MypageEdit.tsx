@@ -1,3 +1,4 @@
+import { pb } from '@/lib/api/getPbData';
 import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { updateData, getData } from '@/lib/utils/crud';
@@ -26,7 +27,6 @@ type AlertProps =
 type ConfirmProps = 'doubleCheckEmail' | 'doubleCheckNickname' | '';
 
 const MypageEdit = () => {
-  //머지 테스트
   /* -------------------------------------------------------------------------- */
   // 유효성 검사
   const regex = {
@@ -195,7 +195,7 @@ const MypageEdit = () => {
   /* -------------------------------------------------------------------------- */
   // 업데이트 데이터
   const updateUserData = {
-    nickname: nicknameValue,
+    nickname: nicknameValue || userNickname,
     oldPassword: `${passwordDefaultValue}`,
     password: `${passwordValue}`,
     passwordConfirm: `${passwordCheckValue}`,
@@ -207,14 +207,15 @@ const MypageEdit = () => {
 
   useEffect(() => {
     if (
-      valiNickDouble &&
-      selectFirstItem &&
-      selectSecondItem &&
-      passwordDefaultValue !== '' &&
-      passwordValue === passwordCheckValue &&
-      valiPasswordForm === true
+      valiNickDouble ||
+      (selectFirstItem && selectSecondItem) ||
+      (passwordDefaultValue !== '' &&
+        passwordValue === passwordCheckValue &&
+        valiPasswordForm === true)
     ) {
       setSubmit(true);
+    } else {
+      setSubmit(false);
     }
   }, [
     valiNickDouble,
@@ -245,37 +246,49 @@ const MypageEdit = () => {
   /* -------------------------------------------------------------------------- */
   // 프로필 사진 변경
   // 파일 선택
-  // const [fileInput, setFileInput] = useState<HTMLInputElement | null>(null);
-  // const formData = new FormData();
-  // useEffect(() => {
-  //   const input = document.getElementById('fileInput') as HTMLInputElement;
-  //   setFileInput(input);
-  // }, []);
+  const avatarRef = useRef<HTMLImageElement>(null);
 
-  // // 포켓베이스 파일 업로드 부분
-  // const handleFileInput = async () => {
-  //   try {
-  //     if (fileInput && fileInput.files && fileInput.files.length > 0) {
-  //       const file = fileInput.files[0];
-  //       console.log('업로드한 이미지:', file);
-  //       formData.append('avatar', file);
-  //     }
-  //     console.log('폼데이터에 심은 업로드한 이미지:', formData.get('avatar'));
+  const [fileInput, setFileInput] = useState<HTMLInputElement | null>(null);
+  const formData = new FormData();
+  useEffect(() => {
+    const input = document.getElementById('fileInput') as HTMLInputElement;
+    setFileInput(input);
+  }, []);
 
-  //     await pb.collection('users').create(formData);
-  //     // await pb.collection('users').update(userId, formData);
-  //     alert('프로필 사진 변경이 완료되었습니다.');
-  //     window.location.reload();
-  //   } catch (error) {
-  //     console.error('프로필 변경 데이터 통신 오류:', error);
-  //   }
-  // };
-  // //프로필 버튼 클릭시 파일 선택창 열기
-  // const handleProfileChange = () => {
-  //   if (fileInput) {
-  //     fileInput.click();
-  //   }
-  // };
+  // 포켓베이스 파일 업로드 부분
+  const handleFileInput = async () => {
+    try {
+      if (fileInput && fileInput.files && fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        console.log('업로드한 이미지:', file);
+        formData.append('avatar', file);
+      }
+      console.log('폼데이터에 심은 업로드한 이미지:', formData.get('avatar'));
+
+      // pb 업로드
+      const updatedUserInfo = await pb
+        .collection('users')
+        .update(userId, formData);
+
+      // 업로드한거 화면 반영
+      const avatarUrl = (avatarRef.current.src = pb.files.getUrl(
+        updatedUserInfo,
+        updatedUserInfo.avatar,
+        { thumb: '88x88' }
+      ));
+      avatarRef.current.src = avatarUrl;
+
+      window.location.reload();
+    } catch (error) {
+      console.error('프로필 변경 데이터 통신 오류:', error);
+    }
+  };
+  //프로필 버튼 클릭시 파일 선택창 열기
+  const handleProfileChange = () => {
+    if (fileInput) {
+      fileInput.click();
+    }
+  };
 
   /* -------------------------------------------------------------------------- */
   /* -------------------------------------------------------------------------- */
@@ -291,23 +304,25 @@ const MypageEdit = () => {
           children={'프로필 수정'}
           isShowSubmit={!!submit}
         />
-        {/* <input
+        <input
           id="fileInput"
           type="file"
           onChange={handleFileInput}
           className="hidden"
-        /> */}
+        />
         <button
           type="button"
-          // onClick={handleProfileChange}
-          className="relative mx-auto my-30px"
+          onClick={handleProfileChange}
+          className="relative mx-auto mb-30px mt-20px"
         >
           <img
+            ref={avatarRef}
             className="size-88px rounded-full"
             src={userAvatar !== '' ? getPbImgURL(userId, userAvatar) : profile}
             alt="나의 프로필 사진"
           />
           <img
+            ref={avatarRef}
             className="absolute	bottom-0 right-0 z-10 size-32px translate-x-4px translate-y-4px "
             src={profileIcon}
             alt="프로필 사진 변경 버튼"
