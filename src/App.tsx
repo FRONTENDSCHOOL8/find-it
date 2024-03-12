@@ -26,6 +26,7 @@ import {
 import SearchFindDetail from '@/components/SearchDetail/pages/SearchFindDetail';
 import SearchLostDetail from './components/SearchDetail/pages/SearchLostDetail';
 import SearchFindResult from '@/components/SearchResult/SearchFindResult';
+import SearchLostResult from './components/SearchResult/SearchLostResult';
 
 const App = () => {
   const [showSplash, setShowSplash] = useState(false);
@@ -54,6 +55,7 @@ const App = () => {
             <Route path="/searchfind" element={<SearchFindDetail />} />
             <Route path="/searchfindresult" element={<SearchFindResult />} />
             <Route path="/searchlost" element={<SearchLostDetail />} />
+            <Route path="/searchlostresult" element={<SearchLostResult />} />
             <Route path="/mypageentry" element={<MypageEntry />} />
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/mypageedit" element={<MypageEdit />} />
