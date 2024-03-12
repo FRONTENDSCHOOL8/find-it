@@ -28,6 +28,7 @@ const Notice = () => {
       const pocketAuth = localStorage.getItem('pocketbase_auth');
       const pocketData = pocketAuth ? JSON.parse(pocketAuth) : null;
 
+      // 로그인 유저의 키워드 데이터 가져오기
       if (pocketData) {
         try {
           const userKeywordData: KeywordType = await pb
@@ -40,7 +41,7 @@ const Notice = () => {
             });
           setUserKeyword(userKeywordData);
         } catch (error) {
-          console.error('Fail', error);
+          console.error('비회원입니다.', error);
         }
       }
     };
@@ -49,14 +50,17 @@ const Notice = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
+      // 등록된 키워드가 있을 경우, 최근 습득물 데이터 가져오기
       if (userKeyword) {
         const keywordsArray = userKeyword.keywords.split(', ').filter((k) => k);
         const data = await getAllData({ numOfRows: 100 });
 
+        // 최근 습득물 데이터 중 키워드와 일치하는 데이터 (물품명, ID) 추출
         const recentItemData = (data as JsonType).map(
           (item: GetDetailData) => `${item.fdPrdtNm}^${item.atcId}`
         );
 
+        // 추출한 데이터 중 랜덤으로 추천하기
         const newRecommendations = keywordsArray
           .map((keyword) => {
             const filteredItems = recentItemData.filter((item) =>
@@ -73,6 +77,7 @@ const Notice = () => {
           })
           .filter((item) => item !== null);
 
+        // 추천 데이터가 있을 경우, 로컬스토리지에 저장
         if (newRecommendations.length > 0) {
           setRecommendations((prevRecommendations) => {
             const updatedRecommendations = [
@@ -88,12 +93,14 @@ const Notice = () => {
         }
       }
     };
-
     fetchPosts();
-    const interval = setInterval(fetchPosts, 3600000); // 3600000ms = 1시간
+
+    // 1시간마다 키워드 추천 알림
+    const interval = setInterval(fetchPosts, 3600000);
     return () => clearInterval(interval);
   }, [userKeyword]);
 
+  // 추천 알림 클릭 -> 상세 페이지 이동 및 로컬 삭제
   const handleButton = (index: number) => {
     navigate(
       `/getlist/detail/${recommendations[index].selectedItem.split('^')[1]}`
