@@ -3,10 +3,11 @@ import Notice from '@/components/pages/06-Notification/Notice';
 import Setting from '@/components/pages/06-Notification/Setting';
 import { useState } from 'react';
 
-const Categories = () => {
+const Categories = ({ onChangeCategory }) => {
   const [activeButton, setActiveButton] = useState('notice');
   const handleClick = (button) => {
     setActiveButton(button);
+    onChangeCategory(button);
   };
 
   return (
@@ -28,12 +29,13 @@ const Categories = () => {
 };
 
 const Notification = () => {
+  const [activeCategory, setActiveCategory] = useState('notice');
   return (
     <div>
       <Header isShowPrev={true} children="키워드 알림" empty={true} />
-      <Categories />
-      {/* <Notice /> */}
-      <Setting />
+      <Categories onChangeCategory={setActiveCategory} />
+      {activeCategory === 'notice' && <Notice />}
+      {activeCategory === 'setting' && <Setting />}
     </div>
   );
 };
