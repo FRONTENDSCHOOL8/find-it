@@ -36,6 +36,12 @@ const handleLogout = () => {
   pb.authStore.clear();
   window.location.href = '/';
 };
+
+/* -------------------------------------------------------------------------- */
+// 서비스 준비 알럿
+const showAlert = () => {
+  alert('서비스 준비 중이에요, 조금만 기다려주세요! 😀');
+};
 /* -------------------------------------------------------------------------- */
 // 마이페이지 마크업
 const Profile = () => {
@@ -69,19 +75,28 @@ const List01 = () => {
     <section className="pb-26px">
       <ul className="flex flex-col gap-10px">
         <li className="transition-all duration-300 hover:rounded hover:bg-gray-100">
-          <a href="/" className="flex gap-10px py-4px">
+          <button
+            onClick={showAlert}
+            className="flex items-center gap-10px py-4px"
+          >
             <img src={icon_bookmark} alt="북마크 관리하기" />
             <span>북마크 관리</span>
-          </a>
+          </button>
         </li>
         <li className="transition-all duration-300 hover:rounded hover:bg-gray-100">
-          <a href="/" className="flex gap-10px py-4px">
+          <button
+            onClick={showAlert}
+            className="flex items-center gap-10px py-4px"
+          >
             <img src={icon_docs} alt="게시글 관리하기" />
             <span>게시글 관리</span>
-          </a>
+          </button>
         </li>
         <li className="transition-all duration-300 hover:rounded hover:bg-gray-100">
-          <a href="/" className="flex gap-10px py-4px">
+          <button
+            onClick={showAlert}
+            className="flex items-center gap-10px py-4px"
+          >
             <img src={icon_envelope} alt="받은 쪽지함 보기" />
             <span className="flex gap-3px">
               받은 쪽지함
@@ -91,7 +106,7 @@ const List01 = () => {
                 &nbsp;
               </p>
             </span>
-          </a>
+          </button>
         </li>
       </ul>
     </section>
@@ -105,10 +120,13 @@ const List02 = () => {
     <section className="py-26px">
       <ul className="flex flex-col gap-10px">
         <li className="transition-all duration-300 hover:rounded hover:bg-gray-100">
-          <a href="/" className="flex gap-10px py-4px">
+          <button
+            onClick={showAlert}
+            className="flex items-center gap-10px py-4px"
+          >
             <img src={icon_search} alt="검색 범위 설정하기" />
             <span>검색 범위 설정</span>
-          </a>
+          </button>
         </li>
         <li className="transition-all duration-300 hover:rounded hover:bg-gray-100">
           <a href="/notification" className="flex gap-10px py-4px">
