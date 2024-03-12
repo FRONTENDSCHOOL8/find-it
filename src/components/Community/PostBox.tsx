@@ -4,16 +4,14 @@ import { getTimeDiff } from '@/lib/utils/getTimeDiff';
 
 // pb 데이터 뿌리기
 const data = await getData('community', { sort: '-created' });
-const Bar = (
-  <div className="h-10px w-full border-t border-t-gray-300 bg-gray-200" />
-);
+
 const PostBox = () => {
   return (
     <>
       {data.map((item, index) => (
-        <div key={item.id} className="w-screen">
+        <div key={item.id} className="w-full">
           <Link to={`/postdetail/${item.id}`}>
-            <section className="relative mx-auto my-0 h-160px w-335px px-10px pt-10px">
+            <section className="relative mx-auto my-0 h-160px w-335px bg-white px-10px pt-10px">
               {getTimeDiff({ createdAt: data[index].created })}
               <h1 className="truncate pt-8px text-16px text-black">
                 {item.title}
@@ -28,7 +26,7 @@ const PostBox = () => {
               </span>
             </section>
           </Link>
-          {Bar}
+          <div className="mx-auto my-0 h-10px w-full max-w-400px border-t border-t-gray-300 bg-gray-200" />
         </div>
       ))}
     </>
