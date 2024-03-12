@@ -18,8 +18,9 @@ const PostList = () => {
           link="/searchpost"
         />
         <Horizon lineBold="thin" lineWidth="long" />
-
-        <PostBox />
+        <div className="h-[calc(100vh-66px-80px)] overflow-auto">
+          <PostBox />
+        </div>
       </div>
       {loginUserData && (
         <Link to="/createpost">
