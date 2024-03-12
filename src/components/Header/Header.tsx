@@ -2,9 +2,10 @@ import icon_prev from '@/assets/icons/icon_prev.svg';
 import LOGO_SYMBOL from '@/assets/icons/LOGO_SYMBOL.svg';
 import LOGOTYPE from '@/assets/icons/LOGOTYPE_true.svg';
 import icon_search from '@/assets/icons/icon_search.svg';
-import { Link } from 'react-router-dom';
+
 import { ReactNode } from 'react';
-import { JSX } from 'react/jsx-runtime';
+import { Link, useNavigate } from 'react-router-dom';
+
 
 interface HeaderProps {
   isShowLogo?: boolean;
@@ -46,17 +47,18 @@ const Header: React.FC<HeaderProps> = ({
 
   const defaultStyle = 'h-26px flex w-375px items-center justify-around';
 
-  const handlePreviousPage = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    history.go(-1);
+  const navigate = useNavigate();
+
+  const handlePreviousPage = () => {
+    navigate(-1);
   };
 
   if (isShowLogo !== undefined) {
     if (isShowLogo) {
       homeLogo = (
-        <a href="/">
+        <Link to="/">
           <img src={LOGOTYPE} alt="찾아줘!" />
-        </a>
+        </Link>
       );
     } else {
       return homeLogo;
@@ -66,9 +68,9 @@ const Header: React.FC<HeaderProps> = ({
   if (isShowSymbol !== undefined) {
     if (isShowSymbol) {
       symbolLogo = (
-        <a href="/">
+        <Link to="/">
           <img src={LOGO_SYMBOL} alt="메인으로" />
-        </a>
+        </Link>
       );
     } else {
       return symbolLogo;
@@ -78,9 +80,9 @@ const Header: React.FC<HeaderProps> = ({
   if (isShowPrev !== undefined) {
     if (isShowPrev) {
       prevIcon = (
-        <a href="/" onClick={handlePreviousPage}>
+        <button onClick={handlePreviousPage}>
           <img src={icon_prev} alt="이전으로" />
-        </a>
+        </button>
       );
     } else {
       return prevIcon;
@@ -90,7 +92,9 @@ const Header: React.FC<HeaderProps> = ({
   if (isShowSearch !== undefined) {
     if (isShowSearch) {
       searchIcon = (
-        <Link to={link}>
+
+        <Link to={link} onClick={handlePreviousPage}>
+
           <img src={icon_search} alt="검색하기" />
         </Link>
       );

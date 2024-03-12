@@ -51,14 +51,14 @@ const ProfileBox: React.FC<ProfileBoxProps> = ({
 const FindItemBox = () => {
   return (
     <div className="relative w-140px rounded-20px bg-gray-200 transition-all duration-300 hover:shadow-lg">
-      <a href="/" className="block h-full p-5">
+      <Link to="/searchfind" className="block h-full p-5">
         <span className="text-20px">물품 찾기</span>
         <img
           src={icon_search}
           alt="물품 찾기"
           className="absolute bottom-5 right-5"
         />
-      </a>
+      </Link>
     </div>
   );
 };
