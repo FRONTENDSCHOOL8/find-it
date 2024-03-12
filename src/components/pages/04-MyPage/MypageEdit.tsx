@@ -6,7 +6,6 @@ import {
   GetGunguList,
   GetCode,
 } from '@/components/SignIn/molecule/GetLocalList';
-import { pb } from '@/lib/api/getPbData';
 import profile from '@/assets/profile.svg';
 import profileIcon from '@/assets/icons/icon_camera.svg';
 import Header from '@/components/Header/Header';

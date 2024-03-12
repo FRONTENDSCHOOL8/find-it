@@ -57,20 +57,22 @@ const GetList = () => {
   }, [page]);
 
   return (
-    <div className="min-h-667px w-375px bg-gray-200">
+    <div className="flex h-screen w-full flex-col items-center bg-gray-200">
       <Header isShowSymbol={true} children="습득물 찾기" isShowSearch={true} />
-      <div
-        ref={scrollContainerRef}
-        className="h-[calc(100vh-73px-80px)] overflow-auto"
-      >
-        <ul className="flex flex-col items-center">
-          {items.map((item, index) => (
-            <li key={index}>
-              <ItemBox item={item} itemType="get" />
-            </li>
-          ))}
-        </ul>
-        {fetching && <img src={loading} alt="로딩 중" className="mx-auto" />}
+      <div className="w-375px">
+        <div
+          ref={scrollContainerRef}
+          className="h-[calc(100vh-73px-80px)] overflow-auto"
+        >
+          <ul className="flex flex-col items-center">
+            {items.map((item, index) => (
+              <li key={index}>
+                <ItemBox item={item} itemType="get" />
+              </li>
+            ))}
+          </ul>
+          {fetching && <img src={loading} alt="로딩 중" className="mx-auto" />}
+        </div>
       </div>
       <Navigation />
     </div>

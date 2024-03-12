@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import default_item from '@/assets/itembox/default_item.svg';
 
 type itemTypeProps = {
   itemType: 'get' | 'lost' | 'main';
   item?: {
+    atcId: string;
     fdPrdtNm: string;
     lstPrdtNm: string;
     fdYmd: string;
@@ -29,6 +31,13 @@ interface LostItemType {
 const ItemBox: React.FC<itemTypeProps> = ({ itemType, item }) => {
   const [getItemData, setGetItemData] = useState<GetItemType | null>(null);
   const [lostItemData, setLostItemData] = useState<LostItemType | null>(null);
+  const navigate = useNavigate();
+
+  const handleClickedItem = (id: string) => {
+    itemType === 'get' && navigate(`/getlist/detail/${id}`);
+    itemType === 'lost' && navigate(`/lostlist/detail/${id}`);
+  };
+
   useEffect(() => {
     if (
       item &&
@@ -61,7 +70,7 @@ const ItemBox: React.FC<itemTypeProps> = ({ itemType, item }) => {
   return (
     <div>
       {itemType === 'get' && getItemData && (
-        <a href="/" className="block">
+        <button className="block" onClick={() => handleClickedItem(item.atcId)}>
           <div className="mb-3 flex h-140px w-335px justify-between rounded-[20px] bg-white transition-all duration-300 hover:cursor-pointer hover:shadow-lg">
             <div className="flex flex-col items-start py-18px pl-20px">
               <h1 className="pb-2 text-20px font-medium leading-[1.3] tracking-tighter">
@@ -96,11 +105,11 @@ const ItemBox: React.FC<itemTypeProps> = ({ itemType, item }) => {
               />
             </div>
           </div>
-        </a>
+        </button>
       )}
 
       {itemType === 'lost' && lostItemData && (
-        <a href="/" className="block">
+        <button className="block" onClick={() => handleClickedItem(item.atcId)}>
           <div className="mb-3 flex h-140px w-335px justify-between rounded-[20px] bg-white transition-all duration-300 hover:cursor-pointer hover:shadow-lg">
             <div className="flex flex-col items-start py-18px pl-20px">
               <h1 className="pb-2 text-20px font-medium leading-[1.3] tracking-tighter">
@@ -126,11 +135,11 @@ const ItemBox: React.FC<itemTypeProps> = ({ itemType, item }) => {
               <img src={default_item} alt="등록된 물품 사진 없음" />
             </div>
           </div>
-        </a>
+        </button>
       )}
 
       {itemType === 'main' && getItemData && (
-        <a href="/" className="block">
+        <button className="block">
           <div className="mb-3 flex h-140px w-335px justify-between rounded-[20px] bg-primary transition-all duration-300 hover:cursor-pointer hover:shadow-lg">
             <div className="flex flex-col items-start py-18px pl-20px">
               <h1 className="pb-2 text-20px font-medium leading-[1.3] tracking-tighter text-white">
@@ -165,7 +174,7 @@ const ItemBox: React.FC<itemTypeProps> = ({ itemType, item }) => {
               />
             </div>
           </div>
-        </a>
+        </button>
       )}
     </div>
   );
