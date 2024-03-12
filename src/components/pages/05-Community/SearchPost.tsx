@@ -26,12 +26,14 @@ const SearchPost = () => {
   const submitInput = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
-      const data = await getData('community', {
-        filter: `content ~ "${inputValue}"`,
-      });
-      setData(data);
-      setInputValue('');
-      setShowNoResult(data.length === 0);
+      if (inputValue !== '') {
+        const data = await getData('community', {
+          filter: `content ~ "${inputValue}"`,
+        });
+        setData(data);
+        setInputValue('');
+        setShowNoResult(data.length === 0);
+      }
     } catch (error) {
       console.error('게시물 검색 pb 통신 에러 ', error);
     }
@@ -39,7 +41,7 @@ const SearchPost = () => {
   const SearchResult = (
     <>
       {data.map((item, index) => (
-        <div key={item.id} className="w-screen">
+        <div key={item.id} className="w-full">
           <Link to={`/postdetail/${item.id}`}>
             <section className="relative mx-auto my-0 h-160px w-335px px-10px pt-10px">
               {getTimeDiff({ createdAt: data[index].created })}
@@ -56,7 +58,7 @@ const SearchPost = () => {
               </span>
             </section>
           </Link>
-          <div className="h-10px w-full border-t border-t-gray-300 bg-gray-200" />
+          <div className="mx-auto my-0 h-10px w-full border-t border-t-gray-300 bg-gray-200" />
         </div>
       ))}
     </>
@@ -86,7 +88,9 @@ const SearchPost = () => {
           />
         </form>
       </div>
-      {data.length > 0 ? SearchResult : showNoResult && NoResult}
+      <div className="h-[calc(100vh-66px-80px)] overflow-auto">
+        {data.length > 0 ? SearchResult : showNoResult && NoResult}
+      </div>
     </>
   );
 };

@@ -2,7 +2,7 @@ import Header from '../../Header/Header';
 
 const Main = () => {
   return (
-    <div className="px-30px">
+    <div className="w-375px px-30px">
       <ul className="mt-51px flex flex-col gap-24px">
         <li className="transition-all duration-300 hover:rounded hover:bg-gray-100">
           <a
@@ -47,7 +47,7 @@ const Main = () => {
 
 const Credit = () => {
   return (
-    <div className="w-375px">
+    <div className="flex w-full flex-col items-center">
       <Header isShowPrev={true} children="만든 사람들" empty={true} />
       <Main />
     </div>
