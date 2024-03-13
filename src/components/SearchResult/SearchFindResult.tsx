@@ -114,6 +114,8 @@ const SearchFindResult = () => {
               <Skeleton />
               <Skeleton />
               <Skeleton />
+              <Skeleton />
+              <Skeleton />
             </div>
           </div>
         </div>
