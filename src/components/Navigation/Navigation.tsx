@@ -13,15 +13,27 @@ const Navigation: React.FC = () => {
       className="fixed bottom-0 left-1/2 flex h-80px w-375px -translate-x-1/2 transform items-center justify-center gap-12px rounded-tl-16px rounded-tr-16px bg-white"
     >
       <NavigationItem isHomeActive={pathname === '/'}>찾아줘!</NavigationItem>
-      <NavigationItem isBoxActive={pathname.startsWith('/getlist')}>
+      <NavigationItem
+        isBoxActive={
+          pathname.startsWith('/getlist') ||
+          pathname.startsWith('/searchfindresult')
+        }
+      >
         습득물
       </NavigationItem>
-      <NavigationItem isLostActive={pathname.startsWith('/lostlist')}>
+      <NavigationItem
+        isLostActive={
+          pathname.startsWith('/lostlist') ||
+          pathname.startsWith('/searchlostresult')
+        }
+      >
         분실물
       </NavigationItem>
       <NavigationItem
         isBoardActive={
-          pathname.startsWith('/postlist') || pathname.startsWith('/postdetail')
+          pathname.startsWith('/postlist') ||
+          pathname.startsWith('/postdetail') ||
+          pathname.startsWith('/searchpost')
         }
       >
         자유게시판
