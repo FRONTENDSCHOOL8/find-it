@@ -74,12 +74,18 @@ const LostList = () => {
             ref={scrollContainerRef}
             className="h-[calc(100vh-66px-80px)] overflow-auto"
           >
-            <Skeleton />
-            <Skeleton />
-            <Skeleton />
-            <Skeleton />
-            <Skeleton />
-            <Skeleton />
+            <div className="flex flex-col items-center">
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+            </div>
           </div>
         </div>
         <Navigation />
