@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HelmetProvider, Helmet } from 'react-helmet-async';
 import {
   Main,
@@ -30,6 +31,9 @@ import SearchFindResult from '@/components/SearchResult/SearchFindResult';
 import SearchLostResult from './components/SearchResult/SearchLostResult';
 
 const SPLASH_KEY = 'alreadyVisited';
+
+const queryClient = new QueryClient();
+
 const App = () => {
   const [showSplash, setShowSplash] = useState(() => {
     // 로컬 스토리지에서 키 값을 읽기
@@ -59,7 +63,7 @@ const App = () => {
   }
 
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <HelmetProvider>
           <Helmet>
@@ -110,7 +114,7 @@ const App = () => {
           </Routes>
         </HelmetProvider>
       </BrowserRouter>
-    </>
+    </QueryClientProvider>
   );
 };
 
