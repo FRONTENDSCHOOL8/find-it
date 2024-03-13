@@ -17,12 +17,10 @@ const GetList = () => {
   const scrollContainerRef = useRef(null);
 
   const fetchData = async (pageNo: number) => {
-    try {
-      const data = await getAllData({
-        pageNo: pageNo,
-        numOfRows: 10,
-      });
-
+    const data = await getAllData({
+      pageNo: pageNo,
+      numOfRows: 10,
+    });
 
     setItems((prev) => {
       return [...prev, ...(data as JsonArray)];
