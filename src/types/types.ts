@@ -55,6 +55,9 @@ export type JsonValue =
 
 export interface JsonArray extends Array<JsonValue> {}
 
+export type JsonItem = JsonValue | string | GetDetailData;
+export interface JsonType extends Array<JsonItem> {}
+
 export interface JsonObject {
   [key: string]: JsonValue;
 }
