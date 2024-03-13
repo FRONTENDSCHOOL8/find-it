@@ -8,6 +8,7 @@ import { getSearchFindData } from '@/lib/utils/getAPIData';
 import getFormattedDate from '@/lib/utils/getFormattedDate';
 import Navigation from '../Navigation/Navigation';
 import { useNavigate } from 'react-router-dom';
+import Skeleton from './../ItemBox/Skeleton';
 
 const SearchFindResult = () => {
   const {
@@ -21,6 +22,7 @@ const SearchFindResult = () => {
   const [items, setItems] = useState([]);
   const [page, setPage] = useState(1);
   const [fetching, setFetching] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const scrollContainerRef = useRef(null);
 
@@ -53,6 +55,7 @@ const SearchFindResult = () => {
       return [...prev, ...(data as JsonArray)];
     });
 
+    setIsLoading(false);
     setFetching(false);
   };
 
@@ -91,6 +94,30 @@ const SearchFindResult = () => {
     }
   }, [page, navigate, selectStartDate]);
 
+  if (isLoading) {
+    return (
+      <div className="fixed left-1/2 flex h-screen w-375px -translate-x-1/2 flex-col items-center bg-gray-200">
+        <Header isShowPrev={true} empty={true}>
+          검색결과
+        </Header>
+        <div className="flex flex-col items-center justify-between">
+          <div
+            ref={scrollContainerRef}
+            className="h-[calc(100vh-66px-80px)] overflow-auto"
+          >
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+          </div>
+        </div>
+        <Navigation />
+      </div>
+    );
+  }
+
   return (
     <div className="fixed left-1/2 flex h-screen w-375px -translate-x-1/2 flex-col items-center bg-gray-200">
       <Header isShowPrev={true} empty={true}>
@@ -105,7 +132,7 @@ const SearchFindResult = () => {
             <div className="text-center">검색 결과가 없습니다.</div>
           ) : (
             <ul className="flex flex-col items-center">
-              {items.map((item, index) => (
+              {(items || []).map((item, index) => (
                 <li key={index}>
                   <ItemBox item={item} itemType="get" />
                 </li>
