@@ -43,7 +43,7 @@ const SwiperItem: React.FC = () => {
         bulletClass: 'custom-bullet',
       }}
     >
-      {items.map((item, index) => (
+      {(items || []).map((item, index) => (
         <SwiperSlide key={index}>
           <ItemBox itemType="main" item={item} />
         </SwiperSlide>
