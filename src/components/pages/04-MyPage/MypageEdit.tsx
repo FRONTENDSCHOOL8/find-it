@@ -1,4 +1,7 @@
 import { pb } from '@/lib/api/getPbData';
+// import PocketBase from 'pocketbase';
+
+// const pb = new PocketBase('https://findit.pockethost.io');
 import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { updateData, getData } from '@/lib/utils/crud';
@@ -195,12 +198,12 @@ const MypageEdit = () => {
   /* -------------------------------------------------------------------------- */
   // 업데이트 데이터
   const updateUserData = {
-    nickname: nicknameValue || userNickname,
+    nickname: `${nicknameValue}` || `${userNickname}`,
     oldPassword: `${passwordDefaultValue}`,
     password: `${passwordValue}`,
     passwordConfirm: `${passwordCheckValue}`,
-    state: selectFirstItem || userSido,
-    city: selectSecondItem || userGungu,
+    state: `${selectFirstItem}` || `${userSido}`,
+    city: `${selectSecondItem}` || `${userGungu}`,
   };
   // 완료 조건
   const [submit, setSubmit] = useState(false);
@@ -228,6 +231,7 @@ const MypageEdit = () => {
   ]);
   //완료 버튼 & 서버 보내고 모달창 뜨우기
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [PWModalOpen, setPWModalOpen] = useState(false);
 
   const buttonSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -235,12 +239,18 @@ const MypageEdit = () => {
       await updateData('users', userId, updateUserData);
       setIsModalOpen(true);
     } catch (error) {
+      setPWModalOpen(true);
       console.error('프로필 수정 페이지 통신 오류:', error);
     }
   };
   const onClickConfirm = () => {
-    window.location.reload();
-    setIsModalOpen(false);
+    setPWModalOpen(false);
+    window.location.href = '/mypage ';
+
+    if (isModalOpen === true) {
+      window.location.reload();
+      setIsModalOpen(false);
+    }
   };
 
   /* -------------------------------------------------------------------------- */
@@ -281,6 +291,7 @@ const MypageEdit = () => {
       window.location.reload();
     } catch (error) {
       console.error('프로필 변경 데이터 통신 오류:', error);
+      alert('서버가 불안정하여 재로그인이 필요합니다.');
     }
   };
   //프로필 버튼 클릭시 파일 선택창 열기
@@ -455,6 +466,13 @@ const MypageEdit = () => {
       {isModalOpen && (
         <ModalComp
           children="프로필 수정이 완료되었습니다."
+          confirmText="확인"
+          onClickConfirm={onClickConfirm}
+        />
+      )}
+      {PWModalOpen && (
+        <ModalComp
+          children="서버가 불안정하여 재로그인이 필요합니다."
           confirmText="확인"
           onClickConfirm={onClickConfirm}
         />

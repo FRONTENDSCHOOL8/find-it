@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAllData } from '@/lib/utils/getAPIData';
 import { GetDetailData, JsonType } from '@/types/types';
+import none_alarm from '@/assets/none_alarm.svg';
 import icon_next from '@/assets/icons/icon_next.svg';
 interface KeywordType {
   keywords: string;
@@ -29,20 +30,16 @@ const Notice = () => {
       const pocketData = pocketAuth ? JSON.parse(pocketAuth) : null;
 
       // 로그인 유저의 키워드 데이터 가져오기
-      if (pocketData) {
-        try {
-          const userKeywordData: KeywordType = await pb
-            .collection('users')
-            .getOne(pocketData.model.id, {
-              fields: 'keywords',
-              headers: {
-                'Access-Control-Allow-Origin': '*',
-              },
-            });
-          setUserKeyword(userKeywordData);
-        } catch (error) {
-          console.error('비회원입니다.', error);
-        }
+      if (pocketAuth) {
+        const userKeywordData: KeywordType = await pb
+          .collection('users')
+          .getOne(pocketData.model.id, {
+            fields: 'keywords',
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+            },
+          });
+        setUserKeyword(userKeywordData);
       }
     };
     fetchUserKeyword();
@@ -116,21 +113,33 @@ const Notice = () => {
     setRecommendations(updatedRecommendations);
   };
 
+  const noneAlarmImage = (
+    <img
+      src={none_alarm}
+      alt="새로운 알림이 없습니다."
+      className="mx-auto mt-90px"
+    />
+  );
+
+  const alarmList = (
+    <ul className="">
+      {recommendations.map((recommendation, index) => (
+        <li key={index} className="pb-25px text-14px">
+          <button
+            className="flex w-full justify-between"
+            onClick={() => handleButton(index)}
+          >
+            <span>[{recommendation.keyword}] 관련 습득물을 확인해보세요</span>
+            <img src={icon_next} alt="관련 글 확인하기" />
+          </button>
+        </li>
+      ))}
+    </ul>
+  );
+
   return (
     <div className="w-375px px-30px pt-40px">
-      <ul className="">
-        {recommendations.map((recommendation, index) => (
-          <li key={index} className="pb-25px text-14px">
-            <button
-              className="flex w-full justify-between"
-              onClick={() => handleButton(index)}
-            >
-              <span>[{recommendation.keyword}] 관련 습득물을 확인해보세요</span>
-              <img src={icon_next} alt="관련 글 확인하기" />
-            </button>
-          </li>
-        ))}
-      </ul>
+      {recommendations.length === 0 ? noneAlarmImage : alarmList}
     </div>
   );
 };

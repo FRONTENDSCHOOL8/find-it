@@ -5,15 +5,16 @@ import Navigation from '@/components/Navigation/Navigation';
 
 const PostDetail = () => {
   return (
-    <>
-      <div className="flex w-full flex-col items-center justify-center">
-        <Header isShowPrev={true} children="자유게시판" empty={true} />
-        <Horizon lineBold="thin" lineWidth="long" />
-
-        <PostDetailBody />
+    <div className="flex h-screen w-full flex-col items-center">
+      <Header isShowPrev={true} children="자유게시판" empty={true} />
+      <Horizon lineBold="thin" lineWidth="long" />
+      <div className="w-375px">
+        <div className="flex h-[calc(100vh-66px-80px)] w-full justify-center overflow-auto">
+          <PostDetailBody />
+        </div>
         <Navigation />
       </div>
-    </>
+    </div>
   );
 };
 
