@@ -9,16 +9,20 @@ import Skeleton from './../../ItemBox/Skeleton';
 
 const GetList = () => {
   const [items, setItems] = useState([]);
+
   const [page, setPage] = useState(1);
   const [fetching, setFetching] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
   const scrollContainerRef = useRef(null);
 
   const fetchData = async (pageNo: number) => {
-    const data = await getAllData({
-      pageNo: pageNo,
-      numOfRows: 10,
-    });
+    try {
+      const data = await getAllData({
+        pageNo: pageNo,
+        numOfRows: 10,
+      });
+
 
     setItems((prev) => {
       return [...prev, ...(data as JsonArray)];

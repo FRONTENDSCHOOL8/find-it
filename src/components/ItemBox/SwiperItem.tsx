@@ -1,8 +1,7 @@
-import React from 'react';
 import SwiperCore from 'swiper';
 import ItemBox from './ItemBox';
 import { JsonArray } from '@/types/types';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { getAllData } from '@/lib/utils/getAPIData';
 import { Autoplay, Pagination, Keyboard } from 'swiper/modules';
@@ -43,6 +42,7 @@ const SwiperItem: React.FC = () => {
         bulletClass: 'custom-bullet',
       }}
     >
+
       {(items || []).map((item, index) => (
         <SwiperSlide key={index}>
           <ItemBox itemType="main" item={item} />
