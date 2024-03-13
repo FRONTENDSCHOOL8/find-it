@@ -1,12 +1,12 @@
-import { DetailData } from '@/types/types';
+import { DetailData, AllData } from '@/types/types';
 
 type JsonValue =
   | string
   | number
   | boolean
-  | null
   | JsonObject
   | JsonArray
+  | AllData[]
   | DetailData;
 
 interface JsonObject {

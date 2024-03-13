@@ -1,49 +1,37 @@
+import { useInfiniteQuery } from '@tanstack/react-query';
 import Header from '../../Header/Header';
 import loading from '@/assets/loading.svg';
 import ItemBox from '../../ItemBox/ItemBox';
 import Navigation from '../../Navigation/Navigation';
-import { JsonArray } from '@/types/types';
 import { getAllData } from '@/lib/utils/getAPIData';
-import { useEffect, useState, useRef, UIEvent, useCallback } from 'react';
-import Skeleton from './../../ItemBox/Skeleton';
+import { useEffect, useRef, UIEvent, useCallback } from 'react';
+import Skeleton from '@/components/ItemBox/Skeleton';
+import { AllData } from '@/types/types';
 
 const GetList = () => {
-  const [items, setItems] = useState([]);
-  const [page, setPage] = useState(1);
-  const [fetching, setFetching] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
   const scrollContainerRef = useRef(null);
 
-  const fetchData = async (pageNo: number) => {
-    const data = await getAllData({
-      pageNo: pageNo,
-      numOfRows: 10,
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useInfiniteQuery({
+      queryKey: ['getListItems'],
+      queryFn: async ({ pageParam }) =>
+        await getAllData({ pageNo: pageParam, numOfRows: 10 }),
+      initialPageParam: 1,
+      getNextPageParam: (allPages) => {
+        if (Array.isArray(allPages)) {
+          return allPages.length + 1;
+        }
+      },
     });
-
-    setItems((prev) => {
-      return [...prev, ...(data as JsonArray)];
-    });
-
-    setIsLoading(false);
-    setFetching(false);
-  };
-
-  const fetchMoreItems = useCallback(async () => {
-    if (!fetching) {
-      setFetching(true);
-      setPage((prevPage) => prevPage + 1);
-    }
-  }, [fetching]);
 
   const handleScroll = useCallback(
     (event: UIEvent<HTMLDivElement>) => {
       const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
-      if (scrollTop + clientHeight >= scrollHeight && !fetching) {
-        fetchMoreItems();
+      if (scrollTop + clientHeight >= scrollHeight && hasNextPage) {
+        fetchNextPage();
       }
     },
-    [fetching, fetchMoreItems]
+    [fetchNextPage, hasNextPage]
   );
 
   useEffect(() => {
@@ -55,10 +43,6 @@ const GetList = () => {
       };
     }
   }, [handleScroll]);
-
-  useEffect(() => {
-    fetchData(page);
-  }, [page]);
 
   if (isLoading) {
     return (
@@ -107,13 +91,17 @@ const GetList = () => {
           className="h-[calc(100vh-66px-80px)] overflow-auto"
         >
           <ul className="flex flex-col items-center">
-            {(items || []).map((item, index) => (
-              <li key={index}>
-                <ItemBox item={item} itemType="get" />
-              </li>
-            ))}
+            {data.pages.map((page: AllData[]) =>
+              page.map((item, index) => (
+                <li key={index}>
+                  <ItemBox item={item} itemType="get" />
+                </li>
+              ))
+            )}
           </ul>
-          {fetching && <img src={loading} alt="로딩 중" className="mx-auto" />}
+          {isFetchingNextPage && (
+            <img src={loading} alt="로딩 중" className="mx-auto" />
+          )}
         </div>
       </div>
       <Navigation />

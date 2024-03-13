@@ -1,7 +1,7 @@
 import SwiperCore from 'swiper';
+import { useQuery } from '@tanstack/react-query';
 import ItemBox from './ItemBox';
-import { JsonArray } from '@/types/types';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { getAllData } from '@/lib/utils/getAPIData';
 import { Autoplay, Pagination, Keyboard } from 'swiper/modules';
@@ -12,20 +12,28 @@ import Skeleton from './Skeleton';
 SwiperCore.use([Autoplay, Pagination, Keyboard]);
 
 const SwiperItem: React.FC = () => {
-  const [items, setItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [items, setItems] = useState([]);
+  // const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    (async () => {
-      setIsLoading(true);
-      const data = await getAllData({
-        pageNo: 1,
-        numOfRows: 3,
-      });
-      setItems(data as JsonArray);
-      setIsLoading(false);
-    })();
-  }, []);
+  const { data: items, isLoading } = useQuery({
+    queryKey: ['swiperItems'],
+    queryFn: async () => await getAllData({ pageNo: 1, numOfRows: 3 }),
+  });
+
+  // console.log('data');
+  // console.log(data);
+
+  // useEffect(() => {
+  //   (async () => {
+  //     setIsLoading(true);
+  //     const data = await getAllData({
+  //       pageNo: 1,
+  //       numOfRows: 3,
+  //     });
+  //     setItems(data as JsonArray);
+  //     setIsLoading(false);
+  //   })();
+  // }, []);
 
   if (isLoading) {
     return <Skeleton />;
@@ -42,12 +50,12 @@ const SwiperItem: React.FC = () => {
         bulletClass: 'custom-bullet',
       }}
     >
-
-      {(items || []).map((item, index) => (
-        <SwiperSlide key={index}>
-          <ItemBox itemType="main" item={item} />
-        </SwiperSlide>
-      ))}
+      {Array.isArray(items) &&
+        items.map((item, index) => (
+          <SwiperSlide key={index}>
+            <ItemBox itemType="main" item={item} />
+          </SwiperSlide>
+        ))}
     </Swiper>
   );
 };
