@@ -65,6 +65,7 @@ const Setting = () => {
       'keywordInput'
     ) as HTMLInputElement;
     const newKeyword = keywordInput.value.trim();
+    const currentTime = new Date().toISOString();
 
     if (keywordsArray.length >= 10) {
       setIsCountModal(true);
@@ -91,6 +92,9 @@ const Setting = () => {
 
       setUserKeyword({ keywords: updateKeyword });
       keywordInput.value = '';
+
+      // 로컬 스토리지에 키워드와 시간 저장
+      localStorage.setItem(newKeyword, currentTime);
     }
   };
 
@@ -105,6 +109,9 @@ const Setting = () => {
     pb.collection('users').update(pocketData.model.id, {
       keywords: updatedKeywords,
     });
+
+    // 로컬 스토리지에서 키워드 삭제
+    localStorage.removeItem(keywordToDelete);
   };
 
   const noKeywordMessage = (
