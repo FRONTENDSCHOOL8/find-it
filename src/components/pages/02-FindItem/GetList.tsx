@@ -9,7 +9,6 @@ import Skeleton from './../../ItemBox/Skeleton';
 
 const GetList = () => {
   const [items, setItems] = useState([]);
-
   const [page, setPage] = useState(1);
   const [fetching, setFetching] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -17,12 +16,10 @@ const GetList = () => {
   const scrollContainerRef = useRef(null);
 
   const fetchData = async (pageNo: number) => {
-    try {
-      const data = await getAllData({
-        pageNo: pageNo,
-        numOfRows: 10,
-      });
-
+    const data = await getAllData({
+      pageNo: pageNo,
+      numOfRows: 10,
+    });
 
     setItems((prev) => {
       return [...prev, ...(data as JsonArray)];
@@ -77,12 +74,18 @@ const GetList = () => {
             ref={scrollContainerRef}
             className="h-[calc(100vh-66px-80px)] overflow-auto"
           >
-            <Skeleton />
-            <Skeleton />
-            <Skeleton />
-            <Skeleton />
-            <Skeleton />
-            <Skeleton />
+            <div className="flex flex-col items-center">
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+            </div>
           </div>
         </div>
         <Navigation />
