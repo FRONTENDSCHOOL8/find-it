@@ -199,8 +199,8 @@ const MypageEdit = () => {
     oldPassword: `${passwordDefaultValue}`,
     password: `${passwordValue}`,
     passwordConfirm: `${passwordCheckValue}`,
-    state: selectFirstItem,
-    city: selectSecondItem,
+    state: selectFirstItem || userSido,
+    city: selectSecondItem || userGungu,
   };
   // 완료 조건
   const [submit, setSubmit] = useState(false);
