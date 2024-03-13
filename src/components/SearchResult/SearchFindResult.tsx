@@ -43,7 +43,7 @@ const SearchFindResult = () => {
           ? getFormattedDate(selectEndDate)
           : '',
       pageNo: pageNo,
-      numOfRows: 6,
+      numOfRows: 10,
     });
 
     if (typeof data === 'undefined') {
@@ -96,21 +96,25 @@ const SearchFindResult = () => {
 
   if (isLoading) {
     return (
-      <div className="fixed left-1/2 flex h-screen w-375px -translate-x-1/2 flex-col items-center bg-gray-200">
+      <div className="flex h-screen w-full flex-col items-center bg-gray-200">
         <Header isShowPrev={true} empty={true}>
           검색결과
         </Header>
-        <div className="flex flex-col items-center justify-between">
+        <div className="w-375px">
           <div
             ref={scrollContainerRef}
             className="h-[calc(100vh-66px-80px)] overflow-auto"
           >
-            <Skeleton />
-            <Skeleton />
-            <Skeleton />
-            <Skeleton />
-            <Skeleton />
-            <Skeleton />
+            <div className="flex flex-col items-center">
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+            </div>
           </div>
         </div>
         <Navigation />
@@ -119,17 +123,17 @@ const SearchFindResult = () => {
   }
 
   return (
-    <div className="fixed left-1/2 flex h-screen w-375px -translate-x-1/2 flex-col items-center bg-gray-200">
+    <div className="flex h-screen w-full flex-col items-center bg-gray-200">
       <Header isShowPrev={true} empty={true}>
         검색결과
       </Header>
-      <div className="flex flex-col items-center justify-between">
+      <div className="w-375px">
         <div
           ref={scrollContainerRef}
           className="h-[calc(100vh-66px-80px)] overflow-auto"
         >
           {items === null ? (
-            <div className="text-center">검색 결과가 없습니다.</div>
+            <span className="text-center">검색 결과가 없습니다.</span>
           ) : (
             <ul className="flex flex-col items-center">
               {(items || []).map((item, index) => (
