@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Horizon from '@/components/common/atom/Horizon';
 import icon_delete from '@/assets/icons/icon_delete.svg';
 import { pb } from '@/lib/utils/pb';
+import ModalComp from '@/components/common/molecule/ModalComp';
 
 const pocketAuth = localStorage.getItem('pocketbase_auth');
 const pocketData = pocketAuth ? JSON.parse(pocketAuth) : null;
@@ -33,6 +34,14 @@ const Keyword = ({ keyword, onDelete }: KeywordProps) => {
 
 const Setting = () => {
   const [userKeyword, setUserKeyword] = useState<KeywordType>({ keywords: '' });
+  const keywordsArray = userKeyword.keywords.split(', ').filter((k) => k);
+  const [isCountModal, setIsCountModal] = useState(false);
+  const [isDuplicate, setIsDuplicate] = useState(false);
+
+  const onClickConfirm = () => {
+    setIsCountModal(false);
+    setIsDuplicate(false);
+  };
 
   useEffect(() => {
     (async () => {
@@ -56,6 +65,18 @@ const Setting = () => {
       'keywordInput'
     ) as HTMLInputElement;
     const newKeyword = keywordInput.value.trim();
+
+    if (keywordsArray.length >= 10) {
+      setIsCountModal(true);
+      keywordInput.value = '';
+      return;
+    }
+
+    if (keywordsArray.includes(keywordInput.value)) {
+      setIsDuplicate(true);
+      keywordInput.value = '';
+      return;
+    }
 
     if (newKeyword) {
       // pb에 키워드 업데이트
@@ -86,8 +107,6 @@ const Setting = () => {
     });
   };
 
-  const keywordsArray = userKeyword.keywords.split(', ').filter((k) => k);
-
   const noKeywordMessage = (
     <span className="w-full pt-5 text-center text-14px text-gray-450">
       등록된 키워드가 없습니다.
@@ -95,7 +114,7 @@ const Setting = () => {
   );
 
   return (
-    <div className="p-30px">
+    <div className="flex flex-col items-center p-30px">
       <fieldset className="pb-30px">
         <legend className="hidden">검색 폼</legend>
         <div className="flex gap-3">
@@ -117,7 +136,7 @@ const Setting = () => {
 
       <Horizon lineBold="thin" lineWidth="short" />
 
-      <section className="py-5">
+      <section className="w-375px p-5">
         <h1 className="pb-5 text-14px">키워드 관리</h1>
         <div className="flex flex-wrap gap-14px">
           {userKeyword.keywords === ''
@@ -131,6 +150,20 @@ const Setting = () => {
               ))}
         </div>
       </section>
+      {isCountModal && (
+        <ModalComp
+          children="키워드는 최대 10개 등록 가능합니다."
+          confirmText="확인"
+          onClickConfirm={onClickConfirm}
+        />
+      )}
+      {isDuplicate && (
+        <ModalComp
+          children="이미 등록된 키워드입니다."
+          confirmText="확인"
+          onClickConfirm={onClickConfirm}
+        />
+      )}
     </div>
   );
 };
