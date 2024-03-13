@@ -12,7 +12,7 @@ const GetDetail = () => {
 
   useEffect(() => {
     (async () => {
-      const data = await lostSearchId(id as string);
+      const data = await lostSearchId(id);
 
       setDetail(data);
     })();

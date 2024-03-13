@@ -12,11 +12,11 @@ const GetDetail = () => {
 
   useEffect(() => {
     (async () => {
-      const data = await getSearchId(id as string);
+      const data = await getSearchId(id);
 
       setDetail(data);
     })();
-  }, []);
+  }, [id, setDetail]);
 
   return (
     <div className="mx-auto w-375px">

@@ -1,6 +1,3 @@
-import bookmark_icon from '@/assets/icons/icon_bookmark_detail.svg';
-import bookmark_icon_fill from '@/assets/icons/icon_bookmark_detail_fill.svg';
-import useBookmarkStore from '@/store/bookmark/bookmark';
 import KakaoMap from '@/components/Detail/atom/KakaoMap';
 import { DetailData } from '@/types/types';
 
@@ -9,39 +6,12 @@ interface DetailProps {
 }
 
 const Detail: React.FC<DetailProps> = ({ detail }) => {
-  const bookmark = useBookmarkStore((state) => state.bookmark);
-
-  const isBookmarked = (bookmark: boolean) => {
-    if (bookmark) {
-      return bookmark_icon_fill;
-    }
-    return bookmark_icon;
-  };
-
   return (
     <div className="w-full leading-[1.3]">
       <div className="flow-root">
         <img src={detail.image} alt="item_image" className="w-full" />
       </div>
       <div className="relative">
-        <form className="absolute right-30px top-2px">
-          <label htmlFor="bookmark">
-            <img
-              src={isBookmarked(bookmark)}
-              alt="bookmark"
-              className="h-18px w-18px"
-            />
-          </label>
-          <input
-            type="checkbox"
-            id="bookmark"
-            hidden
-            onChange={() => {
-              useBookmarkStore.setState({ bookmark: !bookmark });
-              console.log(bookmark);
-            }}
-          />
-        </form>
         <ul className="mt-28px flex flex-col gap-8px px-30px text-12px">
           <li>
             <dl>
