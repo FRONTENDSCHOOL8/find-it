@@ -26,7 +26,7 @@ const PostBox = () => {
               </span>
             </section>
           </Link>
-          <div className="mx-auto my-0 h-10px w-full border-t border-t-gray-300 bg-gray-200" />
+          <div className="mx-auto my-0 h-10px w-full max-w-400px border-t border-t-gray-300 bg-gray-200" />
         </div>
       ))}
     </>
