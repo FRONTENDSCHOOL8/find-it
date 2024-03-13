@@ -4,10 +4,6 @@ import useBookmarkStore from '@/store/bookmark/bookmark';
 import KakaoMap from '@/components/Detail/atom/KakaoMap';
 import { DetailData } from '@/types/types';
 
-const isEmpty = (value: string) => {
-  return value.length !== 0;
-};
-
 interface DetailProps {
   detail: DetailData;
 }
@@ -23,14 +19,9 @@ const Detail: React.FC<DetailProps> = ({ detail }) => {
   };
 
   return (
-    <div className="w-375px leading-[1.3]">
-      <div className="flow-root h-250px w-full bg-slate-500">
-        {isEmpty(detail.image) && (
-          <img src={detail.image} alt="item_image" className="w-full" />
-        )}
-        {/* <span className="mt-40px block text-center text-24px text-white">
-          사진 자리
-        </span> */}
+    <div className="w-full leading-[1.3]">
+      <div className="flow-root">
+        <img src={detail.image} alt="item_image" className="w-full" />
       </div>
       <div className="relative">
         <form className="absolute right-30px top-2px">

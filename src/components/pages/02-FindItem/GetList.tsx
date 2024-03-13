@@ -8,21 +8,25 @@ import { useEffect, useState, useRef, UIEvent, useCallback } from 'react';
 
 const GetList = () => {
   const [items, setItems] = useState([]);
-  const [page, setPage] = useState(1);
-  const [fetching, setFetching] = useState(false);
+  const [page, setPage] = useState<number>(1);
+  const [fetching, setFetching] = useState<boolean>(false);
   const scrollContainerRef = useRef(null);
 
   const fetchData = async (pageNo: number) => {
-    const data = await getAllData({
-      pageNo: pageNo,
-      numOfRows: 10,
-    });
+    try {
+      const data = await getAllData({
+        pageNo: pageNo,
+        numOfRows: 10,
+      });
 
-    setItems((prev) => {
-      return [...prev, ...(data as JsonArray)];
-    });
-
-    setFetching(false);
+      setItems((prev) => {
+        return [...prev, ...(data as JsonArray)];
+      });
+    } catch (error) {
+      console.error('error: ' + error);
+    } finally {
+      setFetching(false);
+    }
   };
 
   const fetchMoreItems = useCallback(async () => {
