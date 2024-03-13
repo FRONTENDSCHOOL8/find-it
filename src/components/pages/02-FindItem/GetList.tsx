@@ -5,11 +5,15 @@ import Navigation from '../../Navigation/Navigation';
 import { JsonArray } from '@/types/types';
 import { getAllData } from '@/lib/utils/getAPIData';
 import { useEffect, useState, useRef, UIEvent, useCallback } from 'react';
+import Skeleton from './../../ItemBox/Skeleton';
 
 const GetList = () => {
   const [items, setItems] = useState([]);
-  const [page, setPage] = useState<number>(1);
-  const [fetching, setFetching] = useState<boolean>(false);
+
+  const [page, setPage] = useState(1);
+  const [fetching, setFetching] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
   const scrollContainerRef = useRef(null);
 
   const fetchData = async (pageNo: number) => {
@@ -19,14 +23,13 @@ const GetList = () => {
         numOfRows: 10,
       });
 
-      setItems((prev) => {
-        return [...prev, ...(data as JsonArray)];
-      });
-    } catch (error) {
-      console.error('error: ' + error);
-    } finally {
-      setFetching(false);
-    }
+
+    setItems((prev) => {
+      return [...prev, ...(data as JsonArray)];
+    });
+
+    setIsLoading(false);
+    setFetching(false);
   };
 
   const fetchMoreItems = useCallback(async () => {
@@ -60,6 +63,33 @@ const GetList = () => {
     fetchData(page);
   }, [page]);
 
+  if (isLoading) {
+    return (
+      <div className="flex h-screen w-full flex-col items-center bg-gray-200">
+        <Header
+          isShowSymbol={true}
+          children="습득물 찾기"
+          isShowSearch={true}
+          link="/searchfind"
+        />
+        <div className="w-375px">
+          <div
+            ref={scrollContainerRef}
+            className="h-[calc(100vh-66px-80px)] overflow-auto"
+          >
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+          </div>
+        </div>
+        <Navigation />
+      </div>
+    );
+  }
+
   return (
     <div className="flex h-screen w-full flex-col items-center bg-gray-200">
       <Header
@@ -74,7 +104,7 @@ const GetList = () => {
           className="h-[calc(100vh-66px-80px)] overflow-auto"
         >
           <ul className="flex flex-col items-center">
-            {items.map((item, index) => (
+            {(items || []).map((item, index) => (
               <li key={index}>
                 <ItemBox item={item} itemType="get" />
               </li>

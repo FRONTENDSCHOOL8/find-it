@@ -6,7 +6,6 @@ import icon_search from '@/assets/icons/icon_search.svg';
 import { ReactNode } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-
 interface HeaderProps {
   isShowLogo?: boolean;
   isShowPrev?: boolean;
@@ -92,9 +91,7 @@ const Header: React.FC<HeaderProps> = ({
   if (isShowSearch !== undefined) {
     if (isShowSearch) {
       searchIcon = (
-
-        <Link to={link} onClick={handlePreviousPage}>
-
+        <Link to={link}>
           <img src={icon_search} alt="검색하기" />
         </Link>
       );

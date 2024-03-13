@@ -42,12 +42,12 @@ const SwiperItem: React.FC = () => {
         bulletClass: 'custom-bullet',
       }}
     >
-      {typeof items !== 'undefined' &&
-        items.map((item, index) => (
-          <SwiperSlide key={index}>
-            <ItemBox itemType="main" item={item} />
-          </SwiperSlide>
-        ))}
+
+      {(items || []).map((item, index) => (
+        <SwiperSlide key={index}>
+          <ItemBox itemType="main" item={item} />
+        </SwiperSlide>
+      ))}
     </Swiper>
   );
 };
