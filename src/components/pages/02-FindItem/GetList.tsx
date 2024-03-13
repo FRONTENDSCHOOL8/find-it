@@ -9,7 +9,6 @@ import Skeleton from './../../ItemBox/Skeleton';
 
 const GetList = () => {
   const [items, setItems] = useState([]);
-
   const [page, setPage] = useState(1);
   const [fetching, setFetching] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -75,12 +74,18 @@ const GetList = () => {
             ref={scrollContainerRef}
             className="h-[calc(100vh-66px-80px)] overflow-auto"
           >
-            <Skeleton />
-            <Skeleton />
-            <Skeleton />
-            <Skeleton />
-            <Skeleton />
-            <Skeleton />
+            <div className="flex flex-col items-center">
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+            </div>
           </div>
         </div>
         <Navigation />

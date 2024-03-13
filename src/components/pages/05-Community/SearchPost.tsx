@@ -4,6 +4,7 @@ import { getData } from '@/lib/utils/crud';
 import { getTimeDiff } from '@/lib/utils/getTimeDiff';
 import Header from '@/components/Header/Header';
 import Horizon from '@/components/common/atom/Horizon';
+import Navigation from '@/components/Navigation/Navigation';
 
 const SearchPost = () => {
   const [inputValue, setInputValue] = useState('');
@@ -26,13 +27,17 @@ const SearchPost = () => {
   const submitInput = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
-      if (inputValue !== '') {
+      if (inputValue.trim() !== '') {
         const data = await getData('community', {
           filter: `content ~ "${inputValue}"`,
         });
         setData(data);
         setInputValue('');
         setShowNoResult(data.length === 0);
+      } else {
+        // 검색어가 빈 문자열 또는 공백 문자열인 경우에 대한 처리
+        setData([]);
+        setShowNoResult(false);
       }
     } catch (error) {
       console.error('게시물 검색 pb 통신 에러 ', error);
@@ -68,30 +73,31 @@ const SearchPost = () => {
     <div className="pt-20px text-center">검색 결과가 없습니다.</div>
   );
   return (
-    <>
-      <div className="relative flex w-full flex-col items-center justify-center">
-        <Header isShowPrev={true} children="게시물 검색" isShowSearch={true} />
-        <Horizon lineBold="thin" lineWidth="long" />
+    <div className="relative flex h-screen w-full flex-col items-center">
+      <Header isShowPrev={true} children="게시물 검색" isShowSearch={true} />
+      <Horizon lineBold="bold" lineWidth="long" />
 
-        <form
-          className="absolute ml-40px flex h-66px items-center"
-          onSubmit={submitInput}
-        >
-          <input
-            ref={inputRef}
-            type="search"
-            value={inputValue}
-            onChange={inputChange}
-            className="w-280px appearance-none	rounded-full px-20px py-8px text-16px outline-none	"
-            style={{ border: '1px solid #bcbcbc' }}
-            placeholder="검색어를 입력하세요."
-          />
-        </form>
+      <form
+        className="absolute ml-40px flex h-66px items-center"
+        onSubmit={submitInput}
+      >
+        <input
+          ref={inputRef}
+          type="search"
+          value={inputValue}
+          onChange={inputChange}
+          className="w-280px appearance-none	rounded-full px-20px py-8px text-16px outline-none	"
+          style={{ border: '1px solid #bcbcbc' }}
+          placeholder="검색어 입력 후 Enter"
+        />
+      </form>
+      <div className="w-375px">
+        <div className="h-[calc(100vh-66px-80px)] overflow-auto">
+          {data.length > 0 ? SearchResult : showNoResult && NoResult}
+        </div>
       </div>
-      <div className="h-[calc(100vh-66px-80px)] overflow-auto">
-        {data.length > 0 ? SearchResult : showNoResult && NoResult}
-      </div>
-    </>
+      <Navigation />
+    </div>
   );
 };
 
