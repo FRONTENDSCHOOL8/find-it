@@ -114,7 +114,17 @@ const List01 = () => {
 };
 
 const List02 = () => {
-  const [keywordAlert] = useState(false);
+  const [voidAlarmIcon, setVoidAlarmIcon] = useState(false);
+
+  useEffect(() => {
+    const savedRecommendations = localStorage.getItem('recommendations');
+
+    if (savedRecommendations === '[]') {
+      setVoidAlarmIcon(false);
+    } else {
+      setVoidAlarmIcon(true);
+    }
+  }, []);
 
   return (
     <section className="py-26px">
@@ -134,7 +144,7 @@ const List02 = () => {
             <span className="flex gap-3px">
               키워드 알림
               <p
-                className={`${keywordAlert ? 'h-7px w-7px rounded-full bg-primary' : ''} `}
+                className={`${voidAlarmIcon ? 'h-7px w-7px rounded-full bg-primary' : ''} `}
               >
                 &nbsp;
               </p>
