@@ -2,48 +2,64 @@ import Header from '../../Header/Header';
 import loading from '@/assets/loading.svg';
 import ItemBox from '../../ItemBox/ItemBox';
 import Navigation from '../../Navigation/Navigation';
-import { JsonArray } from '@/types/types';
-import { lostAllData } from '@/lib/utils/lostAPIData';
-import { useEffect, useState, useRef, UIEvent, useCallback } from 'react';
+// import { JsonArray } from '@/types/types';
+// import { lostAllData } from '@/lib/utils/lostAPIData';
+import { useEffect, useRef, UIEvent, useCallback } from 'react';
 import Skeleton from '@/components/ItemBox/Skeleton';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { lostAllData } from '@/lib/utils/lostAPIData';
+import { AllData } from '@/types/types';
 
 const LostList = () => {
-  const [items, setItems] = useState([]);
-  const [page, setPage] = useState(1);
-  const [fetching, setFetching] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [items, setItems] = useState([]);
+  // const [page, setPage] = useState(1);
+  // const [fetching, setFetching] = useState(false);
+  // const [isLoading, setIsLoading] = useState(true);
 
   const scrollContainerRef = useRef(null);
 
-  const fetchData = async (pageNo: number) => {
-    const data = await lostAllData({
-      pageNo: pageNo,
-      numOfRows: 10,
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useInfiniteQuery({
+      queryKey: ['lostListItems'],
+      queryFn: async ({ pageParam }) =>
+        await lostAllData({ pageNo: pageParam, numOfRows: 10 }),
+      initialPageParam: 1,
+      getNextPageParam: (allPages) => {
+        if (Array.isArray(allPages)) {
+          return allPages.length + 1;
+        }
+      },
     });
 
-    setItems((prev) => {
-      return [...prev, ...(data as JsonArray)];
-    });
+  // const fetchData = async (pageNo: number) => {
+  //   const data = await lostAllData({
+  //     pageNo: pageNo,
+  //     numOfRows: 10,
+  //   });
 
-    setIsLoading(false);
-    setFetching(false);
-  };
+  //   setItems((prev) => {
+  //     return [...prev, ...(data as JsonArray)];
+  //   });
 
-  const fetchMoreItems = useCallback(async () => {
-    if (!fetching) {
-      setFetching(true);
-      setPage((prevPage) => prevPage + 1);
-    }
-  }, [fetching]);
+  //   setIsLoading(false);
+  //   setFetching(false);
+  // };
+
+  // const fetchMoreItems = useCallback(async () => {
+  //   if (!fetching) {
+  //     setFetching(true);
+  //     setPage((prevPage) => prevPage + 1);
+  //   }
+  // }, [fetching]);
 
   const handleScroll = useCallback(
     (event: UIEvent<HTMLDivElement>) => {
       const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
-      if (scrollTop + clientHeight >= scrollHeight && !fetching) {
-        fetchMoreItems();
+      if (scrollTop + clientHeight >= scrollHeight && hasNextPage) {
+        fetchNextPage();
       }
     },
-    [fetching, fetchMoreItems]
+    [hasNextPage, fetchNextPage]
   );
 
   useEffect(() => {
@@ -55,10 +71,6 @@ const LostList = () => {
       };
     }
   }, [handleScroll]);
-
-  useEffect(() => {
-    fetchData(page);
-  }, [page]);
 
   if (isLoading) {
     return (
@@ -107,13 +119,17 @@ const LostList = () => {
           className="h-[calc(100vh-66px-80px)] overflow-auto"
         >
           <ul className="flex flex-col items-center">
-            {(items || []).map((item, index) => (
-              <li key={index}>
-                <ItemBox item={item} itemType="lost" />
-              </li>
-            ))}
+            {data.pages.map((page: AllData[]) =>
+              page.map((item, index) => (
+                <li key={index}>
+                  <ItemBox item={item} itemType="lost" />
+                </li>
+              ))
+            )}
           </ul>
-          {fetching && <img src={loading} alt="로딩 중" className="mx-auto" />}
+          {isFetchingNextPage && (
+            <img src={loading} alt="로딩 중" className="mx-auto" />
+          )}
         </div>
       </div>
       <Navigation />

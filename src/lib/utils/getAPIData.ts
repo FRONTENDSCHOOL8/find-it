@@ -73,7 +73,13 @@ export const getAllData = async (options = {}) => {
       isJsonObject(json.response.body) &&
       isJsonObject(json.response.body.items)
     ) {
-      const result = raiseValue(json.response?.body.items.item);
+      const items = json.response.body.items.item;
+
+      if (!Array.isArray(items)) {
+        throw new Error('items is not array');
+      }
+
+      const result = raiseValue(items);
 
       return result;
     }

@@ -1,3 +1,29 @@
+export interface AllData {
+  atcId: string;
+  depPlace: string;
+  fdFilePathImg: string;
+  fdPrdtNm: string;
+  fdSbjt: string;
+  fdSn: string;
+  fdYmd: string;
+  prdtClNm: string;
+  rnum: string;
+  lstYmd: string;
+  lstPlace: string;
+  lstPrdtNm: string;
+}
+
+export interface LostAllData {
+  lstFilePathImg: string;
+  lstPlace: string;
+  lstPrdtNm: string;
+  lstSbjt: string;
+  lstSn: string;
+  lstYmd: string;
+  prdtClNm: string;
+  rnum: string;
+}
+
 export interface GetDetailData {
   atcId: string;
   csteSteNm: string;
