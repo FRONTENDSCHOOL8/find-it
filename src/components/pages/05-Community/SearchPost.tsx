@@ -26,13 +26,17 @@ const SearchPost = () => {
   const submitInput = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
-      if (inputValue !== '') {
+      if (inputValue.trim() !== '') {
         const data = await getData('community', {
           filter: `content ~ "${inputValue}"`,
         });
         setData(data);
         setInputValue('');
         setShowNoResult(data.length === 0);
+      } else {
+        // 검색어가 빈 문자열 또는 공백 문자열인 경우에 대한 처리
+        setData([]);
+        setShowNoResult(false);
       }
     } catch (error) {
       console.error('게시물 검색 pb 통신 에러 ', error);
