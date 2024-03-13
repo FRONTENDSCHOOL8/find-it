@@ -8,6 +8,7 @@ import { getSearchLostData } from '@/lib/utils/getAPIData';
 import getFormattedDate from '@/lib/utils/getFormattedDate';
 import Navigation from '../Navigation/Navigation';
 import { useNavigate } from 'react-router-dom';
+import Skeleton from './../ItemBox/Skeleton';
 
 const SearchLostResult = () => {
   const {
@@ -21,6 +22,7 @@ const SearchLostResult = () => {
   const [items, setItems] = useState([]);
   const [page, setPage] = useState(1);
   const [fetching, setFetching] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const scrollContainerRef = useRef(null);
 
@@ -41,7 +43,7 @@ const SearchLostResult = () => {
           ? getFormattedDate(selectEndDate)
           : '',
       pageNo: pageNo,
-      numOfRows: 6,
+      numOfRows: 10,
     });
 
     if (typeof data === 'undefined') {
@@ -53,6 +55,7 @@ const SearchLostResult = () => {
       return [...prev, ...(data as JsonArray)];
     });
 
+    setIsLoading(false);
     setFetching(false);
   };
 
@@ -91,12 +94,42 @@ const SearchLostResult = () => {
     }
   }, [page, navigate, selectStartDate]);
 
+  if (isLoading) {
+    return (
+      <div className="flex h-screen w-full flex-col items-center bg-gray-200">
+        <Header isShowPrev={true} empty={true}>
+          검색결과
+        </Header>
+        <div className="w-375px">
+          <div
+            ref={scrollContainerRef}
+            className="h-[calc(100vh-66px-80px)] overflow-auto"
+          >
+            <div className="flex flex-col items-center">
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+              <Skeleton />
+            </div>
+          </div>
+        </div>
+        <Navigation />
+      </div>
+    );
+  }
+
   return (
-    <div className="fixed left-1/2 flex h-screen w-375px -translate-x-1/2 flex-col items-center bg-gray-200">
+    <div className="flex h-screen w-full flex-col items-center bg-gray-200">
       <Header isShowPrev={true} empty={true}>
         검색결과
       </Header>
-      <div className="flex flex-col items-center justify-between">
+      <div className="w-375px">
         <div
           ref={scrollContainerRef}
           className="h-[calc(100vh-66px-80px)] overflow-auto"
