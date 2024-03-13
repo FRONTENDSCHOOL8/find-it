@@ -29,24 +29,30 @@ import SearchLostDetail from './components/SearchDetail/pages/SearchLostDetail';
 import SearchFindResult from '@/components/SearchResult/SearchFindResult';
 import SearchLostResult from './components/SearchResult/SearchLostResult';
 
+const SPLASH_KEY = 'alreadyVisited';
 const App = () => {
-  const [showSplash, setShowSplash] = useState(true);
+  const [showSplash, setShowSplash] = useState(() => {
+    // 로컬 스토리지에서 키 값을 읽기
+    const alreadyVisited = JSON.parse(localStorage.getItem(SPLASH_KEY));
+    // 이미 방문한 적이 있다면?
+    // 스플래시 이미지를 감춘다.
+    return alreadyVisited ? false : true;
+  });
 
   useEffect(() => {
-    const firstVisit = localStorage.getItem('firstVisit');
-    if (firstVisit !== null) {
-      setShowSplash(false);
-    } else {
-      setShowSplash(true);
-      localStorage.setItem('firstVisit', 'true');
+    let timeout: NodeJS.Timeout;
+    if (showSplash) {
+      // 스플래시 보이는 시간 :  3.5초 뒤 사라짐
+      timeout = setTimeout(() => {
+        setShowSplash(false);
+        localStorage.setItem(SPLASH_KEY, JSON.stringify(true));
+      }, 3500);
     }
-    // 스플래시 보이는 시간
-    const timeout = setTimeout(() => {
-      setShowSplash(false);
-    }, 3500);
 
-    return () => clearTimeout(timeout);
-  }, []);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [showSplash]);
 
   if (showSplash) {
     return <Splash />;
