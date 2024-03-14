@@ -37,7 +37,7 @@ const SearchDate: React.FC<SearchDateProps> = ({
         <input
           id={dateInputId}
           type="date"
-          className="date-input"
+          className="date-input text-white"
           aria-label="날짜 입력"
           onChange={handleDateChange}
         />
