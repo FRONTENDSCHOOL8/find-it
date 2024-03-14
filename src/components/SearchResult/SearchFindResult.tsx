@@ -1,14 +1,15 @@
 import Header from '../Header/Header';
 import useSearchStore from '@/store/search/searchStore';
-import { useEffect, useState, useRef, UIEvent, useCallback } from 'react';
+import { useEffect, useRef, UIEvent, useCallback } from 'react';
 import loading from '@/assets/loading.svg';
-import { JsonArray } from '@/types/types';
+import { AllData } from '@/types/types';
 import ItemBox from '@/components/ItemBox/ItemBox';
 import { getSearchFindData } from '@/lib/utils/getAPIData';
 import getFormattedDate from '@/lib/utils/getFormattedDate';
 import Navigation from '../Navigation/Navigation';
 import { useNavigate } from 'react-router-dom';
 import Skeleton from './../ItemBox/Skeleton';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 const SearchFindResult = () => {
   const {
@@ -19,61 +20,95 @@ const SearchFindResult = () => {
     selectedAreaValue,
   } = useSearchStore();
 
-  const [items, setItems] = useState([]);
-  const [page, setPage] = useState(1);
-  const [fetching, setFetching] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [items, setItems] = useState([]);
+  // const [page, setPage] = useState(1);
+  // const [fetching, setFetching] = useState(false);
+  // const [isLoading, setIsLoading] = useState(true);
 
   const scrollContainerRef = useRef(null);
 
   const navigate = useNavigate();
 
-  const fetchData = async (pageNo: number) => {
-    setFetching(true);
-    const data = await getSearchFindData({
-      PRDT_CL_CD_01: selectedMainCategoryValue,
-      PRDT_CL_CD_02: selectedSubCategoryValue,
-      N_FD_LCT_CD: selectedAreaValue,
-      START_YMD:
-        selectStartDate !== '날짜를 선택하세요.'
-          ? getFormattedDate(selectStartDate)
-          : '',
-      END_YMD:
-        selectEndDate !== '날짜를 선택하세요.'
-          ? getFormattedDate(selectEndDate)
-          : '',
-      pageNo: pageNo,
-      numOfRows: 10,
+  // const fetchData = async (pageNo: number) => {
+  //   setFetching(true);
+  //   const data = await getSearchFindData({
+  //     PRDT_CL_CD_01: selectedMainCategoryValue,
+  //     PRDT_CL_CD_02: selectedSubCategoryValue,
+  //     N_FD_LCT_CD: selectedAreaValue,
+  //     START_YMD:
+  //       selectStartDate !== '날짜를 선택하세요.'
+  //         ? getFormattedDate(selectStartDate)
+  //         : '',
+  //     END_YMD:
+  //       selectEndDate !== '날짜를 선택하세요.'
+  //         ? getFormattedDate(selectEndDate)
+  //         : '',
+  //     pageNo: pageNo,
+  //     numOfRows: 10,
+  //   });
+
+  //   console.log('data');
+  //   console.log(data);
+
+  //   if (data === undefined) {
+  //     setFetching(false);
+  //     return setItems(null);
+  //   }
+
+  //   setItems((prev) => {
+  //     return [...prev, ...(data as JsonArray)];
+  //   });
+
+  //   console.log('items');
+  //   console.log(items);
+
+  //   setIsLoading(false);
+  //   setFetching(false);
+  // };
+
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useInfiniteQuery({
+      queryKey: ['searchFindResult'],
+      queryFn: async ({ pageParam }) =>
+        await getSearchFindData({
+          PRDT_CL_CD_01: selectedMainCategoryValue,
+          PRDT_CL_CD_02: selectedSubCategoryValue,
+          N_FD_LCT_CD: selectedAreaValue,
+          START_YMD:
+            selectStartDate !== '날짜를 선택하세요.'
+              ? getFormattedDate(selectStartDate)
+              : '',
+          END_YMD:
+            selectEndDate !== '날짜를 선택하세요.'
+              ? getFormattedDate(selectEndDate)
+              : '',
+          pageNo: pageParam,
+          numOfRows: 10,
+        }),
+      initialPageParam: 1,
+      getNextPageParam: (allPages) => {
+        if (Array.isArray(allPages)) {
+          return allPages.length + 1;
+        }
+      },
     });
 
-    if (typeof data === 'undefined') {
-      setFetching(false);
-      return setItems(null);
-    }
-
-    setItems((prev) => {
-      return [...prev, ...(data as JsonArray)];
-    });
-
-    setIsLoading(false);
-    setFetching(false);
-  };
-
-  const fetchMoreItems = useCallback(async () => {
-    if (!fetching) {
-      setFetching(true);
-      setPage((prevPage) => prevPage + 1);
-    }
-  }, [fetching]);
+  // const fetchMoreItems = useCallback(async () => {
+  //   if (!fetching) {
+  //     setFetching(true);
+  //     setPage((prevPage) => prevPage + 1);
+  //   }
+  // }, [fetching]);
 
   const handleScroll = useCallback(
     (event: UIEvent<HTMLDivElement>) => {
       const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
-      if (scrollTop + clientHeight >= scrollHeight && !fetching) {
-        fetchMoreItems();
+      if (scrollTop + clientHeight >= scrollHeight && hasNextPage) {
+        // fetchMoreItems();
+        fetchNextPage();
       }
     },
-    [fetching, fetchMoreItems]
+    [fetchNextPage, hasNextPage]
   );
 
   useEffect(() => {
@@ -89,10 +124,8 @@ const SearchFindResult = () => {
   useEffect(() => {
     if (selectStartDate === '날짜를 선택하세요.') {
       navigate('/searchfind');
-    } else {
-      fetchData(page);
     }
-  }, [page, navigate, selectStartDate]);
+  }, [navigate, selectStartDate]);
 
   if (isLoading) {
     return (
@@ -134,18 +167,28 @@ const SearchFindResult = () => {
           ref={scrollContainerRef}
           className="h-[calc(100vh-66px-80px)] overflow-auto"
         >
-          {items === null ? (
+          {/* {data.pages[0] === undefined ? (
             <span className="text-center">검색 결과가 없습니다.</span>
-          ) : (
-            <ul className="flex flex-col items-center">
-              {(items || []).map((item, index) => (
-                <li key={index}>
-                  <ItemBox item={item} itemType="get" />
-                </li>
-              ))}
-            </ul>
+          ) : ( */}
+          <ul className="flex flex-col items-center">
+            {data.pages.map((page: AllData[], pageIndex: number) =>
+              page
+                ? page.map((item, itemIndex) => (
+                    <li key={itemIndex}>
+                      <ItemBox item={item} itemType="get" />
+                    </li>
+                  ))
+                : pageIndex === data.pages.length - 1 && (
+                    <li key={pageIndex} className="mb-16px">
+                      검색 결과가 없습니다.
+                    </li>
+                  )
+            )}
+          </ul>
+          {/* )} */}
+          {isFetchingNextPage && (
+            <img src={loading} alt="로딩 중" className="mx-auto" />
           )}
-          {fetching && <img src={loading} alt="로딩 중" className="mx-auto" />}
         </div>
       </div>
       <Navigation />
