@@ -1,7 +1,7 @@
+import { pb } from '@/lib/utils/pb';
 import { useState, useEffect } from 'react';
 import Horizon from '@/components/common/atom/Horizon';
 import icon_delete from '@/assets/icons/icon_delete.svg';
-import { pb } from '@/lib/utils/pb';
 import ModalComp from '@/components/common/molecule/ModalComp';
 
 const pocketAuth = localStorage.getItem('pocketbase_auth');
@@ -65,22 +65,23 @@ const Setting = () => {
       'keywordInput'
     ) as HTMLInputElement;
     const newKeyword = keywordInput.value.trim();
-    const currentTime = new Date().toISOString();
 
+    // 키워드 갯수 제한 모달
     if (keywordsArray.length >= 10) {
       setIsCountModal(true);
       keywordInput.value = '';
       return;
     }
 
+    // 키워드 중복 제한 모달
     if (keywordsArray.includes(keywordInput.value)) {
       setIsDuplicate(true);
       keywordInput.value = '';
       return;
     }
 
+    // pb에 키워드 업데이트
     if (newKeyword) {
-      // pb에 키워드 업데이트
       const updateKeyword = userKeyword.keywords
         ? `${userKeyword.keywords}, ${newKeyword}`
         : newKeyword;
@@ -92,9 +93,6 @@ const Setting = () => {
 
       setUserKeyword({ keywords: updateKeyword });
       keywordInput.value = '';
-
-      // 로컬 스토리지에 키워드와 시간 저장
-      localStorage.setItem(newKeyword, currentTime);
     }
   };
 

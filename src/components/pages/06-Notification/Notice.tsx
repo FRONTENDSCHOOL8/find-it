@@ -93,7 +93,7 @@ const Notice = () => {
     fetchPosts();
 
     // 1시간마다 키워드 추천 알림
-    const interval = setInterval(fetchPosts, 3600000);
+    const interval = setInterval(fetchPosts, 30000);
     return () => clearInterval(interval);
   }, [userKeyword]);
 
