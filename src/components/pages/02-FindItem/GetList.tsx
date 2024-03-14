@@ -24,6 +24,9 @@ const GetList = () => {
       },
     });
 
+  console.log('data');
+  console.log(data);
+
   const handleScroll = useCallback(
     (event: UIEvent<HTMLDivElement>) => {
       const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
