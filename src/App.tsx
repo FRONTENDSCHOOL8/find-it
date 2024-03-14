@@ -44,7 +44,7 @@ const App = () => {
   });
 
   useEffect(() => {
-    let timeout: NodeJS.Timeout;
+    let timeout: number;
     if (showSplash) {
       // 스플래시 보이는 시간 :  3.5초 뒤 사라짐
       timeout = setTimeout(() => {
