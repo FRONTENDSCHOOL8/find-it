@@ -62,6 +62,11 @@ const Header: React.FC<HeaderProps> = ({
         queryKey: ['searchFindResult'],
         exact: true,
       });
+
+      queryClient.removeQueries({
+        queryKey: ['searchLostResult'],
+        exact: true,
+      });
     }
   };
 

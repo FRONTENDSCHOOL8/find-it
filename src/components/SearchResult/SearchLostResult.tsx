@@ -67,37 +67,35 @@ const SearchLostResult = () => {
   //   }
   // }, [fetching]);
 
-  const {
-    data: items,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-  } = useInfiniteQuery({
-    queryKey: ['searchLostResult'],
-    queryFn: async ({ pageParam }) =>
-      await getSearchLostData({
-        PRDT_CL_CD_01: selectedMainCategoryValue,
-        PRDT_CL_CD_02: selectedSubCategoryValue,
-        N_FD_LCT_CD: selectedAreaValue,
-        START_YMD:
-          selectStartDate !== '날짜를 선택하세요.'
-            ? getFormattedDate(selectStartDate)
-            : '',
-        END_YMD:
-          selectEndDate !== '날짜를 선택하세요.'
-            ? getFormattedDate(selectEndDate)
-            : '',
-        pageNo: pageParam,
-        numOfRows: 10,
-      }),
-    initialPageParam: 1,
-    getNextPageParam: (allPages) => {
-      if (Array.isArray(allPages)) {
-        return allPages.length + 1;
-      }
-    },
-  });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useInfiniteQuery({
+      queryKey: ['searchLostResult'],
+      queryFn: async ({ pageParam }) =>
+        await getSearchLostData({
+          PRDT_CL_CD_01: selectedMainCategoryValue,
+          PRDT_CL_CD_02: selectedSubCategoryValue,
+          N_FD_LCT_CD: selectedAreaValue,
+          START_YMD:
+            selectStartDate !== '날짜를 선택하세요.'
+              ? getFormattedDate(selectStartDate)
+              : '',
+          END_YMD:
+            selectEndDate !== '날짜를 선택하세요.'
+              ? getFormattedDate(selectEndDate)
+              : '',
+          pageNo: pageParam,
+          numOfRows: 10,
+        }),
+      initialPageParam: 1,
+      getNextPageParam: (allPages) => {
+        if (Array.isArray(allPages)) {
+          return allPages.length + 1;
+        }
+      },
+    });
+
+  console.log('data');
+  console.log(data);
 
   const handleScroll = useCallback(
     (event: UIEvent<HTMLDivElement>) => {
@@ -166,25 +164,25 @@ const SearchLostResult = () => {
           ref={scrollContainerRef}
           className="h-[calc(100vh-66px-80px)] overflow-auto"
         >
-          {items === null ? (
-            <div className="text-center">검색 결과가 없습니다.</div>
-          ) : (
-            <ul className="flex flex-col items-center">
-              {items.pages.map((page: AllData[], pageIndex: number) =>
-                page
-                  ? page.map((item, itemIndex) => (
-                      <li key={itemIndex}>
-                        <ItemBox item={item} itemType="get" />
-                      </li>
-                    ))
-                  : pageIndex === items.pages.length - 1 && (
-                      <li key={pageIndex} className="mb-16px">
-                        더 이상 결과가 없습니다.
-                      </li>
-                    )
-              )}
-            </ul>
-          )}
+          {/* {data.pages[0] === undefined ? (
+            <span className="text-center">검색 결과가 없습니다.</span>
+          ) : ( */}
+          <ul className="flex flex-col items-center">
+            {data.pages.map((page: AllData[], pageIndex: number) =>
+              page
+                ? page.map((item, itemIndex) => (
+                    <li key={itemIndex}>
+                      <ItemBox item={item} itemType="lost" />
+                    </li>
+                  ))
+                : pageIndex === data.pages.length - 1 && (
+                    <li key={pageIndex} className="mb-16px">
+                      검색 결과가 없습니다.
+                    </li>
+                  )
+            )}
+          </ul>
+          {/* )} */}
           {isFetchingNextPage && (
             <img src={loading} alt="로딩 중" className="mx-auto" />
           )}
