@@ -16,14 +16,15 @@
   }
 
   .date-input::-webkit-calendar-picker-indicator {
-    @apply hidden;
-  }
-
-  .date-input::-webkit-calendar-picker-indicator {
-    @apply block h-20px w-20px bg-cover bg-center bg-no-repeat;
-    background-image: url('./assets/icons/icon_calendar.svg');
-    color: rgba(0, 0, 0, 0);
-    opacity: 1;
+    display: block !important;
+    height: 20px !important;
+    width: 20px !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-image: url('./assets/icons/icon_calendar.svg') !important;
+    color: rgba(0, 0, 0, 0) !important;
+    opacity: 1 !important;
   }
 
   .custom-bullet {
