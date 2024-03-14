@@ -120,7 +120,7 @@ const SearchFindDetail: React.FC = () => {
                   id="mainCategory"
                   value={selectedMainCategoryValue}
                   onChange={handleMainCategoriesSelectChange}
-                  className="hover: flex h-25px w-87px appearance-none items-center justify-center rounded-full border border-gray-500 pl-14px text-10px"
+                  className="hover: flex h-25px w-87px appearance-none items-center justify-center rounded-full border border-gray-500 bg-white pl-14px text-10px"
                 >
                   {mainCategories.map((category) => (
                     <option key={category.value} value={category.value}>
@@ -139,7 +139,7 @@ const SearchFindDetail: React.FC = () => {
                   id="subCategory"
                   value={selectedSubCategoryValue}
                   onChange={handleSubCategoriesSelectChange}
-                  className="flex h-25px w-87px appearance-none items-center justify-center rounded-full border border-gray-350 px-14px text-10px"
+                  className="flex h-25px w-87px appearance-none items-center justify-center rounded-full border border-gray-350 bg-white px-14px text-10px"
                 >
                   {subCategories[selectedMainCategoryValue] &&
                     subCategories[selectedMainCategoryValue].map(
@@ -172,7 +172,7 @@ const SearchFindDetail: React.FC = () => {
                   id="area"
                   value={selectedAreaValue}
                   onChange={handleAreasSelectChange}
-                  className="hover: flex h-25px w-87px appearance-none items-center justify-center rounded-full border border-gray-500 pl-14px text-10px"
+                  className="hover: flex h-25px w-87px appearance-none items-center justify-center rounded-full border border-gray-500 bg-white pl-14px text-10px"
                 >
                   {areas.map((area) => (
                     <option key={area.value} value={area.value}>
