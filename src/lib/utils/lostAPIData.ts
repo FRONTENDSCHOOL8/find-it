@@ -64,7 +64,7 @@ export const lostAllData = async (option = {}) => {
     const json = xmlToJson(xml);
 
     if (typeof json === 'string') {
-      throw new Error('json is string');
+      throw new Error('json이 문자열입니다.');
     }
 
     if (
@@ -100,7 +100,7 @@ export const lostSearchData = async (query: string, options = {}) => {
     const json = xmlToJson(xml);
 
     if (typeof json === 'string') {
-      throw new Error('json is string');
+      throw new Error('json이 문자열입니다.');
     }
 
     if (
@@ -130,7 +130,7 @@ export const lostSearchId = async (id: string) => {
     const json = xmlToJson(xml);
 
     if (typeof json === 'string') {
-      throw new Error('json is string');
+      throw new Error('json이 문자열입니다.');
     }
 
     if (

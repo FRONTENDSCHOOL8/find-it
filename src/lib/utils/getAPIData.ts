@@ -64,7 +64,7 @@ export const getAllData = async (options = {}) => {
     const json = xmlToJson(xml);
 
     if (typeof json === 'string') {
-      throw new Error('json is string');
+      throw new Error('json이 문자열입니다.');
     }
 
     if (
@@ -76,7 +76,7 @@ export const getAllData = async (options = {}) => {
       const items = json.response.body.items.item;
 
       if (!Array.isArray(items)) {
-        throw new Error('items is not array');
+        throw new Error('items의 타입이 배열이 아닙니다.');
       }
 
       const result = raiseValue(items);
@@ -106,7 +106,7 @@ export const getSearchData = async (query: string, options = {}) => {
     const json = xmlToJson(xml);
 
     if (typeof json === 'string') {
-      throw new Error('json is string');
+      throw new Error('json이 문자열입니다.');
     }
 
     if (
@@ -140,7 +140,7 @@ export const getSearchId = async (id: string): Promise<DetailData | null> => {
     const json = xmlToJson(xml);
 
     if (typeof json === 'string') {
-      throw new Error('json is string');
+      throw new Error('json이 문자열입니다.');
     }
 
     if (
@@ -199,7 +199,7 @@ export const getSearchFindData = async (query = {}) => {
     const json = xmlToJson(xml);
 
     if (typeof json === 'string') {
-      throw new Error('json is string');
+      throw new Error('json이 문자열입니다.');
     }
 
     if (
@@ -235,7 +235,7 @@ export const getSearchLostData = async (query = {}) => {
     const json = xmlToJson(xml);
 
     if (typeof json === 'string') {
-      throw new Error('json is string');
+      throw new Error('json이 문자열입니다.');
     }
 
     if (
