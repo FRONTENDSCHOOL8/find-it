@@ -1,4 +1,9 @@
-const IconEyeOn = (props) => {
+import { SVGProps } from 'react';
+import { JSX } from 'react/jsx-runtime';
+
+const IconEyeOn = (
+  props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>
+) => {
   return (
     <svg
       width={16}

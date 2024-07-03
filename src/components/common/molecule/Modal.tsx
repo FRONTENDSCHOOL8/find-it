@@ -1,3 +1,6 @@
+import { ReactNode } from 'react';
+import { JSX } from 'react/jsx-runtime';
+
 interface ModalProps {
   cancelText?: string;
   confirmText: string;
@@ -6,6 +9,13 @@ interface ModalProps {
   onClickConfirm?: () => void;
 }
 
+type CancelButton =
+  | string
+  | number
+  | boolean
+  | JSX.Element
+  | Iterable<ReactNode>;
+
 const Modal: React.FC<ModalProps> = ({
   cancelText,
   confirmText = '확인',
@@ -13,7 +23,8 @@ const Modal: React.FC<ModalProps> = ({
   onClickCancel,
   onClickConfirm,
 }) => {
-  let cancelButton;
+  let cancelButton: CancelButton;
+
   const buttonTextStyle =
     'leading-21px text-center font-medium tracking-[-.48px]';
 
