@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface KakaoMapProps {
   place: string;
@@ -6,8 +6,10 @@ interface KakaoMapProps {
 }
 
 const KakaoMap = ({ place, className }: KakaoMapProps) => {
+  const mapRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    const container = document.getElementById('map');
+    const container = mapRef.current;
     const options = {
       center: new window.kakao.maps.LatLng(33.450701, 126.570667),
       level: 3,
@@ -43,9 +45,15 @@ const KakaoMap = ({ place, className }: KakaoMapProps) => {
         });
       }
     });
+
+    return () => {
+      if (container) {
+        container.innerHTML = '';
+      }
+    };
   }, [place]);
 
-  return <div id="map" className={className} />;
+  return <div ref={mapRef} className={className} />;
 };
 
 export default KakaoMap;
