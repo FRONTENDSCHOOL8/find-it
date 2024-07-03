@@ -6,7 +6,7 @@ interface HorizonProps {
 }
 
 const Horizon: React.FC<HorizonProps> = ({ lineBold, lineWidth }) => {
-  let style;
+  let style: string = '';
 
   if (lineBold === 'thin' && lineWidth === 'short') {
     style = 'h-[0.4px] w-315px bg-gray-300';

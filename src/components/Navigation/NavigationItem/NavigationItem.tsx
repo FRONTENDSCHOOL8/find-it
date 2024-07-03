@@ -9,6 +9,8 @@ import icon_lost_false from '@/assets/navigation/icon_lost_false.svg';
 import icon_profile_true from '@/assets/navigation/icon_profile_true.svg';
 import icon_profile_false from '@/assets/navigation/icon_profile_false.svg';
 import { Link } from 'react-router-dom';
+import { ReactNode } from 'react';
+import { JSX } from 'react/jsx-runtime';
 
 interface NavigationItemProps {
   isHomeActive?: boolean;
@@ -19,6 +21,8 @@ interface NavigationItemProps {
   children?: string;
 }
 
+type IconType = JSX.Element | Iterable<ReactNode>;
+
 const NavigationItem: React.FC<NavigationItemProps> = ({
   isHomeActive,
   isBoxActive,
@@ -27,13 +31,13 @@ const NavigationItem: React.FC<NavigationItemProps> = ({
   isProfileActive,
   children,
 }) => {
-  let iconHome;
-  let iconBox;
-  let iconLost;
-  let iconBoard;
-  let iconProfile;
-  let homeLogo;
-  let paragraph;
+  let iconHome: IconType;
+  let iconBox: IconType;
+  let iconLost: IconType;
+  let iconBoard: IconType;
+  let iconProfile: IconType;
+  let homeLogo: IconType;
+  let paragraph: IconType;
 
   const PARAGRAPH_FALSE_STYLE =
     'font-OAGothic -tracking-0.3px text-center text-10px text-gray-700';

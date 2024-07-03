@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, SetStateAction } from 'react';
 import Header from '@/components/Header/Header';
 import Notice from '@/components/pages/06-Notification/Notice';
 import Setting from '@/components/pages/06-Notification/Setting';
@@ -6,7 +6,7 @@ import Setting from '@/components/pages/06-Notification/Setting';
 const Categories = ({ onChangeCategory }) => {
   const [voidAlarmIcon, setVoidAlarmIcon] = useState(false);
   const [activeButton, setActiveButton] = useState('notice');
-  const handleClick = (button) => {
+  const handleClick = (button: SetStateAction<string>) => {
     setActiveButton(button);
     onChangeCategory(button);
   };

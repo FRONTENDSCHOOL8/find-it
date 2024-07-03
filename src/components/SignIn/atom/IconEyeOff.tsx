@@ -1,4 +1,9 @@
-const IconEyeOff = (props) => {
+import { SVGProps } from 'react';
+import { JSX } from 'react/jsx-runtime';
+
+const IconEyeOff = (
+  props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>
+) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
