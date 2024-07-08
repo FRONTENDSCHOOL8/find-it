@@ -1,4 +1,3 @@
-import { pb } from '@/lib/api/getPbData';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getData } from '@/lib/utils/crud';
@@ -6,46 +5,43 @@ import { getTimeDiff } from '@/lib/utils/getTimeDiff';
 import getPbImgURL from '@/lib/utils/getPbImgURL';
 import profile from '@/assets/profile.svg';
 
-// 포켓베이스 Auto cancellation 취소 명령어
-pb.autoCancellation(false);
-
 const PostDetailBody = () => {
   const { id } = useParams();
   const [thisData, setThisData] = useState(null);
   const [userId, setUserId] = useState('');
   const [userAvatar, setUserAvatar] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
       try {
         const records = await getData('community', { filter: `id="${id}"` });
         setThisData(records[0]);
+
+        if (records[0]) {
+          const userRecords = await getData('users', {
+            filter: `nickname="${records[0].nickname}"`,
+          });
+
+          const realData = userRecords && userRecords[0];
+          setUserId(realData.id);
+          setUserAvatar(realData.avatar);
+        }
       } catch (error) {
-        console.error('자유게시판 pb id 잡아서 데이터 뿌리기 통신 에러', error);
+        console.error('자유게시판 pb > id 검색 에러', error);
+      } finally {
+        setIsLoading(false);
       }
     })();
   }, [id]);
 
-  if (!thisData) return null;
-  const { title, content: bodyText, tag, nickname, created } = thisData;
+  if (isLoading) return <div>로딩중...</div>;
 
-  // 커뮤니티 닉네임으로 유저에서 id, avartar 뽑기
-  (async () => {
-    try {
-      const records = await getData('users', {
-        filter: `nickname="${nickname}"`,
-      });
-      const realdata = records && records[0];
-      setUserId(realdata.id);
-      setUserAvatar(realdata.avatar);
-    } catch (error) {
-      console.error('유저 데이터에서 닉네임 잡기 통신 에러', error);
-    }
-  })();
+  const { title, content: bodyText, tag, nickname, created } = thisData;
 
   return (
     <div className="w-315px">
-      <section className="itmes-center flex gap-8px pt-20px">
+      <section className="flex items-center gap-8px pt-20px">
         <img
           src={
             (userAvatar !== '' && getPbImgURL(userId, userAvatar)) || profile

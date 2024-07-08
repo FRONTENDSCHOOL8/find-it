@@ -74,8 +74,8 @@ const Header: React.FC<HeaderProps> = ({
     if (isShowLogo) {
       homeLogo = (
         <Link to="/">
-          <h1 aria-label="찾아줘 로고 풀버전">
-            <img src={LOGOTYPE} alt="찾아줘!" />
+          <h1 aria-label="메인 페이지로 이동">
+            <img src={LOGOTYPE} alt="찾아줘 로고 풀버전" />
           </h1>
         </Link>
       );
@@ -88,8 +88,8 @@ const Header: React.FC<HeaderProps> = ({
     if (isShowSymbol) {
       symbolLogo = (
         <Link to="/">
-          <h1 aria-label="찾아줘 로고 약식버전">
-            <img src={LOGO_SYMBOL} alt="메인으로" />
+          <h1 aria-label="메인 페이지로 이동">
+            <img src={LOGO_SYMBOL} alt="찾아줘 로고 약식버전" />
           </h1>
         </Link>
       );
