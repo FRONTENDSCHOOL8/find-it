@@ -103,6 +103,7 @@ const ItemBox: React.FC<itemTypeProps> = ({ itemType, item }) => {
                 }
                 alt="물품 사진"
                 className="size-120px rounded-14px"
+                loading="lazy"
               />
             </div>
           </div>
@@ -137,6 +138,7 @@ const ItemBox: React.FC<itemTypeProps> = ({ itemType, item }) => {
                 src={default_item}
                 alt="등록된 사진이 없습니다."
                 className="size-120px rounded-14px"
+                loading="lazy"
               />
             </div>
           </div>
@@ -176,6 +178,7 @@ const ItemBox: React.FC<itemTypeProps> = ({ itemType, item }) => {
                 }
                 alt="물품 사진"
                 className="size-120px rounded-14px"
+                loading="lazy"
               />
             </div>
           </div>
