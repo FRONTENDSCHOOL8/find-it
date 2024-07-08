@@ -61,7 +61,7 @@ const FindItemBox = () => {
         <span className="text-20px">물품 찾기</span>
         <img
           src={icon_search}
-          alt="물품 찾기"
+          alt="돋보기 아이콘"
           className="absolute bottom-5 right-5"
         />
       </Link>
