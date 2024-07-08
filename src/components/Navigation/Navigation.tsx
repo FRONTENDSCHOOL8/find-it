@@ -12,7 +12,7 @@ const Navigation: React.FC = () => {
       style={{ boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.06)' }}
       className="fixed bottom-0 left-1/2 flex h-80px w-375px -translate-x-1/2 transform items-center justify-center gap-12px rounded-tl-16px rounded-tr-16px bg-white"
     >
-      <NavigationItem isHomeActive={pathname === '/'}>찾아줘!</NavigationItem>
+      <NavigationItem isHomeActive={pathname === '/'}></NavigationItem>
       <NavigationItem
         isBoxActive={
           pathname.startsWith('/getlist') ||

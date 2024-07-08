@@ -35,9 +35,15 @@ const ProfileBox: React.FC<ProfileBoxProps> = ({
 
   return (
     <div className="h-140px w-180px rounded-20px bg-skyblue-300 transition-all duration-300 hover:shadow-lg">
-      <Link to="/mypageentry" className="block h-full p-5">
-        <span className="text-17px">
-          <b className="text-24px font-normal">{profileName}</b> 님 <br />
+      <Link
+        to="/mypageentry"
+        style={{ display: 'block', height: '100%', padding: '20px' }}
+      >
+        <span style={{ fontSize: '17px' }}>
+          <b style={{ fontSize: '24px', fontWeight: 'normal' }}>
+            {profileName}
+          </b>{' '}
+          님 <br />
           안녕하세요!
         </span>
       </Link>
