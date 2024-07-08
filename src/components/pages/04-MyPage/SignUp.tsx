@@ -23,6 +23,7 @@ type AlertProps =
   | 'userEmail'
   | 'userEmailDouble'
   | '';
+
 type ConfirmProps = 'doubleCheckEmail' | 'doubleCheckNickname' | '';
 
 const SignUp = () => {
