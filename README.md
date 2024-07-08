@@ -12,15 +12,15 @@
 
 📅 프로젝트 기간: 2024.02.19(월) ~ 2024.03.14(목)
 
-🖥 배포 URL: https://findmyitem.netlify.app
+🖥 배포 URL: https://find-item.netlify.app
 
 ![qrcode_findmyitem](https://github.com/bellori729/bellori729/assets/145115283/2a9633ab-e7b2-4755-b318-3169ca184271)
 
 ## 📄 목차
 
-- [팀원 소개](#팀원-소개)
-- [기술](#기술)
-- [화면 구성](#화면-구성)
+- [팀원 소개](#-팀원-소개)
+- [기술](#-기술)
+- [화면 구성](#-화면-구성)
 
 ## 👨🏻‍💻 팀원 소개
 
