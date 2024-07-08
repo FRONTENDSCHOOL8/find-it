@@ -13,7 +13,7 @@ interface HeaderProps {
   isShowSymbol?: boolean;
   isShowSearch?: boolean;
   isShowSubmit?: boolean;
-  empty?: boolean; // 헤더 영역에 2개 요소만 사용 시 해당 prop 전달 필요
+  empty?: boolean; // 헤더 영역에 2개 요소만 사용 시 빈자리에 해당 prop 전달 필요
   link?: string;
   customStyle?: string;
   children?: string;
@@ -74,7 +74,9 @@ const Header: React.FC<HeaderProps> = ({
     if (isShowLogo) {
       homeLogo = (
         <Link to="/">
-          <img src={LOGOTYPE} alt="찾아줘!" />
+          <h1 aria-label="찾아줘 로고 풀버전">
+            <img src={LOGOTYPE} alt="찾아줘!" />
+          </h1>
         </Link>
       );
     } else {
@@ -86,7 +88,9 @@ const Header: React.FC<HeaderProps> = ({
     if (isShowSymbol) {
       symbolLogo = (
         <Link to="/">
-          <img src={LOGO_SYMBOL} alt="메인으로" />
+          <h1 aria-label="찾아줘 로고 약식버전">
+            <img src={LOGO_SYMBOL} alt="메인으로" />
+          </h1>
         </Link>
       );
     } else {
