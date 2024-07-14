@@ -9,63 +9,72 @@ interface ButtonVariableProps {
     | 'primarySolidThin';
   onClick?: (e: React.FormEvent<HTMLFormElement>) => void;
 }
+
+type ButtonType = 'button' | 'reset' | 'submit' | undefined;
+
 const ButtonVariable: React.FC<ButtonVariableProps> = ({
   buttonText = '확인',
   variant = 'normal',
   onClick,
   ...restProps
 }) => {
-  let buttonType: 'button' | 'reset' | 'submit' | undefined;
-  let background, color, borderColor, width, height;
+  const styles = {
+    buttonType: 'button' as ButtonType,
+    background: '',
+    color: '',
+    borderColor: '',
+    width: '',
+    height: '',
+  };
+
   switch (variant) {
     case 'submit':
-      buttonType = 'submit';
-      background = '#4785ff';
-      color = 'white';
-      borderColor = '#4785ff';
-      width = '100%';
-      height = '66px';
+      styles.buttonType = 'submit';
+      styles.background = '#4785ff';
+      styles.color = 'white';
+      styles.borderColor = '#4785ff';
+      styles.width = '100%';
+      styles.height = '66px';
       break;
     case 'disabled':
-      buttonType = 'button';
-      background = '#666666';
-      color = '#BCBCBC';
-      borderColor = '#666666';
-      width = '100%';
-      height = '66px';
-
+      styles.buttonType = 'button';
+      styles.background = '#666666';
+      styles.color = '#BCBCBC';
+      styles.borderColor = '#666666';
+      styles.width = '100%';
+      styles.height = '66px';
       break;
     case 'lineStyle':
-      buttonType = 'button';
-      background = 'white';
-      color = '#4785ff';
-      borderColor = '#4785ff';
-      width = '334px';
-      height = '66px';
+      styles.buttonType = 'button';
+      styles.background = 'white';
+      styles.color = '#4785ff';
+      styles.borderColor = '#4785ff';
+      styles.width = '334px';
+      styles.height = '66px';
       break;
     case 'blackSolidThin':
-      buttonType = 'button';
-      background = 'black';
-      color = 'white';
-      borderColor = 'black';
-      width = '315px';
-      height = '53px';
+      styles.buttonType = 'button';
+      styles.background = 'black';
+      styles.color = 'white';
+      styles.borderColor = 'black';
+      styles.width = '315px';
+      styles.height = '53px';
       break;
     case 'blackLineThin':
-      buttonType = 'button';
-      background = 'white';
-      color = 'black';
-      borderColor = 'black';
-      width = '315px';
-      height = '53px';
+      styles.buttonType = 'button';
+      styles.background = 'white';
+      styles.color = 'black';
+      styles.borderColor = 'black';
+      styles.width = '315px';
+      styles.height = '53px';
       break;
     case 'primarySolidThin':
-      buttonType = 'button';
-      background = '#4785ff';
-      color = 'white';
-      borderColor = '#4785ff';
-      width = '315px';
-      height = '53px';
+      styles.buttonType = 'button';
+      styles.background = '#4785ff';
+      styles.color = 'white';
+      styles.borderColor = '#4785ff';
+      styles.width = '315px';
+      styles.height = '53px';
       break;
     default:
       break;
@@ -73,14 +82,14 @@ const ButtonVariable: React.FC<ButtonVariableProps> = ({
 
   return (
     <button
-      type={buttonType}
+      type={styles.buttonType}
       onClick={onClick as unknown as React.MouseEventHandler<HTMLButtonElement>}
       style={{
-        width,
-        height,
-        background,
-        color,
-        border: `1px solid ${borderColor}`,
+        width: styles.width,
+        height: styles.height,
+        background: styles.background,
+        color: styles.color,
+        border: `1px solid ${styles.borderColor}`,
         borderRadius: '20px',
       }}
       disabled={variant === 'disabled'}
